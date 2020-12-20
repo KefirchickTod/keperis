@@ -5,14 +5,11 @@ namespace src\Core\Page;
 
 
 use src\Core\ActionButton;
-use src\Core\easyCreateHTML;
-use src\Core\RowMiddlewhere;
-use src\Http\Request;
-use src\Structure\Structure;
 use src\Core\Table\eeTable;
+use src\Http\Request;
 use src\Interfaces\Table;
 use src\Structure\ProvideFilter;
-use PDO;
+use src\Structure\Structure;
 
 class ProvideTable implements Table
 {
@@ -29,10 +26,10 @@ class ProvideTable implements Table
 
     public $templates = [
         'attrTable' => 'class = "table table-striped table-responsive-full table-hover table-bordered fist table-sm" style = "font-size: 0.9em; table-layout: fixed; margin-bottom:2px"',
-        'thead'     => 'class ="thead-light"', //attr
-        'tbody'     => '',
-        'tfoot'     => '',
-        'th'        => ' scope="col" style = "position: relative; vertical-align: middle; text-align:center; width: {%_width_%};"',
+        'thead' => 'class ="thead-light"', //attr
+        'tbody' => '',
+        'tfoot' => '',
+        'th' => ' scope="col" style = "position: relative; vertical-align: middle; text-align:center; width: {%_width_%};"',
     ];
     public $template = "<div class='tableConver'><div {%_mask_%}>{%_table_%}</div></div>";
     /**
@@ -66,9 +63,9 @@ class ProvideTable implements Table
     {
         /** @var  $reqyest Request */
         $reqyest = container()->get('request');
-        if($reqyest->isXhr()){
+        if ($reqyest->isXhr()) {
             $this->template = "<div class='tableConver_ajax'><div {%_mask_%}>{%_table_%}</div></div>";
-        }else{
+        } else {
             $this->template = "<div class='tableConver'><div {%_mask_%}>{%_table_%}</div></div>";
 
         }
@@ -96,13 +93,11 @@ class ProvideTable implements Table
     }
 
 
-
     public function callbackRow(\Closure $closure)
     {
         $this->row_init = $closure;
         return $this;
     }
-
 
 
     public function setData(Structure $structure, array $dataArray)
@@ -111,7 +106,6 @@ class ProvideTable implements Table
         $this->dataArray = $dataArray;
 
         $this->row_init = $this->row_init ?: PageCreator::$row_init;
-
 
 
         if ($this->row_init) {
@@ -170,7 +164,7 @@ class ProvideTable implements Table
         if (!$replaces) {
             $replaces = [
                 '{%_loadbar_%}' => '',
-                "{%_mask_%}"    => 'class = "dragscroll scroll-user-table table-multi-columns  min-height55" data-fixed = "' . $this->fixed . '" style="cursor: grab; overflow: scroll auto; min-height: 100%;"',
+                "{%_mask_%}" => 'class = "dragscroll scroll-user-table table-multi-columns  min-height55" data-fixed = "' . $this->fixed . '" style="cursor: grab; overflow: scroll auto; min-height: 100%;"',
             ];
         }
 
@@ -224,14 +218,14 @@ class ProvideTable implements Table
 
                         preg_match('~option~', $this->filter[$name]) ? html()
                             ->select([
-                                'id'       => "select_$name",
+                                'id' => "select_$name",
                                 'multiple' => '',
-                                'class'    => $this->select2,
+                                'class' => $this->select2,
                             ])->insert($this->filter[$name])
                             ->end('select')
                             ->input([
-                                'id'    => "$name",
-                                'type'  => 'hidden',
+                                'id' => "$name",
+                                'type' => 'hidden',
                                 'value' => "no",
                             ]) : $this->filter[$name]
                     )
@@ -260,61 +254,62 @@ class ProvideTable implements Table
         if (PageCreator::$script == true) {
             ?>
             <script>
-                try {
-                    var title = <?= json_encode($title) ?>;
-                } catch (e) {
-                    console.log('');
-                }
+              try {
+                var title = <?= json_encode($title) ?>;
+              }
+              catch (e) {
+                console.log('');
+              }
 
-                //
-                //function filterSend() {
-                //
-                //    let saveForGet = {};
-                //    let getQuery = new QueryGet();
-                //    for (var i = 0; i < title.length; i++) {
-                //        //console.log(title[i]);
-                //        if (document.getElementById(title[i]) != null) {
-                //
-                //            let value = document.getElementById(title[i]).value;
-                //            if (typeof value == 'undefined' || !value || value.length === 0 || value === "" || !/[^\s]/.test(value) || /^\s*$/.test(value) || value.replace(/\s/g, "") === "") {
-                //                continue;
-                //            }
-                //            let arrayValue = value.split(',');
-                //            arrayValue = arrayValue.filter(function (el) {
-                //                return encodeURIComponent(el) != null;
-                //            });
-                //
-                //            if (arrayValue !== 'no') {
-                //                saveForGet[title[i]] = encodeURIComponent(arrayValue);
-                //            }
-                //        }
-                //
-                //
-                //    }
-                //
-                //    sessionStorage.scrollLeft = $(".double-scroll").scrollLeft();
-                //    getQuery.data.filter = JSON.stringify(clean(saveForGet, 'no'));
-                //    if (saveForGet !== '') {
-                //
-                //        historyPushJson(getQuery.data);
-                //        updateTable();
-                //        //if (getQuery.data.search) {
-                //        //    creat
-                //        //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&' + saveForGet + '&length=' + '<?////=$lenght?>////' + '&search=' + getQuery.data.search;
-                //        //} else {
-                //        //
-                //        //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&' + saveForGet + '&length=' + '<?////=$lenght?>////';
-                //        //}
-                //    }
-                //    //
-                //    //if (getQuery.data.search) {
-                //    //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&length=' + '<?////=$lenght?>////' + '&search=' + getQuery.data.search;
-                //    //} else {
-                //    //
-                //    //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&length=' + '<?////=$lenght?>////';
-                //    //}
-                //
-                //}
+              //
+              //function filterSend() {
+              //
+              //    let saveForGet = {};
+              //    let getQuery = new QueryGet();
+              //    for (var i = 0; i < title.length; i++) {
+              //        //console.log(title[i]);
+              //        if (document.getElementById(title[i]) != null) {
+              //
+              //            let value = document.getElementById(title[i]).value;
+              //            if (typeof value == 'undefined' || !value || value.length === 0 || value === "" || !/[^\s]/.test(value) || /^\s*$/.test(value) || value.replace(/\s/g, "") === "") {
+              //                continue;
+              //            }
+              //            let arrayValue = value.split(',');
+              //            arrayValue = arrayValue.filter(function (el) {
+              //                return encodeURIComponent(el) != null;
+              //            });
+              //
+              //            if (arrayValue !== 'no') {
+              //                saveForGet[title[i]] = encodeURIComponent(arrayValue);
+              //            }
+              //        }
+              //
+              //
+              //    }
+              //
+              //    sessionStorage.scrollLeft = $(".double-scroll").scrollLeft();
+              //    getQuery.data.filter = JSON.stringify(clean(saveForGet, 'no'));
+              //    if (saveForGet !== '') {
+              //
+              //        historyPushJson(getQuery.data);
+              //        updateTable();
+              //        //if (getQuery.data.search) {
+              //        //    creat
+              //        //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&' + saveForGet + '&length=' + '<?////=$lenght?>////' + '&search=' + getQuery.data.search;
+              //        //} else {
+              //        //
+              //        //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&' + saveForGet + '&length=' + '<?////=$lenght?>////';
+              //        //}
+              //    }
+              //    //
+              //    //if (getQuery.data.search) {
+              //    //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&length=' + '<?////=$lenght?>////' + '&search=' + getQuery.data.search;
+              //    //} else {
+              //    //
+              //    //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&length=' + '<?////=$lenght?>////';
+              //    //}
+              //
+              //}
 
             </script>
             <?php
@@ -335,57 +330,22 @@ class ProvideTable implements Table
             foreach ($keys as $key) {
                 if (isset($value[$key])) {
                     $note = ($this->title[$key]['note'] ?? null);
-                    if (in_array($key, $this->nameFotGet)) {
-                        $userName = getNameById((int)$value[$key]);
-                        $value[$key] = isset($this->title[$key]['link']) ?
-                            html()->a([
-                                'text'   => $userName,
-                                'target' => '_blank',
-                                'href'   => preg_replace("/%_value_%/", $value[$key], $this->title[$key]['link']),
-                            ])->render(true) : $userName;
-                    }
-                    if(isset($this->title[$key]['userId'])){
-                        $userId = $value['userId'] ?? $value['bc_user_id'] ?? false;
-                        if($userId !== false){
-                            $value[$key] =
-                                html()->a([
-                                    'text'   => $value[$key],
-                                    'target' => '_blank',
-                                    'href'   => '/user/info/'.($value['userId'] ?? $value['bc_user_id'])
-                                ])->render(true);
-                        }
-                    }
-                    if (in_array($key, [
-                            'firstName',
-                            'secondName',
-                            'fullName',
-                        ]) && isset($value['reputation']) && trim($value['reputation']) === 'Негативна') {
 
-                        $result[] = $this->eeTable->newCell()->addData($value[$key])->setAttr("style = 'color:red' data-label = '" . addslashes($this->title[$key]['text']) . "'");
+                    $line = valid($this->title[$key], 'line', '8');
+                    if ($note) {
+                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content createNote' data-o = '{$note['o']}'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . clean($value[$key]) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");
                     } else {
+                        $value[$key] = isset($this->title[$key]['date_format']) ? date($this->title[$key]['date_format'],
+                            strtotime($value[$key])) : $value[$key];
 
-                        $line = valid($this->title[$key], 'line', '8');
-                        if (isset($this->title[$key]['dynamic'])) {
-
-                            $setting = $this->title[$key]['dynamic'];
-                            $data = $this->dynamicFilter($setting, $value[$key], $value['id']);
-                            $result[] = $this->eeTable->newCell()->addData("<div class='tr-content'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' >{$data}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");
-                        } else {
-                            if ($note) {
-                                $result[] = $this->eeTable->newCell()->addData("<div class='tr-content createNote' data-o = '{$note['o']}'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . clean($value[$key]) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");
-                            } else {
-                                $value[$key] = isset($this->title[$key]['date_format']) ? date($this->title[$key]['date_format'], strtotime($value[$key])) : $value[$key];
-
-                                $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text'] ?? '') . "'");
+                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text'] ?? '') . "'");
 //                                if(error_get_last() && error_get_last()['type'] === E_NOTICE){
 //                                    var_dump(error_get_last());
 //                                    debug($key, $this->title, $this->title[$key]['text']);
 //                                }
-                            }
-                        }
-
-
                     }
+
+
                 } else {
                     if ($key === 'event_o' && isset($this->event) && $this->event) {
 
@@ -393,93 +353,19 @@ class ProvideTable implements Table
                         $event = (new ActionButton($value, $this->event))->__toString();
                         $result[] = $this->eeTable->newCell()->addData("<div class = 'action-icon'>$event</div>")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");;
 
-                    } elseif (isset($this->title[$key]['dynamic'])) {
-
-
-                        $setting = $this->title[$key]['dynamic'];
-                       // debug($setting, $value[$key], $value['id']);
-                       // debug($setting);
-                        $data = $this->dynamicFilter($setting, ($value[$key] ?? null), $value['id']);
-                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content' style = ' -webkit-line-clamp: 8;' >{$data}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");
-
                     } else {
                         $result[] = $this->eeTable->newCell()->addData("");
                     }
                 }
             }
 
-            $this->eeTable->setTBodyAttr($this->templates['tbody'])->addRow($this->eeTable->newRow()->setAttr("data-table-row-id = '".($value['id'] ?? -1)."' data-table-count = '{$counting}'")->addArrayOfCells($result ?: [])->setAsTbody());
+            $this->eeTable->setTBodyAttr($this->templates['tbody'])->addRow($this->eeTable->newRow()->setAttr("data-table-row-id = '" . ($value['id'] ?? -1) . "' data-table-count = '{$counting}'")->addArrayOfCells($result ?: [])->setAsTbody());
             $result = [];
             gc_collect_cycles();
         }
         return [];
     }
 
-    /**
-     * @param array $setting
-     * @return string
-     * @example $setting = [
-     *  'id' => 1,
-     * ]
-     */
-    private function dynamicFilter($setting, $currentValue, $registerId)
-    {
-
-        $id = $setting['id'];
-        $key = $setting['key'];
-        $o = $setting['o'] ?? 'updateRegisterTagsStatus';
-        $data = db()->querySql("SELECT bc_connections_db_right_id, bc_connections_db_id FROM bc_connections_db WHERE bc_connections_db_right_key = '$key' AND bc_connections_db_left_id = {$id} GROUP BY bc_connections_db_right_id")->fetchAll(PDO::FETCH_ASSOC);
-        $data_copy = $data;
-        $data = array_column($data, 'bc_connections_db_right_id');
-
-        $result = [];
-        if ($data) {
-            $data = array_diff($data, ['0', null, false, '']);
-            $values = \structure()->set([
-                'dynamic' =>
-                    [
-                        'get'     => ['b_titleUK'],
-                        'class'   => 'bcDictionaryCat',
-                        'setting' =>
-                            [
-                                'where' => 'id IN (' . join(', ', $data) . ')',
-                            ],
-                    ],
-            ])->get('dynamic');
-
-            foreach ($values as $key => $val) {
-                $id = $data_copy[$key]['bc_connections_db_id'];
-                if ($currentValue == $val['id']) {
-
-                    $result[0] = "<span class='toUperCase'>{$val['b_titleUK']}</span>";
-                } else {
-
-                    $result[$id] = "<a href='#' class='updateStatus' data-o = '$o' data-id = '$registerId' data-status = '{$val['id']}'>{$val['b_titleUK']}|</a>";
-                }
-
-            }
-            if (isset($result[0])) {
-
-                $result[] = "<a href='#' class='updateStatus' data-o = '$o'  data-status = '0' data-id = '$registerId'>скинути |</a>";
-            }
-            if ($result) {
-                ksort($result);
-            }
-//            if($result){
-//                uksort($result, function ($a, $b){
-//                    if($a === 'main' || $a === $b){
-//                        return 1;
-//                    }
-//                    return -1;
-//                });
-//                $result = array_reverse($result);
-//            }
-            return "<div class = 'dynamicFilters'>".join('', $result)."</div>";
-        }
-
-
-        return false;
-    }
 
     /**
      * @return array
@@ -499,7 +385,7 @@ class ProvideTable implements Table
                 $sortClass = $this->getSortClass($name, $nameOfValue);
 
                 $result[] = $this->eeTable->newCell()->setAttr($attr)
-                    ->addData(html()->div('style = "cursor:pointer;" class="sort-icon-box" data-sort = "'.$nameOfValue.'"')
+                    ->addData(html()->div('style = "cursor:pointer;" class="sort-icon-box" data-sort = "' . $nameOfValue . '"')
                         ->span()
                         ->insert($value['text'])
                         ->end('span')
@@ -510,7 +396,7 @@ class ProvideTable implements Table
             } else {
                 $width = $name == 'event_o' ? '55px' : $width;
                 $attr = preg_replace('/{%_width_%}/', $width, $this->templates['th']);
-                $result[] = $this->eeTable->newCell()->setAttr($attr)->addData("<span style='text-align: center; width: 100%; display: block'>".(isset($value['text']) ? $value['text'] : 'Дії')."</span>");
+                $result[] = $this->eeTable->newCell()->setAttr($attr)->addData("<span style='text-align: center; width: 100%; display: block'>" . (isset($value['text']) ? $value['text'] : 'Дії') . "</span>");
             }
         }
         return $result;

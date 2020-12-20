@@ -137,10 +137,7 @@ class ActionButton
                         if ($name == 'link') {
 
                             foreach ($value as $num => $data) {
-                                if (isset($action['api']) && $action['settingApi']) {
-                                    $api = (new BCApi())->sendRequest($action['api']);
-                                    $data = $this->setOtherIds($action['settingApi'], $data, $this->row, $api);
-                                }
+
                                 if (isset($action['id']) && $action['id'] == true) {
                                     if (preg_match("/%_id_%/", $data)) {
 

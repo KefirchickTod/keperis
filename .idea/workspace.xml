@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="" />
+    <list default="true" id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/BCApi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/ActionButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/ActionButton.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/LeaderTimer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,6 +15,9 @@
   <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
@@ -58,6 +66,7 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1lvFT0NwkKshtTddrFMRHWHio4Y" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -83,7 +92,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1608469674079</updated>
-      <workItem from="1608469676588" duration="1802000" />
+      <workItem from="1608469676588" duration="2356000" />
     </task>
     <servers />
   </component>
