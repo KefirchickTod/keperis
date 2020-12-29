@@ -4,13 +4,16 @@
 namespace src\Interfaces;
 
 
+use App\Api\ApiController;
+
 interface ApiInterfaces
 {
 
-    public function search();
+    /**
+     * @return ApiController
+     */
+    public function getController();
 
-    public function execute($result = [], $status = 202);
-
-    public function set($arguments = []);
+    public function getMethod();
 
 }

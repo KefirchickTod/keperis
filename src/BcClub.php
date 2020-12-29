@@ -10,16 +10,17 @@ namespace src;
 
 
 use src\Controller\Controller;
-use src\Controller\ErrorController;
-use src\Controller\User\UserController;
-use src\Core\Middleware\NotFoundHandler;
+
 use src\Http\Request;
 use src\Http\Response;
 use src\Interfaces\MiddlewareInterface;
+use src\Interfaces\RequestHandlerInterface;
 use src\Interfaces\ResponseInterface;
-use src\Middleware\FallbackHandler;
+
 use src\Middleware\Middleware;
+use src\Middleware\RequestHandler;
 use src\Router\Route;
+use src\Router\RouteGroup;
 use src\Router\Router;
 use Error;
 use Exception;
@@ -38,12 +39,20 @@ class BcClub
      */
     private $middleware;
 
+    /**
+     * @var RequestHandlerInterface
+     */
+    private $requestHandle;
+
     function __construct($setting = [])
     {
 
         $this->container = new Container(compact('setting'));
 
-        $this->middleware = new Middleware(new FallbackHandler());
+        $this->middleware = new Middleware(new \src\Middleware\RequestHandler\NotFoundHandler());
+
+        $this->requestHandle = new RequestHandler();
+
 
     }
 
@@ -51,7 +60,6 @@ class BcClub
      * @param $pattern
      * @param $controller
      * @return Router
-     * @throws Exception
      */
     public function get($pattern, $controller, $methods = null)
     {
@@ -65,7 +73,6 @@ class BcClub
      * @param $func
      * @param $controller
      * @return Router
-     * @throws Exception|Error
      */
     public function map(array $methods, $pattern, $controller, $func = null)
     {
@@ -89,7 +96,6 @@ class BcClub
      * @param $pattern
      * @param $controller
      * @return Router
-     * @throws Exception
      */
     public function post($pattern, $controller, $methods)
     {
@@ -99,10 +105,19 @@ class BcClub
 
     }
 
-    public function group($controller, \Closure $callback)
+    /**
+     * @param $pattern string
+     * @param \Closure $callback
+     * @return RouteGroup
+     */
+    public function group($pattern, \Closure $callback)
     {
-
-        return false;
+        /** @var RouteGroup $group */
+        $group = $this->container->get('router')->pushGroup($pattern, $callback);
+        $group->setContainer($this->container);
+        $group($this);
+        $this->container->get('router')->popGroup();
+        return $group;
     }
 
     public function __invoke(Request $request, Response $response)
@@ -121,7 +136,8 @@ class BcClub
             /** @var  $route Route */
             $route = $router->lookupRoute($routeInfo[1]);
 
-            return $route->run($request, $response, $route->getController());
+            $response =    $route->run($request, $this->middleware->process($request, $response, $this->requestHandle));
+            return $response;
         } elseif ($routeInfo[0] === Dispatcher::NOT_FOUND) {
 
             $response = $response->withRedirect('/404');
@@ -153,14 +169,17 @@ class BcClub
         return $request->withAttribute('routeInfo', $routeInfo);
     }
 
-    public function addMiddleware(MiddlewareInterface $middleware)
+    public function addMiddleware(RequestHandler $handler)
     {
-        $this->middleware->addMiddleware($middleware);
+
+        $this->requestHandle->setNext($handler);
         return $this;
     }
 
+
     /**
-     * @throws Exception
+     * @return  ResponseInterface
+     *
      */
     public function run()
     {
@@ -178,7 +197,7 @@ class BcClub
         }
 
         try {
-            $response = $this->middleware->handle($request);
+
             //   var_dump($response);
             $response = $this($request, $response);
 
@@ -190,7 +209,7 @@ class BcClub
 
         $response = $this->finalize($response);
 
-        $response = $this->respond($response);
+        $this->respond($response);
 
         return $response;
 
@@ -218,11 +237,11 @@ class BcClub
 
     /**
      * @param ResponseInterface $response
-     * @return ResponseInterface
-     * @throws Exception
      */
     public function respond(ResponseInterface $response)
     {
+
+
         if (!headers_sent()) {
 
             header(sprintf(
@@ -232,16 +251,16 @@ class BcClub
                 $response->getReasonPhrase()
             ));
 
+
             foreach ($response->getHeaders() as $name => $values) {
-
                 foreach ($values as $value) {
-
                     header(sprintf('%s: %s', $name, $value));
-
                 }
             }
 
         }
+
+
         if (!$this->isEmptyResponse($response)) {
             $body = $response->getBody();
 
@@ -270,7 +289,7 @@ class BcClub
                 }
             }
         }
-        return $response;
+
     }
 
 }

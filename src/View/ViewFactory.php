@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Src\src\View;
+namespace src\View;
 
 use src\View\Renderer\Render;
 use src\View\Validator\Validator;

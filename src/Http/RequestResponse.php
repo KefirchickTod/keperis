@@ -8,6 +8,8 @@ use src\Controller\Controller;
 
 class RequestResponse
 {
+
+
     /**
      * @param Controller| \Closure $controller
      * @param $method
@@ -27,13 +29,7 @@ class RequestResponse
         if ($controller instanceof \Closure) {
             return call_user_func($controller, $request, $response, $routeArgument);
         }
-       // $role =(!isset($controller->role) || $controller->role === null || role_check($controller->role) === true);
-        $role = true;
-
-        if($controller->authentification === true){
-            return $response->withRedirect('/login');
-        }
-
+        $role =(!isset($controller->role) || $controller->role === null || role_check($controller->role) === true);
         return $role ? call_user_func([
             $controller,
             $method,

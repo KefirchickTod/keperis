@@ -13,10 +13,14 @@ use src\Http\Request;
 use src\Http\Response;
 use src\Http\ServerData;
 use src\Http\Session;
+use src\Middleware\Middleware;
+use src\Middleware\RequestHandler;
+use src\Middleware\RequestHandler\NotFoundHandler;
 use src\Router\Router;
 use src\Structure\Structure;
 use Exception;
 use Psr\Container\ContainerInterface;
+use function foo\func;
 
 /**
  * Class Container
@@ -31,6 +35,8 @@ use Psr\Container\ContainerInterface;
  * @property Response           $response
  * @property CallableResolver   $callableResolver
  * @property Router             $router
+ * @property Middleware         $middleware
+ * @property RequestHandler     $requestHandle;
  */
 final class Container extends \Pimple\Container implements ContainerInterface
 {
@@ -88,8 +94,10 @@ final class Container extends \Pimple\Container implements ContainerInterface
             };
         }
         if (!isset($this['router'])) {
-            $this['router'] = function () {
-                return new Router();
+            $this['router'] = function ($c) {
+                $route = new Router();
+                $route->setContainer($c);
+                return $route;
             };
         }
         if (!isset($this['response'])) {
@@ -119,6 +127,17 @@ final class Container extends \Pimple\Container implements ContainerInterface
         if(!isset($this['auth'])){
             $this['auth'] = function (){
                 return new \App\Controller\User\Auth();
+            };
+        }
+
+        if(!isset($this['middleware'])){
+            $this['middleware'] = function (){
+                return new Middleware(new NotFoundHandler());
+            };
+        }
+        if(!isset($this['requestHandle'])){
+            $this['requestHandle'] = function (){
+                return new RequestHandler();
             };
         }
 

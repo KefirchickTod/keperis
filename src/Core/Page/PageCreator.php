@@ -4,12 +4,12 @@
 namespace src\Core\Page;
 
 
+use App\Models\Event\EventModel;
+use App\Models\Opportunities\OpportunitiesModel;
 use src\Core\ApostropheCreat;
 use src\Core\Filtration\DateFilter;
 use src\Core\provideExport;
 use src\Interfaces\PageInterface;
-use src\Models\Event\EventModel;
-use src\Models\Opportunities\OpportunitiesModel;
 use src\Structure\bcProvideSearch;
 use src\Structure\Structure;
 use src\Interfaces\Buttons;
@@ -57,7 +57,6 @@ class PageCreator extends Creator
      * @param $dataArray
      * @param null $callback
      * @param bool $position
-     * @throws Exception
      */
     public static function init(&$dataArray, $callback = null, $position = true, $getting = [])
     {
@@ -93,23 +92,24 @@ class PageCreator extends Creator
             $search = new bcProvideSearch();
 //            $search2 = new bcProvideSearch();
             $apostophe = new ApostropheCreat();
-            $searchValue = str_replace('"', "'",$search->cleanSearch(trim($get['search'])));
+            $searchValue = str_replace('"', "'", $search->cleanSearch(trim($get['search'])));
 
             $apostopheValue = $apostophe->setStr($searchValue)->render();
-            if($apostopheValue !== $searchValue){
+            if ($apostopheValue !== $searchValue) {
                 $where[] = join(" OR ", [
                     $search->setDataStructure($dataArray)->setSearch($searchValue)->parse()->creatQuery()->getWhere(),
-                    $search->withSearch(addslashes($apostopheValue))->parse()->creatQuery()->getWhere()
+                    $search->withSearch(addslashes($apostopheValue))->parse()->creatQuery()->getWhere(),
                 ]);
 
-               // echo $test ."<br><br>$test1";exit;
-            }else{
+                // echo $test ."<br><br>$test1";exit;
+            } else {
                 $where[] = $search->setDataStructure($dataArray)->setSearch($search->cleanSearch(trim($get['search'])))->parse()->creatQuery()->getWhere();
             }
 
         }
 
-        $limit = PageCreatePaginator::limit((int)valid($get, 'page', 1), (int)valid($get, 'length', self::default_length));
+        $limit = PageCreatePaginator::limit((int)valid($get, 'page', 1),
+            (int)valid($get, 'length', self::default_length));
 
         $dataArray[$name]['setting']['limit'] = $limit;
         $where = $where ? join(' AND  ', $where) : null;
@@ -129,8 +129,9 @@ class PageCreator extends Creator
             $size->setData($structure, $dataArray);
             $size = $size->size();
 
-            if($size > 300){
-                session()->error('Перевищоно кількість вибраних персон на '.($size - 300) . '(Помилка 1)', 'group.invate.error');
+            if ($size > 300) {
+                session()->error('Перевищоно кількість вибраних персон на ' . ($size - 300) . '(Помилка 1)',
+                    'group.invate.error');
                 return;
             }
             $groupInviteIdList = $structure->get($name);
@@ -143,19 +144,21 @@ class PageCreator extends Creator
 
                 if ($id && ($size <= 300)) {
                     $userIds = array_column($groupInviteIdList, 'bc_user_id');
-                    if(!empty($userIds)){
-                        foreach ($userIds as $userId){
-                            if(method_exists($class, 'checkUserRegistered') && $class::checkUserRegistered($id, $userId) === '0'){
+                    if (!empty($userIds)) {
+                        foreach ($userIds as $userId) {
+                            if (method_exists($class, 'checkUserRegistered') && $class::checkUserRegistered($id,
+                                    $userId) === '0') {
                                 $class::registerUser($id, $userId, true);
                             }
                         }
-                    }else{
+                    } else {
                         session()->error('Немає користувачів для додавання (Помилка 3)', 'group.invate.error');
                     }
 
                     // $this->router->redirect($this->router->getFullUrl());
-                }else{
-                    session()->error('Перевищоно кількість вибраних персон на '.($size - 300).'(Помилка 2)', 'group.invate.error');
+                } else {
+                    session()->error('Перевищоно кількість вибраних персон на ' . ($size - 300) . '(Помилка 2)',
+                        'group.invate.error');
                     return;//http://crm.bc-club.local/user/list?search=-1&filter={%22area%22:%222,10,7,23,6%22,%22titleUK%22:%22member_base%22}
                 }
             }
@@ -164,7 +167,7 @@ class PageCreator extends Creator
             call_user_func_array($callback, [&$dataArray, &$filter, &$get]);
         }
         if (valid($get, 'export') && self::$export_allow === true) {
-           // debug($dataArray);
+            // debug($dataArray);
 
             //debug($da);
             //debug($dataArray, self::$title, self::$export_title);

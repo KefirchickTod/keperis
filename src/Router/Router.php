@@ -10,19 +10,19 @@ use src\Core\Middleware\NotFoundHandler;
 use src\Http\Request;
 use src\Interfaces\MiddlewareInterface;
 use src\Interfaces\RouterInterface;
-use src\MiddlewareHandeler;
+
 use Error;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use FastRoute\RouteParser;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use src\Middleware\RequestHandler;
 use function FastRoute\simpleDispatcher;
 
-class Router implements RouterInterface
+class Router  implements RouterInterface
 {
 
-    const default_controller = UserController::class;
 
 
     /**
@@ -53,8 +53,7 @@ class Router implements RouterInterface
      * @var string
      */
     private $currentIndification;
-
-
+    private $routeGroups = [];
 
 
     public function __construct(RouteParser $parser = null)
@@ -62,9 +61,31 @@ class Router implements RouterInterface
         $this->routeParser = $parser ?: new RouteParser\Std();
     }
 
-    public function setContainer(ContainerInterface $container)
+
+    /**
+     * @param $pattern
+     * @param $callable
+     * @return RouteGroup
+     */
+    public function pushGroup($pattern, $callable)
     {
+        $group = new RouteGroup($pattern, $callable);
+
+        array_push($this->routeGroups, $group);
+        return $group;
+    }
+
+
+    public function setContainer(ContainerInterface $container){
         $this->container = $container;
+    }
+    /**
+     * @return bool|mixed|RouteGroup
+     */
+    public function popGroup()
+    {
+        $group = array_pop($this->routeGroups);
+        return $group instanceof RouteGroup ? $group : false;
     }
 
     public function name(string $name){
@@ -86,6 +107,9 @@ class Router implements RouterInterface
     {
         $indication = !($controller instanceof \Closure) ? get_class($controller).".$func" : "route".$this->counting;
         $route = new Route($method, $pattern, $controller, $indication, $func);
+
+        $route->setContainer($this->container);
+
 
         $this->routes[$route->getIndication()] = $route;
         $this->currentIndification = $route->getIndication();
@@ -137,7 +161,7 @@ class Router implements RouterInterface
         if (class_exists($controller)) {
             return new $controller($this->container);
         }
-        $controller = self::default_controller;
+        $controller = \App\Controller\User\UserController::class;
         return new $controller($this->container);
 
     }
@@ -167,7 +191,7 @@ class Router implements RouterInterface
         return $this->routes[$identifier];
     }
 
-    public function middleware(MiddlewareInterface $middleware){
+    public function middleware(RequestHandler $middleware){
         $this->routes[$this->currentIndification]->add($middleware);
         return $this;
     }

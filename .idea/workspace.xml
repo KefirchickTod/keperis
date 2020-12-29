@@ -2,30 +2,57 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cache/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ApiRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/BCApi.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Cache.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Page/Table/ProvideTableContainer.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/Handler/MiddlewareInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/Handler/RequestHandlerInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxImportInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxParseInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxRenderInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxValidationInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler/NotFoundHandler.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler/TestHandler.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Router/RouteGroup.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Router/Routeable.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/ImportFile.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/Parser.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/ParserForMarge.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/ParserUnique.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/Render.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderByCache.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderNewNote.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/Validation/Validate.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Xlsx/XlsxFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/keperis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/keperis.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/animsition.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/bootsratp4.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/bootstrap-select.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/component1.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/css.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/custom.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/datatables.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/demo.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/flatpickr.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/font-awesome.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/jquery.dataTables.yadcf.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/material.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/normalize.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/lib/table.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/Notes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/animsition.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/autosize.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/freeze-table.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/jquery.smartWizard.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/modernizr-2.6.2.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/lib/select2.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BcClub.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/BcClub.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Collection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Container.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Container.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/ActionButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/ActionButton.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreateButtons.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreateButtons.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/RequestResponse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/RequestResponse.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interfaces/ApiInterfaces.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/ApiInterfaces.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middleware/FallbackHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middleware/Middleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middleware/Middleware.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middleware/MiddlewareHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middleware/Middlewares/AuthonficationMiddleware.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middleware/Middlewares/TestMiddleware.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Resource.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Router/Route.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Route.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Router/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Router.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Traits/User/Auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/User/Auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Traits/User/UserTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/User/UserTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ViewFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/function.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,12 +122,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\server\html\keperis\src" />
       <recent name="G:\server\html\keperis\app\Api" />
     </key>
   </component>
@@ -115,11 +143,24 @@
       <workItem from="1608469676588" duration="2356000" />
       <workItem from="1608727177836" duration="870000" />
       <workItem from="1608744761833" duration="76000" />
-      <workItem from="1608816107536" duration="396000" />
+      <workItem from="1608816107536" duration="1718000" />
+      <workItem from="1608897219470" duration="671000" />
     </task>
+    <task id="LOCAL-00001" summary="Add readme">
+      <created>1608816683316</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1608816683316</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add readme" />
   </component>
 </project>

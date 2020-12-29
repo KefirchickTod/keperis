@@ -26,10 +26,12 @@ class PageCreateButtons implements Buttons
     private $dataArray;
     private $setting = null;
 
+    public static $mainColumn = 'col-lg-8 col-md-12 col-12 insertMargin-5px';
+
     public function __construct()
     {
         $this->setting = [
-            'col-lg-8 col-md-12 col-12 insertMargin-5px' => join('', [
+            self::$mainColumn => join('', [
                 $this->getLength(get('length', '10')),
                 (PageCreator::$export_allow === true ? $this->getExport() : ''),
                 $this->getDeleteFilter(),

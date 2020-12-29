@@ -5,20 +5,27 @@ namespace src\Core\Page;
 
 
 use src\Core\ActionButton;
-use src\Core\Table\eeTable;
+use src\Core\easyCreateHTML;
+use src\Core\Page\Table\ProvideTableContainer;
+use src\Core\RowMiddlewhere;
 use src\Http\Request;
+use src\Structure\Structure;
+use src\Core\Table\eeTable;
 use src\Interfaces\Table;
 use src\Structure\ProvideFilter;
-use src\Structure\Structure;
+use PDO;
 
 class ProvideTable implements Table
 {
 
     const width = 'auto';
-
-    public $select2 = "select2_filter";
-
+    public static $reputatuin = [
+        'firstName',
+        'secondName',
+        'fullName',
+    ];
     public static $tfooterValue = [];
+    public $select2 = "select2_filter";
     /**
      * @var int
      */
@@ -26,37 +33,32 @@ class ProvideTable implements Table
 
     public $templates = [
         'attrTable' => 'class = "table table-striped table-responsive-full table-hover table-bordered fist table-sm" style = "font-size: 0.9em; table-layout: fixed; margin-bottom:2px"',
-        'thead' => 'class ="thead-light"', //attr
-        'tbody' => '',
-        'tfoot' => '',
-        'th' => ' scope="col" style = "position: relative; vertical-align: middle; text-align:center; width: {%_width_%};"',
+        'thead'     => 'class ="thead-light"', //attr
+        'tbody'     => '',
+        'tfoot'     => '',
+        'th'        => ' scope="col" style = "position: relative; vertical-align: middle; text-align:center; width: {%_width_%};"',
     ];
     public $template = "<div class='tableConver'><div {%_mask_%}>{%_table_%}</div></div>";
-    /**
-     * @var array
-     */
-    protected $event;
-    /**
-     * @var ProvideFilter|array
-     */
-    protected $filter;
-    /**
-     * @var array
-     */
-    protected $title;
     /**
      * @var eeTable
      */
     protected $eeTable;
-    private $row;
+
     private $nameFotGet = [];
+    /**
+     * @var Structure
+     */
     private $structure;
     private $dataArray;
     private $replace = false;
     /**
      * @var \Closure
      */
-    private $row_init;
+
+    /**
+     * @var ProvideTableContainer
+     */
+    private $container;
 
 
     function __construct()
@@ -67,61 +69,75 @@ class ProvideTable implements Table
             $this->template = "<div class='tableConver_ajax'><div {%_mask_%}>{%_table_%}</div></div>";
         } else {
             $this->template = "<div class='tableConver'><div {%_mask_%}>{%_table_%}</div></div>";
-
         }
+
+        $this->container = new ProvideTableContainer();
+        $this->eeTable = new eeTable();
+
     }
 
+
+    public function withContainer(ProvideTableContainer $container){
+        $clone = clone $this;
+        $clone->container = $container;
+        return $clone;
+    }
+
+    /**
+     * @return ProvideTableContainer
+     */
+    public function container(){
+        return $this->container;
+    }
     public function setting(array $setting = [], array $title = [], $filter = [], array $action = [])
     {
-        $this->eeTable = new eeTable();
-        $this->templates = $setting ? array_replace_recursive($this->templates, $setting) : $this->templates;
-        $this->filter = $filter;
-        $this->event = $action === null ? [] : $action;
-        $this->title = $title;
-    }
 
-    public function setAction($action)
-    {
-        $this->event = $action;
-        return $this;
+        $this->container->execute($setting, $title, $filter, $action);
+        $this->templates = $this->container->setting ? array_replace_recursive($this->templates,
+            $this->container->setting) : $this->templates;
     }
-
-    public function setTitle(array $title)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
 
     public function callbackRow(\Closure $closure)
     {
-        $this->row_init = $closure;
+        $this->container->callbackRow($closure);
         return $this;
     }
-
 
     public function setData(Structure $structure, array $dataArray)
     {
         $this->structure = $structure;
         $this->dataArray = $dataArray;
 
-        $this->row_init = $this->row_init ?: PageCreator::$row_init;
-
-
-        if ($this->row_init) {
-            $this->row = $this->structure->set($dataArray)->getData($this->row_init, key($dataArray));
-        } else {
-            $this->row = $this->structure->set($dataArray)->get(key($dataArray));
+        if (!$this->container->getCallbackRow()) {
+            $this->container->callbackRow(PageCreator::$row_init);
         }
-        // TODO: Implement setData() method.
+        $this->container->setRow($this->getRow());
+    }
+
+    public function getRow()
+    {
+        if($this->container->getRow()){
+            return  $this->container->getRow();
+        }
+
+        $this->structure->set($this->dataArray);
+        $key = key($this->dataArray);
+        if ($this->container->getCallbackRow()) {
+            return $this->structure
+                ->getData($this->container->getCallbackRow(), $key);
+        }
+
+        return $this->structure->get($key);
+
+
     }
 
     public function withColumn($key)// using
     {
-        if ($this->row && valid($this->row[0], $key)) {
-            return array_column($this->row, $key);
+        if ($this->container->getRow()) {
+            return array_column($this->container->getRow(), $key);
         }
-        return null;
+        return [];
     }
 
     public function render(): string
@@ -132,6 +148,7 @@ class ProvideTable implements Table
             $this->tablePattern([], '');
 
         }
+
 
         return preg_replace("/{%_table_%}/", $this->eeTable->__toString(), $this->template);
     }
@@ -164,7 +181,7 @@ class ProvideTable implements Table
         if (!$replaces) {
             $replaces = [
                 '{%_loadbar_%}' => '',
-                "{%_mask_%}" => 'class = "dragscroll scroll-user-table table-multi-columns  min-height55" data-fixed = "' . $this->fixed . '" style="cursor: grab; overflow: scroll auto; min-height: 100%;"',
+                "{%_mask_%}"    => 'class = "dragscroll scroll-user-table table-multi-columns  min-height55" data-fixed = "' . $this->fixed . '" style="cursor: grab; overflow: scroll auto; min-height: 100%;"',
             ];
         }
 
@@ -183,14 +200,9 @@ class ProvideTable implements Table
         return $this->eeTable->__toString();
     }
 
-    public function getRow()
-    {
-        return $this->row;
-    }
-
     public function setRow(array $row)
     {
-        $this->row = $row;
+        $this->container->setRow($row);
         return $this;
     }
 
@@ -199,45 +211,50 @@ class ProvideTable implements Table
      */
     protected function addFilter()
     {
-        $result = [];
-        if ($this->filter) {
 
-            if ($this->filter instanceof ProvideFilter) {
-                $structure = !($this->structure instanceof Structure) ? \structure() : $this->structure;
-                $this->filter = $this->filter->setStrucutre($structure)->setTitle($this->title)->getFilter();
-            } else {
-                $this->filter = array_values($this->filter);
-            }
-            $keys = !$this->filter ? [] : array_keys($this->title);
-            array_unshift($this->filter, false);
-            foreach ($keys as $id => $name) {
 
-                $name = isset($this->filter[$name]) ? $name : $id;
-                if (isset($this->filter[$name]) && $this->filter[$name] != false) {
-                    $result[] = $this->eeTable->newCell()->addData(
-
-                        preg_match('~option~', $this->filter[$name]) ? html()
-                            ->select([
-                                'id' => "select_$name",
-                                'multiple' => '',
-                                'class' => $this->select2,
-                            ])->insert($this->filter[$name])
-                            ->end('select')
-                            ->input([
-                                'id' => "$name",
-                                'type' => 'hidden',
-                                'value' => "no",
-                            ]) : $this->filter[$name]
-                    )
-                        ->addClass('ui-state-default')
-                        ->setAttr('rowspan = 1 colspan = 1');
-                } else {
-                    $result[] = $this->eeTable->newCell()->addData(' ');
-                }
-            }
-            self::jsCreateFilterInclude($this->title);
+        if (!$this->container->filter) {
+            return [];
         }
-        return $result;
+
+        $result = [];
+
+
+        $filter = $this->container->filter instanceof ProvideFilter ?
+            $this->container->filter->setStrucutre($this->structure)->setTitle($this->container->title)->getFilter() :
+            array_values($this->container->filter);
+
+        $keys = array_keys($this->container->title);
+        array_unshift($filter, false);
+
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $filter)) {
+                $result[] = $this->eeTable->newCell()->addData(
+
+                    preg_match('~option~', $filter[$key]) ? html()
+                        ->select([
+                            'id'       => "select_$key",
+                            'multiple' => '',
+                            'class'    => $this->select2,
+                        ])->insert($filter[$key])
+                        ->end('select')
+                        ->input([
+                            'id'    => "$key",
+                            'type'  => 'hidden',
+                            'value' => "no",
+                        ]) : $filter[$key]
+                )
+                    ->addClass('ui-state-default')
+                    ->setAttr('rowspan = 1 colspan = 1');
+            } else {
+                $result[] = $this->eeTable->newCell()->addData(' ')->addClass('ui-state-default')->setAttr('rowspan = 1 colspan = 1');;
+            }
+        }
+        self::jsCreateFilterInclude($this->container->title);
+        $this->container->setFilter($filter);
+
+
+        return $result ?: [];
 
     }
 
@@ -247,70 +264,14 @@ class ProvideTable implements Table
             unset($title['id']);
         }
         $title = array_keys($title);
-
-        // var_dump($title);
-        $toJS = isset($_GET['filter']) ? $_GET['filter'] : '';
-        $lenght = isset($_GET['length']) ? $_GET['length'] : '10';
         if (PageCreator::$script == true) {
             ?>
             <script>
-              try {
-                var title = <?= json_encode($title) ?>;
-              }
-              catch (e) {
-                console.log('');
-              }
-
-              //
-              //function filterSend() {
-              //
-              //    let saveForGet = {};
-              //    let getQuery = new QueryGet();
-              //    for (var i = 0; i < title.length; i++) {
-              //        //console.log(title[i]);
-              //        if (document.getElementById(title[i]) != null) {
-              //
-              //            let value = document.getElementById(title[i]).value;
-              //            if (typeof value == 'undefined' || !value || value.length === 0 || value === "" || !/[^\s]/.test(value) || /^\s*$/.test(value) || value.replace(/\s/g, "") === "") {
-              //                continue;
-              //            }
-              //            let arrayValue = value.split(',');
-              //            arrayValue = arrayValue.filter(function (el) {
-              //                return encodeURIComponent(el) != null;
-              //            });
-              //
-              //            if (arrayValue !== 'no') {
-              //                saveForGet[title[i]] = encodeURIComponent(arrayValue);
-              //            }
-              //        }
-              //
-              //
-              //    }
-              //
-              //    sessionStorage.scrollLeft = $(".double-scroll").scrollLeft();
-              //    getQuery.data.filter = JSON.stringify(clean(saveForGet, 'no'));
-              //    if (saveForGet !== '') {
-              //
-              //        historyPushJson(getQuery.data);
-              //        updateTable();
-              //        //if (getQuery.data.search) {
-              //        //    creat
-              //        //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&' + saveForGet + '&length=' + '<?////=$lenght?>////' + '&search=' + getQuery.data.search;
-              //        //} else {
-              //        //
-              //        //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&' + saveForGet + '&length=' + '<?////=$lenght?>////';
-              //        //}
-              //    }
-              //    //
-              //    //if (getQuery.data.search) {
-              //    //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&length=' + '<?////=$lenght?>////' + '&search=' + getQuery.data.search;
-              //    //} else {
-              //    //
-              //    //    window.location.href = '?filter=' + JSON.stringify(saveForGet) + '&length=' + '<?////=$lenght?>////';
-              //    //}
-              //
-              //}
-
+                try {
+                    var title = <?= json_encode($title) ?>;
+                } catch (e) {
+                    console.log('');
+                }
             </script>
             <?php
         }
@@ -321,51 +282,242 @@ class ProvideTable implements Table
      */
     protected function tbody()
     {
-        $keys = array_keys($this->title);
+        $keys = array_keys($this->container->title);
         $result = [];
 
+        $row = $this->container->getRow();
 
-        foreach ($this->row as $counting => $value) {
+        $size = count($row);
 
+
+        $names = $this->getUserNames();
+
+
+
+        for ($counting = 0; $counting <= $size; $counting++) {
+            $value = $row[$counting] ?? null;
+            if(!$value){
+                continue;
+            }
             foreach ($keys as $key) {
-                if (isset($value[$key])) {
-                    $note = ($this->title[$key]['note'] ?? null);
 
-                    $line = valid($this->title[$key], 'line', '8');
-                    if ($note) {
-                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content createNote' data-o = '{$note['o']}'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . clean($value[$key]) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");
-                    } else {
-                        $value[$key] = isset($this->title[$key]['date_format']) ? date($this->title[$key]['date_format'],
-                            strtotime($value[$key])) : $value[$key];
+                if (!array_key_exists($key, $value)) {
 
-                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text'] ?? '') . "'");
-//                                if(error_get_last() && error_get_last()['type'] === E_NOTICE){
-//                                    var_dump(error_get_last());
-//                                    debug($key, $this->title, $this->title[$key]['text']);
-//                                }
-                    }
+                    //debug($key, $this->container->action);
+                    if ($key === 'event_o' && $this->container->action) {
+
+                        $this->container->setAction(isset($this->container->action[0]) ? $this->container->action[0] : $this->container->action);
+                        $event = (new ActionButton($value, $this->container->action))->__toString();
+                        $result[] = $this->eeTable->newCell()->addData("<div class = 'action-icon'>$event</div>")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");;
+
+                    } elseif (isset($this->title[$key]['dynamic'])) {
 
 
-                } else {
-                    if ($key === 'event_o' && isset($this->event) && $this->event) {
-
-                        $this->event = isset($this->event[0]) ? $this->event[0] : $this->event;
-                        $event = (new ActionButton($value, $this->event))->__toString();
-                        $result[] = $this->eeTable->newCell()->addData("<div class = 'action-icon'>$event</div>")->setAttr("data-label = '" . addslashes($this->title[$key]['text']) . "'");;
+                        $setting = $this->container->title[$key]['dynamic'];
+                        $data = $this->dynamicFilter($setting, ($value[$key] ?? null), $value['id']);
+                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content' style = ' -webkit-line-clamp: 8;' >{$data}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
 
                     } else {
                         $result[] = $this->eeTable->newCell()->addData("");
+
                     }
+                    continue;
+                }
+
+
+                $note = $this->inNote($key);
+
+
+                $value[$key] = $this->renderUserName($key, $value, $names);
+
+                $value[$key] = $this->renderRedirect($value, $key);
+
+                $reputation = $this->renderReputatuin($value, $key);
+                if ($reputation !== false) {
+                    $reputation[] = $reputation;
+                } else {
+
+                    $line = valid($this->container->title[$key], 'line', '8');
+                    if (isset($this->title[$key]['dynamic'])) {
+
+                        $setting = $this->container->title[$key]['dynamic'];
+                        $data = $this->dynamicFilter($setting, $value[$key], $value['id']);
+                        $result[] = $this->eeTable->newCell()->addData("<div class='tr-content'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' >{$data}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
+                    } else {
+                        if ($note) {
+                            $result[] = $this->eeTable->newCell()->addData("<div class='tr-content createNote' data-o = '{$note['o']}'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . clean($value[$key]) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
+                        } else {
+                            $value[$key] = isset($this->title[$key]['date_format']) ? date($this->container->title[$key]['date_format'],
+                                strtotime($value[$key])) : $value[$key];
+
+                            $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '" . ($value['id'] ?? $key) . "' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text'] ?? '') . "'");
+//
+                        }
+                    }
+
+
                 }
             }
 
+
             $this->eeTable->setTBodyAttr($this->templates['tbody'])->addRow($this->eeTable->newRow()->setAttr("data-table-row-id = '" . ($value['id'] ?? -1) . "' data-table-count = '{$counting}'")->addArrayOfCells($result ?: [])->setAsTbody());
             $result = [];
-            gc_collect_cycles();
+
         }
         return [];
     }
 
+    private function getUserNames()
+    {
+
+        if (!$this->nameFotGet) {
+            return null;
+        }
+
+        $row = $this->container->getRow();
+        $ids = [];
+        foreach ($this->nameFotGet as $column) {
+            $ids = array_merge($ids, array_diff(array_column($row, $column), [null]));
+        }
+
+        $ids = array_unique($ids);
+        if(!$ids){
+            return  [];
+        }
+
+        return getUserNameArray($ids);
+    }
+
+    /**
+     * @param array $setting
+     * @return string
+     * @example $setting = [
+     *  'id' => 1,
+     * ]
+     */
+    private function dynamicFilter($setting, $currentValue, $registerId)
+    {
+
+        $id = $setting['id'];
+        $key = $setting['key'];
+        $o = $setting['o'] ?? 'updateRegisterTagsStatus';
+        $data = db()->querySql("SELECT bc_connections_db_right_id, bc_connections_db_id FROM bc_connections_db WHERE bc_connections_db_right_key = '$key' AND bc_connections_db_left_id = {$id} GROUP BY bc_connections_db_right_id")->fetchAll(PDO::FETCH_ASSOC);
+        $data_copy = $data;
+        $data = array_column($data, 'bc_connections_db_right_id');
+
+        $result = [];
+        if ($data) {
+            $data = array_diff($data, ['0', null, false, '']);
+            $values = \structure()->set([
+                'dynamic' =>
+                    [
+                        'get'     => ['b_titleUK'],
+                        'class'   => 'bcDictionaryCat',
+                        'setting' =>
+                            [
+                                'where' => 'id IN (' . join(', ', $data) . ')',
+                            ],
+                    ],
+            ])->get('dynamic');
+
+            foreach ($values as $key => $val) {
+                $id = $data_copy[$key]['bc_connections_db_id'];
+                if ($currentValue == $val['id']) {
+
+                    $result[0] = "<span class='toUperCase'>{$val['b_titleUK']}</span>";
+                } else {
+
+                    $result[$id] = "<a href='#' class='updateStatus' data-o = '$o' data-id = '$registerId' data-status = '{$val['id']}'>{$val['b_titleUK']}|</a>";
+                }
+
+            }
+            if (isset($result[0])) {
+
+                $result[] = "<a href='#' class='updateStatus' data-o = '$o'  data-status = '0' data-id = '$registerId'>скинути |</a>";
+            }
+            if ($result) {
+                ksort($result);
+            }
+//            if($result){
+//                uksort($result, function ($a, $b){
+//                    if($a === 'main' || $a === $b){
+//                        return 1;
+//                    }
+//                    return -1;
+//                });
+//                $result = array_reverse($result);
+//            }
+            return "<div class = 'dynamicFilters'>" . join('', $result) . "</div>";
+        }
+
+
+        return false;
+    }
+
+    private function inNote($key)
+    {
+        if (isset($this->container->title[$key]['note'])) {
+            return true;
+        }
+        return false;
+    }
+
+    private function renderUserName($key, $value, $names)
+    {
+
+
+        if (!isset($names[$value[$key]])) {
+            return $value[$key];
+        }
+
+
+        $link = $this->container->title[$key]['link'] ?? null;
+        $name = $names[$value[$key]];
+        if ($link) {
+            $name = html()->a([
+                'text'   => $name,
+                'target' => '_blank',
+                'href'   => preg_replace("/%_value_%/", $value[$key], $this->container->title[$key]['link']),
+            ])->render(true);
+
+        }
+        return $name;
+
+
+    }
+
+    private function renderRedirect($value, $key)
+    {
+        if (!isset($this->container->title[$key]['userId'])) {
+            return $value[$key];
+        }
+
+        $user = $value['userId'] ?? $value['bc_user_id'] ?? null;
+
+        if ($user) {
+            return html()->a([
+                'text'   => $value[$key],
+                'target' => "_blank",
+                'href'   => route('user.info', ['id' => $user]),
+            ])->render(true);
+        }
+
+        return $value[$key];
+    }
+
+    private function renderReputatuin($value, $key)
+    {
+        if (!in_array($key, self::$reputatuin)) {
+            return false;
+        }
+        $reputation = $value['reputation'] ?: '';
+        if ($reputation === 'Негативна') {
+            return $this->eeTable->newCell()->addData($value[$key])->setAttr("style = 'color:red' data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
+        }
+        return false;
+
+
+    }
 
     /**
      * @return array
@@ -373,7 +525,7 @@ class ProvideTable implements Table
     protected function thead()
     {
         $result = [];
-        foreach ($this->title as $name => $value) {
+        foreach ($this->container->title as $name => $value) {
             if (isset($value['name']) && $value['name'] == true) {
                 $this->nameFotGet[] = $name;
             }
@@ -435,7 +587,7 @@ class ProvideTable implements Table
     {
         if (self::$tfooterValue) {
             $result = [];
-            $keys = array_keys($this->title);
+            $keys = array_keys($this->container->title);
             foreach (self::$tfooterValue as $value) {
                 foreach ($keys as $key) {
                     $result[] = $this->eeTable->newCell()->addData($value[$key] ?? '');
@@ -448,5 +600,6 @@ class ProvideTable implements Table
         }
         return [];
     }
+
 
 }

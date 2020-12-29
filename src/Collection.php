@@ -15,7 +15,7 @@ class Collection implements CollectionInterface
 
     public function __construct(?array $item = [])
     {
-        if(is_null($item)){
+        if (is_null($item)) {
             $item = [];
         }
         foreach ($item as $key => $value) {
@@ -25,9 +25,9 @@ class Collection implements CollectionInterface
 
     public function set($key, $value)
     {
-        if($key === null){
+        if ($key === null) {
             $this->data[] = $value;
-        }else{
+        } else {
             $this->data[$key] = $value;
         }
     }
@@ -69,25 +69,6 @@ class Collection implements CollectionInterface
         return sizeof($this->data);
     }
 
-
-    public function get($key, $default = null)
-    {
-        if ($this->has($key)) {
-            try {
-                $result = $this->data[$key] ?? null;
-                if (is_null($result)) {
-
-                    throw new Exception();
-                }
-                return $this->data[$key];
-            } catch (Exception $exception) {
-
-                return $this->data[strtolower($key)];
-            }
-        }
-        return $default;
-    }
-
     public function copy(): CollectionInterface
     {
         return clone $this;
@@ -118,7 +99,8 @@ class Collection implements CollectionInterface
         return null;
     }
 
-    public function map(callable $callback){
+    public function map(callable $callback)
+    {
 
         $array_values = array_values($this->data);
         $array_keys = array_keys($this->data);
@@ -126,5 +108,29 @@ class Collection implements CollectionInterface
         $array = array_map($callback, $array_values, $array_keys);
         return array_combine($array_keys, $array);
 
+    }
+
+    public function first()
+    {
+        $key = key($this->data);
+        return $this->get($key);
+    }
+
+    public function get($key, $default = null)
+    {
+        if ($this->has($key)) {
+            try {
+                $result = $this->data[$key] ?? null;
+                if (is_null($result)) {
+
+                    throw new Exception();
+                }
+                return $this->data[$key];
+            } catch (Exception $exception) {
+
+                return $this->data[strtolower($key)];
+            }
+        }
+        return $default;
     }
 }

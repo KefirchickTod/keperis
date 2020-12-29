@@ -15,9 +15,14 @@ if (!function_exists('debug')) {
      */
     function debug()
     {
+        echo "<pre>";
+        $debugInfo = debug_backtrace();
+        foreach ($debugInfo as $info) {
+            echo "File " . ($info['file'] ?? '') . ": <br>line: " . ($info['line'] ?? '') . "  <hr><br>";
+        }
         $argc = func_get_args();
         foreach ($argc as $value) {
-            echo "<pre>";
+
             var_dump($value);
             echo "</pre>";
         }
@@ -36,8 +41,7 @@ if (!function_exists('resource')) {
     {
 
 
-
-        return \Src\src\View\ViewFactory::make($names, $param);
+        return \src\View\ViewFactory::make($names, $param);
 
 //        static $resource;
 //
@@ -229,7 +233,6 @@ function marshalUriFromSapi(array $server, array $headers)
     }
     return $uri->withPath($path)->withFragment($fragment)->withQuery($query);
 }
-
 
 
 if (!function_exists('router')) {
@@ -911,6 +914,36 @@ if (!function_exists('structure')) {
     }
 }
 
+if (!function_exists('getUserNameArray')) {
+    function getUserNameArray(array $ids)
+    {
+        $key = "user_array_" . count($ids);
+        $in = join(", ", $ids);
+
+        $result = \structure()->set([
+            $key => [
+                'get'     => [
+                    'firstName',
+                    'secondName',
+                ],
+                'class'   => \App\Provides\ProvideStructures\bcUser::class,
+                'setting' => [
+                    'where' => "bc_user_id IN ($in)",
+                ],
+            ],
+        ])->getData(function ($row) {
+            $result = [];
+            foreach ($row as $value) {
+                $result[$value['id']] = ($value['firstName'] ?? '') . ' ' .($value['secondName'] ?? '');
+            }
+            return $result;
+        }, $key);
+
+        return $result;
+
+    }
+}
+
 if (!function_exists('getUserName')) {
     function getUserName($id)
     {
@@ -919,6 +952,7 @@ if (!function_exists('getUserName')) {
             $structure = $structure->clean();
         }
         $id = settype($id, 'int');
+
         return $structure->set([
             'user'    =>
                 [
@@ -1007,7 +1041,7 @@ if (!function_exists('creat_sort')) {
             }
             if (isset($dataArray[$name]['setting']['join'])) {
                 foreach ($joinNames as $joinName) {
-                    if(!isset($dataArray[$name]['setting']['join'][$joinName]['get'])){
+                    if (!isset($dataArray[$name]['setting']['join'][$joinName]['get'])) {
                         continue;
                     }
                     $joinNamesGet = $dataArray[$name]['setting']['join'][$joinName]['get'];
@@ -1073,14 +1107,14 @@ if (!function_exists('addToArray')) {
 if (!function_exists('getNameById')) {
     function getNameById($id)
     {
-        if($id == 0){
+        if ($id == 0) {
             return '';
         }
         $where = "id = $id";
         $isArray = false;
-        if(is_array($id)){
+        if (is_array($id)) {
             $isArray = true;
-            $where = "id IN (".implode(', ',$id).")";
+            $where = "id IN (" . implode(', ', $id) . ")";
         }
         return structure()->set([
             "user_$id" =>
@@ -1091,8 +1125,8 @@ if (!function_exists('getNameById')) {
                 ],
         ])->getData(function ($row) use ($isArray) {
             if (!empty($row)) {
-                if($isArray === true){
-                    return array_combine(array_column($row,'id'), array_column($row,'fullName'));
+                if ($isArray === true) {
+                    return array_combine(array_column($row, 'id'), array_column($row, 'fullName'));
                 }
                 return valid($row[0], 'fullName', '');
             }
@@ -1110,8 +1144,7 @@ if (!function_exists('container')) {
 
 if (!function_exists('uri')) {
     /**
-     * @return \App\src\Http\Uri
-     * @throws Exception
+     * @return \src\Http\Uri
      */
     function uri()
     {
@@ -1123,7 +1156,8 @@ if (!function_exists('isLogin')) {
     function isLogin()
     {
 
-        return false;
+        $result = \App\Models\User\UserModel::select('checkLoggedUser');
+        return $result;
     }
 }
 
@@ -1206,6 +1240,19 @@ if (!function_exists('db')) {
     }
 }
 
+if (!function_exists('getCRMPeople')) {
+    function getCRMPeople(): array
+    {
+        static $data = [];
+        if (empty($data)) {
+
+            $data = \App\Models\User\UserModel::this()->getCRMPeople();
+
+        }
+        return $data;
+
+    }
+}
 
 if (!function_exists('set_structure_setting')) {
     function set_structure_setting(&$data, $value, $setting = 'where', $key = null)
@@ -1240,8 +1287,9 @@ if (!function_exists('studly')) {
     }
 }
 
-if(!function_exists('checkToken')){
-    function checkToken(string $token) : bool {
+if (!function_exists('checkToken')) {
+    function checkToken(string $token): bool
+    {
         $sql = db()->selectSql('bc_user', 'bc_user_id', "bc_user_token = '" . $token . "'");
 
         if (empty($sql[0]['bc_user_id'])) {
@@ -1269,7 +1317,7 @@ if (!function_exists('getCompanyLogoLink')) {
         }
 
 
-        return '/app/images/no_logo.png';
+        return '/images/no_logo.png';
     }
 }
 if (!function_exists('post')) {

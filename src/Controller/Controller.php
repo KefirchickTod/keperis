@@ -4,8 +4,6 @@
 namespace src\Controller;
 
 
-use src\Api\Api;
-use src\Api\UserApi;
 use src\Container;
 use src\Core\Page\PageCreator;
 use src\Core\Page\ProvideTable;

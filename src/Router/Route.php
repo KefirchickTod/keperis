@@ -5,21 +5,23 @@ namespace src\Router;
 
 
 use src\Controller\Controller;
-use src\Core\Middleware\NotFoundHandler;
+
 use src\Http\Body;
 use src\Http\Request;
 use src\Http\RequestResponse;
 use src\Http\Response;
 use src\Interfaces\MiddlewareInterface;
 use src\Interfaces\ResponseInterface;
-use src\MiddlewareHandeler;
+use src\Middleware\Middleware;
+use src\Middleware\RequestHandler;
+
 use src\Resource;
 use Exception;
 use FastRoute\RouteParser\Std;
 use LogicException;
 use src\View\View;
 
-class Route
+class Route extends Routeable
 {
 
     /**
@@ -50,19 +52,61 @@ class Route
      */
     private $arguments = [];
 
-    function __construct(array $methods, $pattern, $controller, $indication, $func)
+
+    /**
+     * @var RouteGroup[]
+     */
+    private $groups = [];
+    /**
+     * @var bool
+     */
+    private $finalize = false;
+
+
+    private $middleware;
+
+    function __construct(array $methods, $pattern, $controller, $indication, $func, $groups = [] )
     {
         $this->methods = $methods;
         $this->pattern = $pattern;
         $this->controller = $controller;
         $this->indication = $indication;
         $this->func = $func;
+        $this->groups = $groups;
+
+
+
+        $this->middleware = container()->get('middleware');
+
+
+
+
 
 
     }
 
+    public function finalize(){
+        if($this->finalize){
+            return;
+        }
+        $groupMiddleware = [];
+        foreach ($this->getGroups() as $group){
+            $groupMiddleware = array_merge($group->getMiddleware(), $groupMiddleware);
+        }
 
 
+        $this->requestHandle = array_merge($this->requestHandle, $groupMiddleware);
+
+        $this->finalize = true;
+    }
+
+
+    /**
+     * @return RouteGroup[]
+     */
+    public function getGroups(){
+        return $this->groups;
+    }
 
     public function getPath(array $params = [])
     {
@@ -124,10 +168,6 @@ class Route
         return $this->indication;
     }
 
-    function getController()
-    {
-        return $this->controller;
-    }
 
     /**
      * Retrieve route arguments
@@ -183,40 +223,30 @@ class Route
     }
 
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param $controller Controller| \Closure
-     * @return ResponseInterface
-     * @throws Exception
-     */
-    public function run(Request $request, Response $response, $controller, $routerinfo = [])
+    public function __invoke(Request $request, Response $response, $routerinfo = [])
     {
         $routerinfo = $routerinfo ?: $request->getAttribute('routeInfo');
-        $this->controller = $controller instanceof Controller || $controller instanceof \Closure ? $controller : new $controller;
+        $this->controller = $this->controller instanceof Controller || $this->controller instanceof \Closure ? $this->controller : new $this->controller;
         $handler = new RequestResponse();
 
 
         try {
-            $output = $handler($controller, $this->getFunc(), $request, $response, $routerinfo);
+            $output = $handler($this->controller, $this->getFunc(), $request, $response, $routerinfo);
 
             //$output = ($output instanceof View && $output->isResource()) ? $output->getResource() : $output;
 
             if ($output instanceof View) {
-                ob_start();
-                echo $output->render();
-                $output = ob_get_clean() . PHP_EOL;
-                ob_clean();
+                $output = $output->render() . PHP_EOL;
             } elseif ($output instanceof ResponseInterface) {
                 $response = $output;
             }
         } catch (Exception $e) {
-            ob_end_clean();
+
             error_log($e->getMessage());
-            throw  $e;
+            throw new \RuntimeException($e->getMessage());
         }
 
-//        $response = $this->middleware->handle($request);
+//        $response = $this->requestHandle->handle($request);
 
         if (!empty($output) && is_string($output)) {
             if ($response->getBody()->isWritable()) {
@@ -239,6 +269,26 @@ class Route
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
+     */
+    public function run(Request $request, Response $response, $routerinfo = [])
+    {
+        $this->finalize();
+
+
+        $response = $this->middleware->process($request, $response, new RequestHandler());
+        return  $this($request, $response, $routerinfo);
+
+
+        //return $this($request, $response, $routerinfo);
+    }
+
+
+
+
     public function withPattern($pattern){
         $clone = clone $this;
         $clone->pattern = $pattern;
@@ -250,8 +300,4 @@ class Route
         return $this->func;
     }
 
-    public function setFunc($name)
-    {
-        $this->func = $name;
-    }
 }

@@ -45,6 +45,13 @@ class Model extends Collection implements ModelInterface
      */
     public $guarded = ['*'];
 
+
+    protected $xlsxImportUnique = [];
+    /**
+     * @var string|null
+     */
+    protected $bc_table_id;
+
     public function __construct(array $arguments = [], $data = [])
     {
         parent::__construct($data);
@@ -52,6 +59,15 @@ class Model extends Collection implements ModelInterface
         $this->fill($arguments);
         $this->connection = db();
         $this->structure = structure();
+    }
+
+
+    public function id(){
+        if(!$this->bc_table_id){
+            $this->bc_table_id = $this->bc_table."_id";
+        }
+        return $this->bc_table_id;
+
     }
 
     /**
@@ -154,6 +170,15 @@ class Model extends Collection implements ModelInterface
         return $this->guarded;
     }
 
+    public function getImportUnique($key = null)
+    {
+
+        if($key){
+            return $this->xlsxImportUnique[$key] ?? null;
+        }
+        return array_keys($this->xlsxImportUnique);
+    }
+
     /**
      * @return bool
      */
@@ -247,7 +272,7 @@ class Model extends Collection implements ModelInterface
             error_log($exception->getMessage());
         }
         $this->mask = new $this->mask;
-       // debug($this->mask);
+        // debug($this->mask);
         return $this->getMask();
     }
 
@@ -272,6 +297,24 @@ class Model extends Collection implements ModelInterface
     public function withData($data)
     {
         return new static($this->fillable, $data);
+    }
+
+    public function findIdByXlsxValue($column, $value)
+    {
+        if(!is_array($value)){
+            $value = [$value];
+        }
+
+        $value = join(', ',$value);
+
+        $column = $this->xlsxImportUnique[$column];
+
+        if (!$this->bc_table_id) {
+            $this->bc_table_id = $this->bc_table . "_id";
+        }
+
+        $row = $this->connection->selectSql($this->bc_table, $this->bc_table_id . " AS id", "$column IN ($value)");
+        return $row;
     }
 
     public function where(string $query, $need = '*')

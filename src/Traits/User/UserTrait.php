@@ -190,7 +190,7 @@ WHERE
 
         $data = db()->selectSqlPrepared($query)[0];
         if($img === true){
-            $data['img'] = '/app/images/no_photo.jpg';
+            $data['img'] = '/images/no_photo.jpg';
         }
         $data['name'] = valid($data, 'bc_user_first_name') . ' ' . valid($data, 'bc_user_second_name');
 
@@ -203,7 +203,7 @@ WHERE
     {
 
         if (!$id && !$this->id) {
-            return '/app/images/no_photo.jpg';
+            return '/images/no_photo.jpg';
         }
         $id = $id ?: $this->id;
         $url = APP_URL . "theme/bc_user_{$id}/photo/{$id}";
@@ -212,12 +212,12 @@ WHERE
                 return "$url.$type";
             }
         }
-        return '/app/images/no_photo.jpg';
+        return '/images/no_photo.jpg';
     }
 
 
     public function apiGetUserPhoto(int $userId){
-        $bc = new \App\src\BCApi();
+        $bc = new BCApi();
 
         $link = $bc->sendRequest([
             'action' => 'getUserPhoto',
