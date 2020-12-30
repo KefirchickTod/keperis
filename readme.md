@@ -1,4 +1,4 @@
-#INSTALLATION
+##INSTALLATION
 
 - Setup as virtual host for local development. Add to file httpd-vhosts.conf next few lines:
 ````apacheconfig
