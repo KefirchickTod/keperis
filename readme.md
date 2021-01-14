@@ -1,4 +1,4 @@
-#INSTALLATION
+##INSTALLATION
 
 - Setup as virtual host for local development. Add to file httpd-vhosts.conf next few lines:
 ````apacheconfig
@@ -58,5 +58,4 @@ return view("include.header");
 ## Author
 - Zahar Pylypchuck <zacharpu2@gmail.com>
 - Kovalychuck Sany <mister.x.2002.06@gmail.com>
-- Kylychick Vlad <kulchitskiy.01@gmail.com>
-## Licence
+- Kylychick Vlad <handon@gmail.com>
