@@ -68,6 +68,13 @@ class Route extends Routeable
     function __construct(array $methods, $pattern, $controller, $indication, $func, $groups = [] )
     {
         $this->methods = $methods;
+
+
+        if(env('ROUTE_FULL_PATH', 'off') === 'on') {
+            $pattern = container()->request->getUri()->getBaseUrl() . $pattern;
+        }
+
+
         $this->pattern = $pattern;
         $this->controller = $controller;
         $this->indication = $indication;

@@ -4,7 +4,7 @@
 namespace src\View;
 
 use src\View\Renderer\Render;
-use src\View\Validator\Validator;
+use src\View\Validators\Validator;
 use src\View\View;
 
 /**

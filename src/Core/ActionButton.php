@@ -3,7 +3,7 @@
 
 namespace src\Core;
 
-use App\BCApi;
+use App\bcerpapi;
 use Closure;
 use ErrorException;
 use Exception;
@@ -138,7 +138,7 @@ class ActionButton
 
                             foreach ($value as $num => $data) {
                                 if (isset($action['api']) && $action['settingApi']) {
-                                    $api = (new BCApi())->sendRequest($action['api']);
+                                    $api = bcerpapi::sendRequest($action['api']);
                                     $data = $this->setOtherIds($action['settingApi'], $data, $this->row, $api);
                                 }
                                 if (isset($action['id']) && $action['id'] == true) {

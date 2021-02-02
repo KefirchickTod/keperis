@@ -51,6 +51,7 @@ class Request extends Message
      * @var SessionInterface
      */
     private $session;
+    private $routeName;
 
     public function __construct(
         $method,
@@ -339,5 +340,15 @@ class Request extends Message
         $clone->attributes->remove($name);
         return $name;
     }
+
+    public function withRouteName(string $routeName){
+        $clone = clone $this;
+        $clone->routeName = $routeName;
+        return $clone;
+    }
+    public function getRouteName(){
+        return $this->routeName;
+    }
+
 
 }

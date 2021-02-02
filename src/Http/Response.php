@@ -7,7 +7,7 @@ namespace src\Http;
 use src\Interfaces\HeaderInterface;
 use src\Interfaces\ResponseInterface;
 use src\Interfaces\StreamInterface;
-use src\Resource;
+
 use RuntimeException;
 use src\View\View;
 
@@ -189,21 +189,13 @@ class Response extends Message implements ResponseInterface
         return $this->status;
     }
 
-    public function withResource(Resource $resource)
+    public function withResource(View $resource)
     {
         $clone = clone $this;
         $clone->resource = $resource;
         return $clone;
     }
 
-    public function getResource(): Resource
-    {
-        if ($this->isResource()) {
-            return $this->resource;
-        }
-
-        return new Resource();
-    }
 
     public function isResource(): bool
     {

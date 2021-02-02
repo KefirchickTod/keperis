@@ -27,7 +27,5 @@ class RenderByCache extends Render
         $this->parser->parse(new Collection($data), $this->model);
         $this->initTable();
 
-
-
     }
 }

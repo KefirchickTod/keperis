@@ -61,15 +61,6 @@ class Model extends Collection implements ModelInterface
         $this->structure = structure();
     }
 
-
-    public function id(){
-        if(!$this->bc_table_id){
-            $this->bc_table_id = $this->bc_table."_id";
-        }
-        return $this->bc_table_id;
-
-    }
-
     /**
      * @param $argument
      * @return $this
@@ -95,6 +86,12 @@ class Model extends Collection implements ModelInterface
         return $this;
     }
 
+    public function delete($fields){
+        if(!is_array($fields)){
+            $fields = [$this->id() => $fields];
+        }
+        return $this->connection->deleteSql($this->bc_table, $fields);
+    }
     /**
      * @param array $attributes
      * @return array
@@ -173,7 +170,7 @@ class Model extends Collection implements ModelInterface
     public function getImportUnique($key = null)
     {
 
-        if($key){
+        if ($key) {
             return $this->xlsxImportUnique[$key] ?? null;
         }
         return array_keys($this->xlsxImportUnique);
@@ -198,6 +195,22 @@ class Model extends Collection implements ModelInterface
         return intval($save);
     }
 
+    public function insert($id)
+    {
+        $valid = $this->connection->valid($this->bc_table, $this->getAttributes());
+        return $this->connection->insertOrUpdateSql($this->bc_table, array_merge($valid, [$this->id() => $id]));
+    }
+
+
+
+    public function id()
+    {
+        if (!$this->bc_table_id) {
+            $this->bc_table_id = $this->bc_table . "_id";
+        }
+        return $this->bc_table_id;
+
+    }
 
     public function update($id)
     {
@@ -301,11 +314,11 @@ class Model extends Collection implements ModelInterface
 
     public function findIdByXlsxValue($column, $value)
     {
-        if(!is_array($value)){
+        if (!is_array($value)) {
             $value = [$value];
         }
 
-        $value = join(', ',$value);
+        $value = join(', ', $value);
 
         $column = $this->xlsxImportUnique[$column];
 

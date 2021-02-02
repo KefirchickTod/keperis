@@ -4,6 +4,7 @@
 namespace src\Core\Page;
 
 
+use App\Provides\ProvideStructures\bcDictionaryCat;
 use src\Core\ActionButton;
 use src\Core\easyCreateHTML;
 use src\Core\Page\Table\ProvideTableContainer;
@@ -221,7 +222,7 @@ class ProvideTable implements Table
 
 
         $filter = $this->container->filter instanceof ProvideFilter ?
-            $this->container->filter->setStrucutre($this->structure)->setTitle($this->container->title)->getFilter() :
+            $this->container->filter->setStrucutre($this->structure ?: \structure())->setTitle($this->container->title)->getFilter() :
             array_values($this->container->filter);
 
         $keys = array_keys($this->container->title);
@@ -310,7 +311,7 @@ class ProvideTable implements Table
                         $event = (new ActionButton($value, $this->container->action))->__toString();
                         $result[] = $this->eeTable->newCell()->addData("<div class = 'action-icon'>$event</div>")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");;
 
-                    } elseif (isset($this->title[$key]['dynamic'])) {
+                    } elseif (isset($this->container->title[$key]['dynamic'])) {
 
 
                         $setting = $this->container->title[$key]['dynamic'];
@@ -334,23 +335,24 @@ class ProvideTable implements Table
 
                 $reputation = $this->renderReputatuin($value, $key);
                 if ($reputation !== false) {
-                    $reputation[] = $reputation;
+                    $value[$key] = $reputation;
                 } else {
 
                     $line = valid($this->container->title[$key], 'line', '8');
-                    if (isset($this->title[$key]['dynamic'])) {
+                    if (isset($this->container->title[$key]['dynamic'])) {
 
                         $setting = $this->container->title[$key]['dynamic'];
                         $data = $this->dynamicFilter($setting, $value[$key], $value['id']);
                         $result[] = $this->eeTable->newCell()->addData("<div class='tr-content'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' >{$data}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
                     } else {
                         if ($note) {
+
                             $result[] = $this->eeTable->newCell()->addData("<div class='tr-content createNote' data-o = '{$note['o']}'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . clean($value[$key]) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
                         } else {
-                            $value[$key] = isset($this->title[$key]['date_format']) ? date($this->container->title[$key]['date_format'],
+                            $value[$key] = isset($this->container->title[$key]['date_format']) ? date($this->container->title[$key]['date_format'],
                                 strtotime($value[$key])) : $value[$key];
 
-                            $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '" . ($value['id'] ?? $key) . "' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->title[$key]['text'] ?? '') . "'");
+                            $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '" . ($value['id'] ?? $key) . "' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text'] ?? '') . "'");
 //
                         }
                     }
@@ -384,6 +386,9 @@ class ProvideTable implements Table
         if(!$ids){
             return  [];
         }
+        if(is_string($ids[0]) && intval($ids[0]) === 0){
+            return [];
+        }
 
         return getUserNameArray($ids);
     }
@@ -398,13 +403,13 @@ class ProvideTable implements Table
     private function dynamicFilter($setting, $currentValue, $registerId)
     {
 
+
         $id = $setting['id'];
         $key = $setting['key'];
         $o = $setting['o'] ?? 'updateRegisterTagsStatus';
         $data = db()->querySql("SELECT bc_connections_db_right_id, bc_connections_db_id FROM bc_connections_db WHERE bc_connections_db_right_key = '$key' AND bc_connections_db_left_id = {$id} GROUP BY bc_connections_db_right_id")->fetchAll(PDO::FETCH_ASSOC);
         $data_copy = $data;
         $data = array_column($data, 'bc_connections_db_right_id');
-
         $result = [];
         if ($data) {
             $data = array_diff($data, ['0', null, false, '']);
@@ -412,7 +417,7 @@ class ProvideTable implements Table
                 'dynamic' =>
                     [
                         'get'     => ['b_titleUK'],
-                        'class'   => 'bcDictionaryCat',
+                        'class'   => bcDictionaryCat::class,
                         'setting' =>
                             [
                                 'where' => 'id IN (' . join(', ', $data) . ')',
@@ -429,7 +434,6 @@ class ProvideTable implements Table
 
                     $result[$id] = "<a href='#' class='updateStatus' data-o = '$o' data-id = '$registerId' data-status = '{$val['id']}'>{$val['b_titleUK']}|</a>";
                 }
-
             }
             if (isset($result[0])) {
 
@@ -457,7 +461,7 @@ class ProvideTable implements Table
     private function inNote($key)
     {
         if (isset($this->container->title[$key]['note'])) {
-            return true;
+            return $this->container->title[$key]['note'];
         }
         return false;
     }
@@ -510,7 +514,7 @@ class ProvideTable implements Table
         if (!in_array($key, self::$reputatuin)) {
             return false;
         }
-        $reputation = $value['reputation'] ?: '';
+        $reputation = $value['reputation'] ?? '';
         if ($reputation === 'Негативна') {
             return $this->eeTable->newCell()->addData($value[$key])->setAttr("style = 'color:red' data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
         }

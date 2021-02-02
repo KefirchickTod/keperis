@@ -4,8 +4,9 @@
 namespace src\Traits\User;
 
 
-use App\BCApi;
 
+
+use App\bcerpapi;
 use src\Collection;
 use src\Core\User\UserAuth;
 
@@ -40,7 +41,7 @@ trait UserTrait
         return (int)$status['status'];
     }
 
-    public function checkToken($token): bool
+    public function checkToken(string $token, int $userId = null): bool
     {
         $sql = db()->selectSql('bc_user', 'bc_user_id', "bc_user_token = '" . $token . "'");
 
@@ -53,8 +54,8 @@ trait UserTrait
 
     public function deletePhoto($user_id)
     {
-        $bcapi = new BCApi();
-        return $bcapi->sendRequest([
+
+        return bcerpapi::sendRequest([
             'action'  => 'deleteUserPhoto',
             'user_id' => $user_id,
         ]);
@@ -206,7 +207,7 @@ WHERE
             return '/images/no_photo.jpg';
         }
         $id = $id ?: $this->id;
-        $url = APP_URL . "theme/bc_user_{$id}/photo/{$id}";
+        $url = env('CITE_URL') . "theme/bc_user_{$id}/photo/{$id}";
         foreach (['jpg', 'jpeg', 'png', 'gif'] as $type) {
             if (isPhoto("$url.$type") !== false) {
                 return "$url.$type";
@@ -217,18 +218,17 @@ WHERE
 
 
     public function apiGetUserPhoto(int $userId){
-        $bc = new BCApi();
 
-        $link = $bc->sendRequest([
+        $link = bcerpapi::sendRequest([
             'action' => 'getUserPhoto',
             'user_id' => $userId
         ]);
-        return $link['link'];
+        return $link['link'] ?? '/images/no_photo.png';
     }
 
     public function forParserImg($id)
     {
-        $url = APP_URL . "theme/bc_user_{$id}/photo/{$id}";
+        $url = env('CITE_URL') . "theme/bc_user_{$id}/photo/{$id}";
         foreach (['jpg', 'jpeg', 'png', 'gif'] as $type) {
             if (isPhoto("$url.$type") !== false) {
                 return ['link' => "$url.$type", 'type' => $type];
@@ -261,7 +261,7 @@ WHERE
             }
 
             $user_photo_dir = UPLOAD_PATH . 'user_photos';
-            $user_photo_url = UPLOAD_URL . 'user_photos';
+            $user_photo_url = UPLOAD_PATH . 'user_photos';
 
             if (!is_dir($user_photo_dir)) {
                 mkdir($user_photo_dir, 0777, true);
@@ -274,8 +274,7 @@ WHERE
 
             if (move_uploaded_file($user_photo['tmp_name'], $user_photo_dir . '/' . $new_file_name)) {
                 //TODO - remove schema
-                $bcapi = new BCApi();
-                $result = $bcapi->sendRequest([
+                $result = bcerpapi::sendRequest([
                     'action'    => 'uploadUserPhoto',
                     'user_id'   => $user_id,
                     'url'       => $user_photo_url . '/',

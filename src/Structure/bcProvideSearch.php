@@ -56,8 +56,10 @@ class bcProvideSearch extends DataFilterPrototype
     public function creatQuery()
     {
         try {
+
             $type = $this->typeSearch();
-            if (!$this->where[$type]) {
+
+            if (!isset($this->where[$type]) && !$this->where[$type]) {
                 error_log("Type error in line 55 bcProvideSearch");
                 throw new Exception("Type error");
             }

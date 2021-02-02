@@ -8,12 +8,12 @@ $env = $defins->map(function ($value, $key) {
     }
     return $value;
 });
-$app = new src\BcClub(
+$app = new src\App(
     require_once "config.php"
 );
 /**
  * @param null $app
- * @return \src\BcClub
+ * @return \src\App
  */
 function app($app = null)
 {
@@ -25,14 +25,15 @@ function app($app = null)
 }
 app($app);
 
-require_once "../src/function.php";
+require_once ROOT_PATH."/src/function.php";
 
-require_once "../app/config.php";
+require_once ROOT_PATH."/app/config.php";
 
 
 
 
 require_once "route.php";
+require_once "middleware.php";
 
 
 

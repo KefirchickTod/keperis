@@ -5,10 +5,8 @@ namespace src\Router;
 
 
 use src\Controller\Controller;
-use src\Controller\User\UserController;
-use src\Core\Middleware\NotFoundHandler;
+
 use src\Http\Request;
-use src\Interfaces\MiddlewareInterface;
 use src\Interfaces\RouterInterface;
 
 use Error;
@@ -121,7 +119,10 @@ class Router  implements RouterInterface
     public function dispatch(Request $request)
     {
         $uri = '/' . ltrim($request->getUri()->getPath(), '/');
-        //debug($uri);
+        if(env('ROUTE_FULL_PATH', 'off') === 'on'){
+            $uri =  $request->getUri()->getBaseUrl() . $uri;
+        }
+
         return $this->getDispatcher()->dispatch(
             $request->getMethod(),
             $uri
@@ -133,11 +134,14 @@ class Router  implements RouterInterface
      */
     protected function getDispatcher()
     {
+
         return $this->dispatcher ?: simpleDispatcher(function (RouteCollector $r) {
             foreach ($this->routes as $route) {
 
                 /** @var $route Route */
+
                 $r->addRoute($route->getMethods(), $route->getPattern(), $route->getIndication());
+
 
 
             }

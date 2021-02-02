@@ -5,7 +5,7 @@ namespace src\Router;
 
 
 use Closure;
-use src\BcClub;
+use src\App;
 use src\Traits\CallableResolverAwareTrait;
 
 class RouteGroup extends Routeable
@@ -23,7 +23,7 @@ class RouteGroup extends Routeable
     }
 
 
-    public function __invoke(BcClub $app = null)
+    public function __invoke(App $app = null)
     {
         $callable = $this->resolveCallable($this->callable);
         if ($callable instanceof Closure && $app !== null) {

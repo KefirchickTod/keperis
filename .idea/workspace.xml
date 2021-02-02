@@ -2,57 +2,47 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/cache/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ApiRequest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/BCApi.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/Cache.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/Page/Table/ProvideTableContainer.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Handler/MiddlewareInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Handler/RequestHandlerInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxImportInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxParseInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxRenderInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxValidationInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler/NotFoundHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler/TestHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Router/RouteGroup.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Router/Routeable.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/ImportFile.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/Parser.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/ParserForMarge.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/ParserUnique.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/Render.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderByCache.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderNewNote.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/Validation/Validate.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Xlsx/XlsxFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/keperis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/keperis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BcClub.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/BcClub.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Collection.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Middleware/AuthenficationMiddleware.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Api/AjaxApi.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Api/Api.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Api/ApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Api/ApiFactory.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Api/ErrorApi.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/RequstApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/LeaderTimer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/cache/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ApiRequest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BcClub.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Container.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Container.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Controller.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/ActionButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/ActionButton.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreateButtons.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreateButtons.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/DB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/DB.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Http/RequestResponse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/RequestResponse.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Environment.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Environment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Request.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Response.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Response.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Uri.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Uri.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interfaces/ApiInterfaces.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/ApiInterfaces.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Middleware/FallbackHandler.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Middleware/Middleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middleware/Middleware.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Middleware/MiddlewareHandler.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Middleware/Middlewares/AuthonficationMiddleware.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Middleware/Middlewares/TestMiddleware.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interfaces/Handler/RequestHandlerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/Handler/RequestHandlerInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resource.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router/Route.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Route.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Router/RouteGroup.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/RouteGroup.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Router.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Traits/User/Auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/User/Auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Structure/bcProvideSearch.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/bcProvideSearch.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Traits/TableTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/TableTrait.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Traits/User/UserTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/User/UserTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Validator/Validator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Validators/Validator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ViewFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderByCache.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderByCache.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/function.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/api.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/helper.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/init.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/init.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/middleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/middleware.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/roles.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +51,9 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution />
+    <execution>
+      <executable />
+    </execution>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -113,7 +105,9 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1lvFT0NwkKshtTddrFMRHWHio4Y" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -122,17 +116,36 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\server\html\keperis" />
+      <recent name="G:\server\html\keperis\web" />
+      <recent name="G:\server\html\keperis\app" />
       <recent name="G:\server\html\keperis\src" />
       <recent name="G:\server\html\keperis\app\Api" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="" />
@@ -145,6 +158,7 @@
       <workItem from="1608744761833" duration="76000" />
       <workItem from="1608816107536" duration="1718000" />
       <workItem from="1608897219470" duration="671000" />
+      <workItem from="1612280669148" duration="309000" />
     </task>
     <task id="LOCAL-00001" summary="Add readme">
       <created>1608816683316</created>
@@ -157,10 +171,35 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add readme" />
     <option name="LAST_COMMIT_MESSAGE" value="Add readme" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1612280978523">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612280978523" />
+    <state x="794" y="443" key="NewPhpFileDialog" timestamp="1612280839036">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="794" y="443" key="NewPhpFileDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612280839036" />
+    <state x="461" y="162" key="SettingsEditor" timestamp="1612280728216">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="162" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612280728216" />
   </component>
 </project>

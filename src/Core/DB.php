@@ -14,9 +14,9 @@ class DB
 
     private function __construct($dsn = null, $username = null, $password = null, $options = [])
     {
-        $dsn = $dsn ?? 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-        $username = $username ?? DB_USER;
-        $password = $password ?? DB_PASS;
+        $dsn = $dsn ?? 'mysql:host=' . env('DB_HOST', '') . ';dbname=' . env('DB_NAME','');
+        $username = $username ?? env('DB_USER', '');
+        $password = $password ?? env('DB_PASS', '');
         $options = $options ?? [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"];
 
         try {

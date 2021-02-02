@@ -4,7 +4,8 @@
 namespace src;
 
 
-use App\BCApi;
+
+use App\bcerpapi;
 use src\Controller\User\Auth;
 use src\Core\Page\PageCreator;
 use src\Http\Environment;
@@ -115,21 +116,15 @@ final class Container extends \Pimple\Container implements ContainerInterface
 
         if (!isset($this['api'])) {
             $this['api'] = function () {
-                return new BCApi();
+                return new bcerpapi();
             };
-        }
+        }//todo new api class and custom value
 
         if (!isset($this['callableResolver'])) {
             $this['callableResolver'] = function ($c) {
                 return new CallableResolver($c);
             };
         }
-        if(!isset($this['auth'])){
-            $this['auth'] = function (){
-                return new \App\Controller\User\Auth();
-            };
-        }
-
         if(!isset($this['middleware'])){
             $this['middleware'] = function (){
                 return new Middleware(new NotFoundHandler());

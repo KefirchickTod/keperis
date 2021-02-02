@@ -3,7 +3,7 @@
 /**
  * @author Zahar Pylypchuck
  * @version 0.79
- * @package App|BcClub
+ * @package App|App
  */
 
 namespace src;
@@ -27,7 +27,7 @@ use Exception;
 use FastRoute\Dispatcher;
 use RuntimeException;
 
-class BcClub
+class App
 {
     /**
      * @var Container
@@ -130,20 +130,26 @@ class BcClub
             $routeInfo = $request->getAttribute('routeInfo');
 
 
+
         }
+
 
         if ($routeInfo[0] === Dispatcher::FOUND) {
             /** @var  $route Route */
             $route = $router->lookupRoute($routeInfo[1]);
-
+            $request = $request->withRouteName($route->getIndication());
             $response =    $route->run($request, $this->middleware->process($request, $response, $this->requestHandle));
             return $response;
         } elseif ($routeInfo[0] === Dispatcher::NOT_FOUND) {
 
-            $response = $response->withRedirect('/404');
+
+            /**
+             * @var $response Response
+             */
+            $response = $response->withResource(view('404'));
         } else {
 
-            $response = $response->withRedirect('/405');
+            $response = $response->withStatus(405);
         }
         return $response;
     }
@@ -151,6 +157,10 @@ class BcClub
     protected function dispatchRouterAndPrepareRoute(Request $request, Router $router): Request
     {
         $routeInfo = $router->dispatch($request);
+
+
+
+
         if ($routeInfo[0] === Dispatcher::FOUND) {
             $routerArgument = [];
             foreach ($routeInfo[2] as $key => $value) {

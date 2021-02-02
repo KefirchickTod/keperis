@@ -1,7 +1,7 @@
 <?php
 
-use src\Resource;
-use src\BcClub;
+
+use src\App;
 use src\Container;
 use src\Core\easyCreateHTML;
 use src\Router\Router;
@@ -902,6 +902,12 @@ if (!function_exists('valid')) {
     }
 }
 
+if(!function_exists('env')){
+    function env(string $key, $default = null){
+        return \container()->env->get($key, $default);
+    }
+}
+
 if (!function_exists('structure')) {
     function structure(): Structure
     {
@@ -1171,7 +1177,7 @@ if (!function_exists('view')) {
             'title'      => $title,
             'data_array' => $data_array,
             'copyText'   => $copyText,
-        ])->render();
+        ]);
 
     }
 }
@@ -1288,12 +1294,16 @@ if (!function_exists('studly')) {
 }
 
 if (!function_exists('checkToken')) {
-    function checkToken(string $token): bool
+    function checkToken(string $token, $userId = null): bool
     {
         $sql = db()->selectSql('bc_user', 'bc_user_id', "bc_user_token = '" . $token . "'");
 
         if (empty($sql[0]['bc_user_id'])) {
             return false;
+        }
+
+        if($userId){
+            return  $sql[0]['bc_user_id'] == $userId;
         }
 
         return true;

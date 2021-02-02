@@ -11,9 +11,9 @@ use src\Core\Page\PageCreator;
 use src\Core\Page\ProvideTable;
 use src\Interfaces\Buttons;
 use src\Interfaces\Paginator;
-use src\Resource;
+
 use Error;
-use phpDocumentor\Reflection\Types\String_;
+use src\View\View;
 
 /**
  * Trait TableTrait
@@ -58,7 +58,7 @@ trait TableTrait
 
 
     protected function setValue(array $list){
-        list($this->title,$this->dataArray, $this->action) = $list;
+        [$this->title,$this->dataArray, $this->action] = $list;
     }
 
     protected function init()
@@ -119,7 +119,7 @@ trait TableTrait
             ($this->action ?? []));
     }
 
-    protected function render(Resource $resource = null, $str = false, $gzip = false, $setting = null)
+    protected function render(View $resource = null, $str = false, $gzip = false, $setting = null)
     {
 
 
@@ -127,7 +127,7 @@ trait TableTrait
 
         $result = [];
         if ($resource) {
-            $resource->set(null, [
+            $resource->with( [
                 'buttons'   => $this->buttons,
                 'table'     => $this->table,
                 'page'      => $this->page,

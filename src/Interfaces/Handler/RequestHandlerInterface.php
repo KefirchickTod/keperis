@@ -4,6 +4,7 @@
 namespace src\Interfaces\Handle;
 
 
+use src\Http\Request;
 use src\Http\Response;
 use src\Interfaces\ResponseInterface;
 
@@ -20,7 +21,7 @@ interface RequestHandlerInterface
      *
      * May call other collaborating code to generate the response.
      */
-    public function handle($request, ResponseInterface $response ,RequestHandlerInterface $requestHandler = null): ?ResponseInterface;
+    public function handle(Request $request, ResponseInterface $response ,RequestHandlerInterface $requestHandler = null): ?ResponseInterface;
 
     public function setNext(RequestHandlerInterface $handler): RequestHandlerInterface;
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace src\View\Validator;
+namespace src\View\Validators;
 
 
 use src\Interfaces\View\ValidatorInterface;

@@ -1,2 +1,8 @@
-logs/*
+.idea/
+nbproject/
+upload/
 vendor/
+*.log
+public/upload
+
+

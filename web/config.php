@@ -56,7 +56,7 @@ return [
                                     'loyalty',
                                     'reputation',
                                 ],
-                            'class'   => 'bcUser',
+                            'class'   => \App\Provides\ProvideStructures\bcUser::class,
                             'setting' =>
                                 [
                                     'where' => 'bc_user_delete <> 1 ',

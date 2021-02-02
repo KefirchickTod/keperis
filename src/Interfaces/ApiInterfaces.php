@@ -4,13 +4,13 @@
 namespace src\Interfaces;
 
 
-use App\Api\ApiController;
+use App\Api\Api;
 
 interface ApiInterfaces
 {
 
     /**
-     * @return ApiController
+     * @return Api
      */
     public function getController();
 
