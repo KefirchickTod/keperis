@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Models/User/UserModel.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Observers/TableRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/keperis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/keperis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/helperinstaller.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/function.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreatePaginator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreatePaginator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Traits/TableTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/TableTrait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/function.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/init.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/init.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,13 +15,10 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution>
-      <executable />
-    </execution>
+    <execution />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
@@ -87,9 +77,7 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1lvFT0NwkKshtTddrFMRHWHio4Y" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -98,36 +86,18 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="php.override.implement.member.chooser.php.doc" value="COPY_ALWAYS" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\server\html\keperis" />
-      <recent name="G:\server\html\keperis\web" />
-      <recent name="G:\server\html\keperis\app" />
       <recent name="G:\server\html\keperis\src" />
       <recent name="G:\server\html\keperis\app\Api" />
     </key>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="" />
@@ -140,8 +110,6 @@
       <workItem from="1608744761833" duration="76000" />
       <workItem from="1608816107536" duration="1718000" />
       <workItem from="1608897219470" duration="671000" />
-      <workItem from="1612280669148" duration="409000" />
-      <workItem from="1612356474160" duration="4206000" />
     </task>
     <task id="LOCAL-00001" summary="Add readme">
       <created>1608816683316</created>
@@ -150,70 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608816683316</updated>
     </task>
-    <task id="LOCAL-00002" summary="update">
-      <created>1612281003060</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1612281003060</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add readme" />
-    <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="585" y="112" key="CommitChangelistDialog2" timestamp="1612281001478">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="585" y="112" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612281001478" />
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1612280978523">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612280978523" />
-    <state x="-1163" y="334" key="NewPhpClassDialog" timestamp="1612366280002">
-      <screen x="-1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="-1163" y="334" key="NewPhpClassDialog/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612366280002" />
-    <state x="-1126" y="443" key="NewPhpFileDialog" timestamp="1612365839897">
-      <screen x="-1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="-1126" y="443" key="NewPhpFileDialog/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612365839897" />
-    <state x="794" y="443" key="NewPhpFileDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612281009916" />
-    <state x="461" y="162" key="SettingsEditor" timestamp="1612280728216">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="461" y="162" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612280728216" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1612281005112">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1612281005112" />
-    <state x="-1151" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612356781940">
-      <screen x="-1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="-1151" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612356781940" />
-    <state x="-1264" y="257" width="607" height="526" key="find.popup" timestamp="1612365903698">
-      <screen x="-1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="-1264" y="257" width="607" height="526" key="find.popup/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612365903698" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add readme" />
   </component>
 </project>
