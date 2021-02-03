@@ -23,18 +23,18 @@ function app($app = null)
     }
     return $singleton;
 }
+
 app($app);
 
-require_once ROOT_PATH."/src/function.php";
+require_once ROOT_PATH . "/src/function.php";
 
-require_once ROOT_PATH."/app/config.php";
-
-
+if (file_exists(ROOT_PATH . "/app/config.php")) {
+    require_once ROOT_PATH . "/app/config.php";
+}
 
 
 require_once "route.php";
 require_once "middleware.php";
-
 
 
 return app();

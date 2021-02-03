@@ -277,8 +277,6 @@ class PageCreatePaginator implements Paginator
         $result = [];
 
         $totalPages = $this->totalPage;
-//        $counterTemplate = preg_replace("{%_current_%}", $setting['{%_current_%}'], $counterTemplate);
-//        unset($setting['{%_current_%}']);
         $from = $this->currentPage;
         $setting = $this->currentPage > self::up ? [
                 "{%_first_%}" => preg_replace(['/{%_value_%}/', '/{%_link_%}/'], [1, newGenerateLink('page', 1)],

@@ -1110,36 +1110,6 @@ if (!function_exists('addToArray')) {
     }
 }
 
-if (!function_exists('getNameById')) {
-    function getNameById($id)
-    {
-        if ($id == 0) {
-            return '';
-        }
-        $where = "id = $id";
-        $isArray = false;
-        if (is_array($id)) {
-            $isArray = true;
-            $where = "id IN (" . implode(', ', $id) . ")";
-        }
-        return structure()->set([
-            "user_$id" =>
-                [
-                    'get'     => 'fullName',
-                    'class'   => \App\Provides\ProvideStructures\bcUser::class,
-                    'setting' => compact('where'),
-                ],
-        ])->getData(function ($row) use ($isArray) {
-            if (!empty($row)) {
-                if ($isArray === true) {
-                    return array_combine(array_column($row, 'id'), array_column($row, 'fullName'));
-                }
-                return valid($row[0], 'fullName', '');
-            }
-            return '';
-        }, "user_$id");
-    }
-}
 
 if (!function_exists('container')) {
     function container(): Container
