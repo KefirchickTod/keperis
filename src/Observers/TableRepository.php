@@ -9,7 +9,7 @@ use SplObserver;
 class TableRepository implements \SplSubject
 {
 
-    private $events = [];
+
 
 
     private $observers = [];
