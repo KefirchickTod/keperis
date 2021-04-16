@@ -55,6 +55,15 @@ class Collection implements CollectionInterface
     {
         return $this->data;
     }
+    public function hasMany(array $key)
+    {
+        foreach ($key as $need){
+            if(!$this->has($need)){
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * @return void

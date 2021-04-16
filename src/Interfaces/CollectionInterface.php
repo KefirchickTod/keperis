@@ -21,5 +21,12 @@ interface CollectionInterface
 
     public function get($key, $default = []);
 
+    /**
+     * @param array $key
+     * @return bool
+     * If empty once of param return false
+     */
+    public function hasMany(array $key);
+
 
 }

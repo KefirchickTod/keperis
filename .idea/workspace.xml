@@ -2,9 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a958487-d838-4c0e-adf9-0d826715052d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Observer/ObserverInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseAdapterInterfaceAdapter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseBuilder.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseFactory.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Database/Interfaces/DatabaseAdapterInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Database/Interfaces/DatabaseBuilderInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Core/Database/Interfaces/DatabaseFactoryInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Observers/TableRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Observers/TableRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Collection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interfaces/CollectionInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/CollectionInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/function.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/route.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/route.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +97,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../bc-club.org.ua" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="COPY_ALWAYS" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -127,6 +136,8 @@
       <workItem from="1608744761833" duration="76000" />
       <workItem from="1608816107536" duration="1718000" />
       <workItem from="1608897219470" duration="671000" />
+      <workItem from="1612521908828" duration="409000" />
+      <workItem from="1618586654681" duration="5372000" />
     </task>
     <task id="LOCAL-00001" summary="Add readme">
       <created>1608816683316</created>
@@ -135,24 +146,59 @@
       <option name="project" value="LOCAL" />
       <updated>1608816683316</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="*">
+      <created>1612452830481</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1612452830481</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Add readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add readme" />
+    <MESSAGE value="*" />
+    <option name="LAST_COMMIT_MESSAGE" value="*" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1180" y="274" key="FileChooserDialogImpl" timestamp="1612439425608">
+    <state x="-1312" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1618589607256">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1180" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612439425608" />
-    <state x="-1187" y="334" key="NewPhpClassDialog" timestamp="1612437269513">
+    <state x="-1312" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1618589607256" />
+    <state x="-1335" y="112" key="CommitChangelistDialog2" timestamp="1612452829401">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1187" y="334" key="NewPhpClassDialog/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612437269513" />
+    <state x="-1335" y="112" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612452829401" />
+    <state x="-1180" y="274" key="FileChooserDialogImpl" timestamp="1612522318755">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1180" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612522318755" />
+    <state x="-1187" y="334" key="NewPhpClassDialog" timestamp="1618589667163">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1187" y="334" key="NewPhpClassDialog/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1618589667163" />
+    <state x="-1368" y="252" key="Vcs.Push.Dialog.v2" timestamp="1612452831994">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1368" y="252" key="Vcs.Push.Dialog.v2/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612452831994" />
+    <state x="-1264" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1612521932156">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1264" y="343" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1612521932156" />
+    <state x="-143" y="-8" width="1398" height="1028" key="dock-window-1" timestamp="1618590679855">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-143" y="-8" width="1398" height="1028" key="dock-window-1/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1618590176382" />
+    <state x="-143" y="-8" width="1398" height="1028" key="dock-window-1/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1618590679855" />
+    <state x="-1264" y="257" width="737" height="596" key="find.popup" timestamp="1618590226362">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1264" y="257" width="737" height="596" key="find.popup/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1618590226362" />
   </component>
 </project>

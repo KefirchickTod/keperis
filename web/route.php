@@ -1,3 +1,6 @@
 <?php
 
-app()->get('/', \App\Controller\TestContoller::class, 'index')->name('test.controller');
+app()->get('/', function (){
+    $test = \sc\Core\Database\DatabaseFactory::table('bc_user');
+    var_dump($test);exit;
+})->name('test.controller');
