@@ -4,7 +4,7 @@
 namespace src\Middleware;
 
 
-use src\Interfaces\Handle\RequestHandlerInterface;
+use src\Interfaces\Handler\RequestHandlerInterface;
 use src\Interfaces\ResponseInterface;
 
 class RequestHandler implements RequestHandlerInterface

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace sc\Core\Database;
+namespace src\Core\Database;
 
 use PDO;
-use sc\Core\Database\Interfaces\DatabaseAdapterInterface AS DatabaseInterfaces;
+use src\Core\Database\Interfaces\DatabaseAdapterInterface AS DatabaseInterfaces;
 use src\Http\Environment;
 
 /**
  * Class Database
- * @package sc\Core\Database
+ * @package src\Core\Database
  * !!!! Using not supported PDO attribute for Oracle !!!
  */
 class DatabaseAdapter implements DatabaseInterfaces
@@ -38,7 +38,7 @@ class DatabaseAdapter implements DatabaseInterfaces
         $attributes = [
             PDO::ATTR_ERRMODE      => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
-            PDO::ATTR_CASE         => PDO::ATTR_CASE,
+            PDO::ATTR_CASE         => PDO::CASE_LOWER,
         ];
         if(!$environment->hasMany(['DB_USER', 'DB_HOST', 'DB_PASS', 'DB_NAME'])){
             throw new \PDOException("Undefined db setting");
@@ -56,12 +56,16 @@ class DatabaseAdapter implements DatabaseInterfaces
                 $options
             );
             foreach ($attributes as $attribute => $value){
+
                 $pdo->setAttribute($attribute, $value);
             }
             $pdo->exec("SET time_zone = '" . date('P') . "'");
             $pdo->exec('SET names utf8');
             $connection = new static($pdo);
-        }catch (\PDOException $exception){
+        }catch (\PDOException $exception){;
+            if(boolval($environment->get('APP_DEBUG', false)) === true){
+                echo $exception->getMessage();
+            }
             error_log($exception->getMessage());
             die(0);
         }
@@ -70,11 +74,39 @@ class DatabaseAdapter implements DatabaseInterfaces
     }
 
 
+
     /**
      * @inheritDoc
      */
     public function getPdo(): \PDO
     {
         return $this->connection;
+    }
+
+    public function select(string $query){
+        try {
+            $STH = $this->connection->prepare($query);
+            $STH->execute();
+            return $STH->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\PDOException $exception){
+            if((bool)env("APP_DEBUG", false)  === true){
+                echo $exception->getMessage() ." <br > ".$STH->queryString;
+            }
+            error_log($exception->getMessage());
+            die();
+        }
+    }
+
+    public function line(string $query)
+    {
+        try {
+            return $this->connection->query($query);
+        } catch (\PDOException $exception){
+            if((bool)env("APP_DEBUG", false)  === true){
+                echo $exception->getMessage();
+            }
+            error_log($exception->getMessage());
+            die();
+        }
     }
 }

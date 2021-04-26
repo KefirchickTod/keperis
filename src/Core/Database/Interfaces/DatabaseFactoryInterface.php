@@ -1,7 +1,7 @@
 <?php
 
 
-namespace sc\Core\Database\Interfaces;
+namespace src\Core\Database\Interfaces;
 
 
 interface DatabaseFactoryInterface

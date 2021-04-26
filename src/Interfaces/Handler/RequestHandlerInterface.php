@@ -1,7 +1,7 @@
 <?php
 
 
-namespace src\Interfaces\Handle;
+namespace src\Interfaces\Handler;
 
 
 use src\Http\Request;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace sc\Core\Database\Interfaces;
+namespace src\Core\Database\Interfaces;
 
 
 interface DatabaseAdapterInterface
@@ -13,5 +13,7 @@ interface DatabaseAdapterInterface
      */
     public function getPdo() : \PDO;
 
+
+    public function line(string $query);
 
 }

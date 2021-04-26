@@ -1,13 +1,17 @@
 <?php
 
 
-namespace sc\Core\Database\Interfaces;
+namespace src\Core\Database\Interfaces;
 
 
 interface DatabaseBuilderInterface
 {
 
 
+    /**
+     * @param string[]|string $fields
+     * @return static
+     */
     public function select($fields = ["*"]);
     public function where($fields);
     public function limit($from, $to = null);

@@ -7,8 +7,8 @@ namespace src\Middleware;
 use Psr\Http\Message\RequestInterface;
 use src\Http\Request;
 use src\Http\Response;
-use src\Interfaces\Handle\MiddlewareInterface;
-use src\Interfaces\Handle\RequestHandlerInterface;
+use src\Interfaces\Handler\MiddlewareInterface;
+use src\Interfaces\Handler\RequestHandlerInterface;
 
 class Middleware implements MiddlewareInterface
 {

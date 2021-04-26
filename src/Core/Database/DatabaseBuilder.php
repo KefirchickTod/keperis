@@ -1,16 +1,18 @@
 <?php
 
 
-namespace sc\Core\Database;
+namespace src\Core\Database;
 
 
-use sc\Core\Database\Interfaces\DatabaseBuilderInterface;
+use src\Core\Database\Interfaces\DatabaseAdapterInterface;
+use src\Core\Database\Interfaces\DatabaseBuilderInterface;
 
 class DatabaseBuilder implements DatabaseBuilderInterface
 {
 
+    const SHCHEMA = "SELECT DATA_TYPE as type, COLUMN_NAME as name  FROM information_schema.COLUMNS WHERE TABLE_NAME='{%_table_%}'";
     /**
-     * @var DatabaseAdapter
+     * @var DatabaseAdapterInterface
      */
     protected $connection;
 
@@ -24,20 +26,30 @@ class DatabaseBuilder implements DatabaseBuilderInterface
      */
     protected $query = [];
 
-    public function __construct(string $table, DatabaseAdapter $connection)
+    public function __construct(string $table, DatabaseAdapterInterface $connection)
     {
-        $this->table = $table;
+        $this->table = new DatabaseInfoScheme($table, $connection);
         $this->connection = $connection;
-        $table->query = [];
+
+        $this->query = [];
     }
 
 
-    protected function valid(){
+    protected function valid($fields, string $operator){
+        foreach ($fields as $field){
+            if($this->table->isColumn($field)){
+                $this->query[$operator][] = $field;
+            }
+        }
     }
 
     public function select($fields = ["*"])
     {
-
+        if(!is_array($fields)){
+            $fields = [$fields];
+        }
+        $this->valid($fields, 'select');
+        return $this;
     }
 
     public function where($fields)

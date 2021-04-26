@@ -1,12 +1,13 @@
 <?php
 
 
-namespace sc\Core\Database;
+namespace src\Core\Database;
 
 
-use sc\Core\Database\Interfaces\DatabaseAdapterInterface;
-use sc\Core\Database\Interfaces\DatabaseBuilderInterface;
-use sc\Core\Database\Interfaces\DatabaseFactoryInterface;
+
+
+use src\Core\Database\Interfaces\DatabaseAdapterInterface;
+use src\Core\Database\Interfaces\DatabaseFactoryInterface;
 
 class DatabaseFactory implements DatabaseFactoryInterface
 {
@@ -16,6 +17,7 @@ class DatabaseFactory implements DatabaseFactoryInterface
 
     public static function table(string $table)
     {
+
 
         $builder = new DatabaseBuilder($table, self::connect());
 
