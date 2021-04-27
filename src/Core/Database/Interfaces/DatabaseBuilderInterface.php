@@ -16,8 +16,9 @@ interface DatabaseBuilderInterface
     public function where($fields);
     public function limit($from, $to = null);
     public function order($fields);
-    public function join();
+    public function join(array $join);
     public function delete($fields);
     public function insert($fields);
+    public function execute() : DatabaseStatementInterface;
 
 }

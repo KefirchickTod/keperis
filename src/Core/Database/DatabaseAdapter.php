@@ -83,11 +83,11 @@ class DatabaseAdapter implements DatabaseInterfaces
         return $this->connection;
     }
 
-    public function select(string $query){
+    public function select(string $query, $style = PDO::FETCH_ASSOC ){
         try {
             $STH = $this->connection->prepare($query);
             $STH->execute();
-            return $STH->fetchAll(PDO::FETCH_ASSOC);
+            return $STH->fetchAll($style);
         } catch (\PDOException $exception){
             if((bool)env("APP_DEBUG", false)  === true){
                 echo $exception->getMessage() ." <br > ".$STH->queryString;

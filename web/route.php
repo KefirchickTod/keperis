@@ -3,6 +3,6 @@
 use src\Core\Database\DatabaseAdapter;
 
 app()->get('/', function (){
-    $test = new \src\Core\Database\DatabaseInfoScheme('bc_user', DatabaseAdapter::createDateBaseConnection(container()->env));
+    $test = \src\Core\Database\DatabaseFactory::table('bc_user')->select(['bc_user_id', 'bc_user_name_uk'])->where(['bc_user_id = 1'])->toBase();
     var_dump($test);exit;
 })->name('test.controller');
