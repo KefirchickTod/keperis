@@ -5,7 +5,7 @@ namespace src\Interfaces\Xlsx;
 
 
 use src\Collection;
-use src\Model;
+use src\Models\Model;
 
 interface XlsxParseInterface
 {

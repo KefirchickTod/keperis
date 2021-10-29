@@ -33,6 +33,7 @@ class Render implements RenderInterface
         $file = $this->validator->validate($file);
         ob_start();
         extract($data, EXTR_SKIP);
+
         try {
              include_once $file;
         } catch (\Exception $exception) {

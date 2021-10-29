@@ -18,4 +18,10 @@ class Body extends Stream
 
         return new static($stream);
     }
+
+    public static function getAsResponseBody(){
+        $stream = fopen('php://output', 'r+');
+
+        return new static($stream);
+    }
 }

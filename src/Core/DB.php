@@ -5,16 +5,20 @@ namespace src\Core;
 use src\Collection;
 use PDO;
 use PDOException;
+use src\Controller\Api\ErrorApi;
+use src\Core\Database\DatabaseAdapter;
+use src\Core\Database\DatabaseInfoScheme;
 
 class DB
 {
     private static $instance;
-    private $connection;
     public $error;
+    private $connection;
+    private $state;
 
     private function __construct($dsn = null, $username = null, $password = null, $options = [])
     {
-        $dsn = $dsn ?? 'mysql:host=' . env('DB_HOST', '') . ';dbname=' . env('DB_NAME','');
+        $dsn = $dsn ?? 'mysql:host=' . env('DB_HOST', '') . ';dbname=' . env('DB_NAME', '');
         $username = $username ?? env('DB_USER', '');
         $password = $password ?? env('DB_PASS', '');
         $options = $options ?? [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"];
@@ -64,11 +68,6 @@ class DB
             $paramArray["sort"]);
     }
 
-    public function getConnection(): PDO
-    {
-        return $this->connection;
-    }
-
     public function querySql($sql_string)
     {
         if (isset($sql_string)) {
@@ -82,20 +81,24 @@ class DB
         }
     }
 
-    public function isError(){
-        return !empty($this->error);
-    }
     public function error($error, $sql_string, $code = null)
     {
-        echo $sql_string;
-        var_dump($error);
-        if($code){
+        //  echo $sql_string;
+
+        if ($code) {
             $this->error[intval($code)] = $error . ' / ' . $sql_string;
-        }else{
+        } else {
 
             $this->error[] = $error . ' / ' . $sql_string;
         }
+
         error_log($error . ' / ' . $sql_string);
+        ErrorApi::add(compact('error', 'sql_string'));
+    }
+
+    public function isError()
+    {
+        return !empty($this->error);
     }
 
     public function addSqlMany($table, $db_array)
@@ -160,7 +163,9 @@ class DB
                 $this->connection->beginTransaction();
                 $STH = $this->connection->prepare($sql_pre);
 
+
                 $STH->execute($db_values);
+
                 $lastInsertId = $this->connection->lastInsertId();
                 if ($lastInsertId == 0) {
                     $lastInsertId = $STH->rowCount();
@@ -170,6 +175,7 @@ class DB
                 return $lastInsertId;
             } catch (PDOException $e) {
 
+                echo($e->getMessage());exit;
                 $this->connection->rollBack();
                 $this->error($e->getMessage(), $STH->queryString);
                 return false;
@@ -321,6 +327,7 @@ class DB
 
             return $STH->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
+            var_dump($e->getMessage());
             $this->error($e->getMessage() . $sql_pre, $STH->queryString);
         }
     }
@@ -366,6 +373,8 @@ class DB
                 $this->connection->beginTransaction();
                 $STH = $this->connection->prepare($sql_pre);
 
+
+
                 $STH->execute($db_values);
                 $this->connection->commit();
                 if ($returnCount) {
@@ -375,6 +384,8 @@ class DB
                 return true;
             } catch (PDOException $e) {
 
+                var_dump($e->getMessage(), $db_array);exit;
+
                 $this->connection->rollBack();
                 $this->error($e->getMessage(), $STH->queryString, $e->getCode());
                 return false;
@@ -383,7 +394,6 @@ class DB
         return false;
     }
 
-
     public function valid($table_name, $db_array)
     {
         try {
@@ -391,7 +401,8 @@ class DB
             $data = $this->connection->query("SELECT DATA_TYPE as type, COLUMN_NAME as name  FROM information_schema.COLUMNS WHERE TABLE_NAME='{$table_name}'")->fetchAll(PDO::FETCH_ASSOC);
             foreach ($data as $schema) {
                 if (array_key_exists($schema['name'], $db_array)) {
-                    $valid[$schema['name']] = $db_array[$schema['name']];
+                    $value = $db_array[$schema['name']];
+                    $valid[$schema['name']] = $this->toType($schema['type'], $value);
                 }
             }
             return $valid;
@@ -400,6 +411,54 @@ class DB
             return [];
         }
 
+    }
+
+    private function toType($type, $value)
+    {
+        if ($type === 'int') {
+            return intval($value);
+        }
+        if ($type === 'float') {
+            return floatval($value);
+        }
+        if ($type === 'tinyint') {
+            return intval($value);
+        }
+        return $value;
+    }
+
+    public function databaseValidation($table, $db_array)
+    {
+        if ($this->state && array_key_exists($table, $this->state)) {
+            $schema = $this->state[$table];
+        } else {
+            $schema = new DatabaseInfoScheme($table,
+                DatabaseAdapter::createDataBaseConnectionByPdo($this->getConnection()));
+            $this->state[$table] = $schema;
+        }
+        $valid = [];
+        foreach ($db_array as $name => $value) {
+
+            if ($schema->isColumn($name)) {
+
+                $callbackType = $schema->getColumnDataTypeCallback($name);
+
+                $value = call_user_func($callbackType, $value);
+                if ($callbackType === 'strval' && strlen($value) >= $schema->getColumnMaxLength($name)) {
+                    $value = mb_substr($value, 0, $schema->getColumnMaxLength($name) / 2);
+
+                }
+
+                $valid[$name] = $value;
+            }
+        }
+
+        return $valid;
+    }
+
+    public function getConnection(): PDO
+    {
+        return $this->connection;
     }
 
     public function dynamicInsert($table_name, $db_array, $method = 'insertOrUpdateSql', $where = ''): bool

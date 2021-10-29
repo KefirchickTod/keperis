@@ -22,18 +22,28 @@ class RequestResponse
     {
         if ($routeArgument) {
             foreach ($routeArgument as $k => $v) {
-                $request = $k === 2 && is_array($v) ? $request->withAttribute('argc', $v) : $request->withAttribute($k, $v);
+                $request = $k === 2 && is_array($v) ? $request->withAttribute('argc', $v) : $request->withAttribute($k,
+                    $v);
             }
         }
         $routeArgument = $routeArgument[2];
         if ($controller instanceof \Closure) {
             return call_user_func($controller, $request, $response, $routeArgument);
         }
-        $role =(!isset($controller->role) || $controller->role === null || role_check($controller->role) === true);
-        return $role ? call_user_func([
+
+        if (method_exists($controller,
+                'getRole') && $controller->getRole() !== null && $controller->getRole() !== true) {
+            $role = $controller->getRole() === null || role_check($controller->getRole()) === true;
+            if(!$role){
+                return $response->withRedirect('/404');
+            }
+        }
+
+        $callback = call_user_func([
             $controller,
             $method,
-        ], $request, $response, $routeArgument) : $response->withRedirect("404");
+        ], $request, $response, $routeArgument);
+        return $callback;
 
 
     }

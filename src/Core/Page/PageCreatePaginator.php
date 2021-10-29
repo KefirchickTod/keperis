@@ -52,6 +52,10 @@ class PageCreatePaginator implements Paginator
 
     public static function limit($page = 1, $length = 10)
     {
+        if ($length <= 0) {
+            $length = 10;
+        }
+
         $page = $page - 1;
 
 
@@ -187,7 +191,7 @@ class PageCreatePaginator implements Paginator
         if (isset($data[$this->name]['setting']['limit'])) {
             unset($data[$this->name]['setting']['limit']);
         }
-        if(isset($data[$this->name]['setting']['order'])){
+        if (isset($data[$this->name]['setting']['order'])) {
             unset($data[$this->name]['setting']['order']);
         }
         $data[$this->name]['get'] = array_merge(array_flip($reverseGet), ['size']);
@@ -197,12 +201,12 @@ class PageCreatePaginator implements Paginator
         $size->bindClouser();
 
         $size = $size->set($data)->getData(function ($row) {
-            if(isset($row[0]) && isset($row[0]['size'])){
+            if (isset($row[0]) && isset($row[0]['size'])) {
                 return intval($row[0]['size']);
             }
             //debug($row);
 
-            if($this->isError()){
+            if ($this->isError()) {
                 $size = db()->selectSqlPrepared("SELECT FOUND_ROWS () AS size");
                 return $size[0]['size'] ?? 1;
 
@@ -211,7 +215,7 @@ class PageCreatePaginator implements Paginator
         }, $this->name);
 
 
-       // debug($size);
+        // debug($size);
         return $size;
     }
 
@@ -243,15 +247,15 @@ class PageCreatePaginator implements Paginator
         return html()->div(['class' => 'zui-pager'])
             ->ol(['class' => 'btn-group'])
             ->li('class = "btn-group__item""')
-            ->i('class="i-chevron-left" onclick = "paginator (\' ' . ($this->currentPage > 1 ?
-                    ($this->currentPage - 1) : $this->currentPage) . ' \')"')->end('i')
+            ->i('class="i-chevron-left paginator-fetch" data-page ="' . ($this->currentPage > 1 ?
+                    ($this->currentPage - 1) : $this->currentPage) . '"')->end('i')
             ->end('li')
             ->insert("{%_first_%}")
             ->li('class = "btn-group__item""')
             ->button([
-                'class'    => 'btn btn--basic',
+                'class' => 'btn btn--basic',
                 'disabled' => '',
-                'style'    => 'display:' . ($this->currentPage > self::up ? 'block' : 'none'),
+                'style' => 'display:' . ($this->currentPage > self::up ? 'block' : 'none'),
             ])
             ->end('li')
             ->insert('{%_counter_%}')
@@ -260,9 +264,10 @@ class PageCreatePaginator implements Paginator
             ->end('li')
             ->li('class="btn-group__item"')
             ->button([
-                'class'   => 'btn btn--basic',
-                'onclick' => 'paginator("{%_link_%}");',
-                'text'    => '{%_size_%}',
+                'class' => 'btn btn--basic',
+                'data-page' => '{%_link_%}',
+
+                'text' => '{%_size_%}',
             ])->end('button')
             ->end('li')
             ->end('ol')
@@ -277,6 +282,8 @@ class PageCreatePaginator implements Paginator
         $result = [];
 
         $totalPages = $this->totalPage;
+//        $counterTemplate = preg_replace("{%_current_%}", $setting['{%_current_%}'], $counterTemplate);
+//        unset($setting['{%_current_%}']);
         $from = $this->currentPage;
         $setting = $this->currentPage > self::up ? [
                 "{%_first_%}" => preg_replace(['/{%_value_%}/', '/{%_link_%}/'], [1, newGenerateLink('page', 1)],

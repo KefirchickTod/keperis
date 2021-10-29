@@ -11,6 +11,7 @@ use Closure;
 use Error;
 use InvalidArgumentException;
 use RuntimeException;
+use src\Interfaces\UriInterface;
 
 class Request extends Message
 {
@@ -149,7 +150,7 @@ class Request extends Message
 
     public function isMethod($method)
     {
-        return $this->getMethod() === $method;
+        return strtolower($this->getMethod()) === strtolower($method);
     }
 
     public function registerMediaTypeParser($mediaType, callable $callable)
@@ -348,6 +349,13 @@ class Request extends Message
     }
     public function getRouteName(){
         return $this->routeName;
+    }
+
+    public function withUri(UriInterface $uri){
+        $clone = clone $this;
+        $clone->uri = $uri;
+
+        return $clone;
     }
 
 

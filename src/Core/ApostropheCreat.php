@@ -16,6 +16,7 @@ class ApostropheCreat
             'в',
             'м',
             'ф',
+            'к'
         ];
     /**
      * @var array

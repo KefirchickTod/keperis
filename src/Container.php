@@ -4,10 +4,13 @@
 namespace src;
 
 
+use Illuminate\Database\ConnectionResolver;
+use Illuminate\Database\MySqlConnection;
 
-use App\bcerpapi;
-use src\Controller\User\Auth;
+use src\Core\Database\DatabaseAdapter;
+
 use src\Core\Page\PageCreator;
+use src\Eloquent\Model;
 use src\Http\Environment;
 use src\Http\Headers;
 use src\Http\Request;
@@ -21,23 +24,24 @@ use src\Router\Router;
 use src\Structure\Structure;
 use Exception;
 use Psr\Container\ContainerInterface;
-use function foo\func;
+
 
 /**
  * Class Container
  * @package App\src
- * @property Environment        $env
- * @property Collection         $setting
- * @property Session            $session
- * @property Request            $request
- * @property Structure          $structure
- * @property PageCreator        $pageCreator
- * @property BCApi              $api
- * @property Response           $response
- * @property CallableResolver   $callableResolver
- * @property Router             $router
- * @property Middleware         $middleware
- * @property RequestHandler     $requestHandle;
+ * @property Environment $env
+ * @property Collection $setting
+ * @property Session $session
+ * @property Request $request
+ * @property Structure $structure
+ * @property PageCreator $pageCreator
+ * @property bcerpapi $api
+ * @property Response $response
+ * @property CallableResolver $callableResolver
+ * @property Router $router
+ * @property Middleware $middleware
+ * @property RequestHandler $requestHandle;
+ * @property MySqlConnection $connection
  */
 final class Container extends \Pimple\Container implements ContainerInterface
 {
@@ -45,7 +49,7 @@ final class Container extends \Pimple\Container implements ContainerInterface
         'displayErrorDetails' => true,
         'httpVersion'         => '1.1',
         'responseChunkSize'   => 4096,
-        'api' => []//todo
+        'api'                 => []//todo
     ];
 
 
@@ -68,8 +72,8 @@ final class Container extends \Pimple\Container implements ContainerInterface
             return new Collection(array_merge($userSetting, $defaultSettings));
         };
 
-        if(!isset($this['session'])){
-            $this['session'] = function (){
+        if (!isset($this['session'])) {
+            $this['session'] = function () {
                 return new Session();
             };
         }
@@ -108,8 +112,8 @@ final class Container extends \Pimple\Container implements ContainerInterface
                 return $response->withProtocolVersion($c->get('setting')->get('httpVersion'));
             };
         }
-        if(!isset($this['env'])){
-            $this['env'] = function ($c){
+        if (!isset($this['env'])) {
+            $this['env'] = function ($c) {
                 return Environment::mock($_ENV);
             };
         }
@@ -125,14 +129,44 @@ final class Container extends \Pimple\Container implements ContainerInterface
                 return new CallableResolver($c);
             };
         }
-        if(!isset($this['middleware'])){
-            $this['middleware'] = function (){
+        if (!isset($this['middleware'])) {
+            $this['middleware'] = function () {
                 return new Middleware(new NotFoundHandler());
             };
         }
-        if(!isset($this['requestHandle'])){
-            $this['requestHandle'] = function (){
+        if (!isset($this['requestHandle'])) {
+            $this['requestHandle'] = function () {
                 return new RequestHandler();
+            };
+        }
+
+        if (isset($userSetting['provides']) && !empty($userSetting['provides'])) {
+            foreach ($userSetting['provides'] as $name => $provide) {
+
+
+                $this[$name] = function () use ($provide) {
+
+                    if (method_exists($provide, 'boot')) {
+                        return $provide::boot();
+                    }
+                    return null;
+                };
+            }
+        }
+
+        if (!isset($this['connection'])) {
+            $this['connection'] = function ($e) {
+                $pdo = DatabaseAdapter::createDateBaseConnection($e->env)->getPdo();
+
+                $connection = new MySqlConnection($pdo, $e->env->get('DB_NAME'));
+
+                $resolver = new \src\Eloquent\ConnectionResolver([
+                    'mysql' => $connection,
+                ]);
+
+                Model::setConnectionResolver($resolver);
+
+                return $connection;
             };
         }
 

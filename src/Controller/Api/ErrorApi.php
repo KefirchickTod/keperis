@@ -4,12 +4,19 @@
 namespace src\Controller\Api;
 
 
+use phpDocumentor\Reflection\Types\Self_;
 use src\Container;
 
 class ErrorApi extends ApiController
 {
 
+    public static $error = [];
+
     protected $msg = "";
+
+    public static function add($massage){
+        static::$error[] = $massage;
+    }
 
     public function __construct($msg = "")
     {

@@ -5,38 +5,46 @@ namespace src\Core\Database;
 
 
 use ArrayIterator;
+use src\Collection;
 use src\Core\Database\Interfaces\DatabaseAdapterInterface;
+use src\Core\Database\Interfaces\DatabaseInfoSchemeInterface;
 use src\Core\Database\Interfaces\DatabaseStatementInterface;
 use src\Interfaces\CollectionInterface;
 
 class DatabaseStatement implements DatabaseStatementInterface
 {
+
     /**
      * @var DatabaseAdapterInterface
      */
     protected $connection;
-
     /**
      * @var string
      */
-    protected $table;
+    protected $queryString = '';
 
     /**
-     * @var array
+     * @var DatabaseInfoSchemeInterface
      */
-    protected $query = [];
+    protected $infoScheme;
 
-    public function __construct(string $table, DatabaseAdapterInterface $connection)
+    private $data = [];
+
+    public function __construct(string $queryString, DatabaseInfoSchemeInterface $infoScheme,  DatabaseAdapterInterface $connection)
     {
-        $this->table = new DatabaseInfoScheme($table, $connection);
+
+        $this->queryString = $queryString;
+        $this->infoScheme = $infoScheme;
+
         $this->connection = $connection;
 
-        $this->query = new \stdClass();
+        $this->data = $this->fetch();
+
     }
 
     public function clear()
     {
-        // TODO: Implement clear() method.
+        $this->data = [];
     }
 
     public function copy(): CollectionInterface
@@ -46,7 +54,7 @@ class DatabaseStatement implements DatabaseStatementInterface
 
     public function has($key)
     {
-        // TODO: Implement has() method.
+        return $this->infoScheme->isColumn($key);
     }
 
     public function toArray(): ArrayIterator
@@ -54,14 +62,48 @@ class DatabaseStatement implements DatabaseStatementInterface
         // TODO: Implement toArray() method.
     }
 
+    public function column($value, $index = null){
+        $result = array_column($this->data, $value, $index);
+        return $result;
+    }
+
+    /**
+     * @return DatabaseInfoScheme|string
+     */
+    public function info()
+    {
+        return $this->infoScheme;
+    }
+
     public function set($key, $value)
     {
-        // TODO: Implement set() method.
+        $this->data = array_map(function ($row) use ($key, $value){
+            if(array_key_exists($key, $row)){
+                $row[$key] = $value;
+            }
+            return $row;
+        }, $this->data);
     }
 
     public function get($key, $default = [])
     {
         // TODO: Implement get() method.
+    }
+
+    public function groupValueById(string $value, string $id){
+        $result = [];
+        foreach ($this->data as $row){
+            $row = (array)$row;
+
+            if(array_key_exists($id, $row) && $row[$id]){
+                $result[$row[$id]][] = $row[$value];
+            }
+
+
+            //var_dump($row);
+
+        }
+        return $result;
     }
 
     /**
@@ -74,7 +116,14 @@ class DatabaseStatement implements DatabaseStatementInterface
 
     public function fetch($mode = \PDO::FETCH_ASSOC)
     {
-        // TODO: Implement fetch() method.
+        if (DatabaseBuilder::MODE_SELECT === 1) {
+            $data = $this->connection->select($this->queryString, \PDO::FETCH_OBJ);
+        } else {
+            $data = $this->connection->line($this->queryString)->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+
+        return $data;
     }
 
     public function indexColumn(string $key)
@@ -82,23 +131,20 @@ class DatabaseStatement implements DatabaseStatementInterface
         // TODO: Implement inexColumn() method.
     }
 
-    public function getSql(){
-        if($this->query->where){
-            $this->query->base .= " WHERE ".$this->query->where;
-        }
-        return $this->query->base;
-    }
 
     public function toBase(): array
     {
 
-        if($this->query->type === DatabaseBuilder::MODE_SELECT){
-            $data = $this->connection->select($this->getSql(), \PDO::FETCH_OBJ);
-        }else{
-            $data = $this->connection->line($this->getSql());
+
+        if (DatabaseBuilder::MODE_SELECT === 1) {
+            $data = $this->connection->select($this->queryString, \PDO::FETCH_OBJ);
+        } else {
+            $data = $this->connection->line($this->queryString)->fetchAll(\PDO::FETCH_ASSOC);
         }
 
-        return  $data;
+
+        return $data;
 
     }
+
 }

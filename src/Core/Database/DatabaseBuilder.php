@@ -8,13 +8,41 @@ use src\Core\Database\Interfaces\DatabaseAdapterInterface;
 use src\Core\Database\Interfaces\DatabaseBuilderInterface;
 use src\Core\Database\Interfaces\DatabaseStatementInterface;
 
-class DatabaseBuilder extends DatabaseStatement implements DatabaseBuilderInterface
+class DatabaseBuilder implements DatabaseBuilderInterface
 {
 
     const MODE_SELECT = 1;
 
     const SHCHEMA = "SELECT DATA_TYPE as type, COLUMN_NAME as name  FROM information_schema.COLUMNS WHERE TABLE_NAME='{%_table_%}'";
+    /**
+     * @var object
+     */
+    private $query;
+    /**
+     * @var DatabaseAdapterInterface
+     */
+    private $connection;
+    /**
+     * @var DatabaseInfoScheme
+     */
+    private $table;
 
+
+    public function __construct(string $table, DatabaseAdapterInterface $connection)
+    {
+        $this->table = new DatabaseInfoScheme($table, $connection);
+        $this->connection = $connection;
+
+        $this->query = (object)[
+            'select' => null,
+            'limit'  => null,
+            'join'   => null,
+            'where'  => null,
+            'order'  => null,
+            'type'   => 0,
+        ];
+
+    }
 
     public function select($fields = ["*"])
     {
@@ -22,22 +50,25 @@ class DatabaseBuilder extends DatabaseStatement implements DatabaseBuilderInterf
             $fields = [$fields];
         }
         foreach ($fields as $field) {
-            if ($this->table->isColumn($field)) {
-                $this->query->select[] =  $field;
+            if ($this->table->isColumn($field) || $field === '*') {
+                $this->query->select[] = $field;
             } else {
                 error_log("Undefined field $field");
             }
         }
-        if($this->query->select){
-            $this->query->base = "SELECT ".join(', ', $this->query->select) . " FROM ".$this->table->table();
-            $this->query->type = self::MODE_SELECT;
+
+
+        if (isset($this->query->select) && $this->query->select) {
+            $this->query->base = "SELECT " . join(', ', $this->query->select) . " FROM " . $this->table->table();
+            // $this->query->type = self::MODE_SELECT;
         }
+
         return $this;
     }
 
     public function where($fields)
     {
-        if ($this->query->type !== self::MODE_SELECT){
+        if ($this->query->type !== self::MODE_SELECT) {
             throw new \RuntimeException("Cant add to mode");
         }
         if (!is_array($fields)) {
@@ -84,9 +115,18 @@ class DatabaseBuilder extends DatabaseStatement implements DatabaseBuilderInterf
         // TODO: Implement insert() method.
     }
 
-
     public function execute(): DatabaseStatementInterface
     {
-        // TODO: Implement execute() method.
+        return new DatabaseStatement($this->getSql(), $this->table, $this->connection);
+    }
+
+
+
+    public function getSql()
+    {
+        if (isset($this->query->where) && $this->query->where) {
+            $this->query->base .= " WHERE " . $this->query->where;
+        }
+        return $this->query->base ?? '';
     }
 }

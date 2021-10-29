@@ -5,19 +5,20 @@ namespace src\Core\Page;
 
 
 use App\Provides\ProvideStructures\bcDictionaryCat;
-use src\Core\ActionButton;
-use src\Core\easyCreateHTML;
-use src\Core\Page\Table\ProvideTableContainer;
-use src\Core\RowMiddlewhere;
-use src\Http\Request;
-use src\Structure\Structure;
-use src\Core\Table\eeTable;
-use src\Interfaces\Table;
-use src\Structure\ProvideFilter;
 use PDO;
+use src\Core\ActionButton;
+use src\Core\Page\Table\ProvideTableContainer;
+use src\Core\Table\eeTable;
+use src\Http\Request;
+use src\Interfaces\Table;
+use src\MiddlewareProvideTableTrait;
+use src\Structure\ProvideFilter;
+use src\Structure\Structure;
 
 class ProvideTable implements Table
 {
+
+    use MiddlewareProvideTableTrait;
 
     const width = 'auto';
     public static $reputatuin = [
@@ -26,41 +27,41 @@ class ProvideTable implements Table
         'fullName',
     ];
     public static $tfooterValue = [];
+    public static $callback;
     public $select2 = "select2_filter";
     /**
      * @var int
      */
     public $fixed = 3;
-
     public $templates = [
         'attrTable' => 'class = "table table-striped table-responsive-full table-hover table-bordered fist table-sm" style = "font-size: 0.9em; table-layout: fixed; margin-bottom:2px"',
-        'thead'     => 'class ="thead-light"', //attr
+        'thead'     => 'class ="thead-light" nochilddrag="1"', //attr
         'tbody'     => '',
         'tfoot'     => '',
-        'th'        => ' scope="col" style = "position: relative; vertical-align: middle; text-align:center; width: {%_width_%};"',
+        'th'        => ' scope="col" class="th-table-table" style = " width: {%_width_%};"',
     ];
     public $template = "<div class='tableConver'><div {%_mask_%}>{%_table_%}</div></div>";
+
+
     /**
      * @var eeTable
      */
     protected $eeTable;
-
     private $nameFotGet = [];
     /**
      * @var Structure
      */
     private $structure;
     private $dataArray;
-    private $replace = false;
     /**
      * @var \Closure
      */
-
+    private $replace = false;
     /**
      * @var ProvideTableContainer
      */
     private $container;
-
+    private $colors = [];
 
     function __construct()
     {
@@ -75,10 +76,22 @@ class ProvideTable implements Table
         $this->container = new ProvideTableContainer();
         $this->eeTable = new eeTable();
 
+        if (is_null($this->stack)) {
+            $this->seedMiddlewareStack(function ($data) {
+
+                return $data;
+            });
+        }
+
     }
 
+    public function setColor(int $index, string $color)
+    {
+        $this->colors[$index] = $color;
+    }
 
-    public function withContainer(ProvideTableContainer $container){
+    public function withContainer(ProvideTableContainer $container)
+    {
         $clone = clone $this;
         $clone->container = $container;
         return $clone;
@@ -87,9 +100,11 @@ class ProvideTable implements Table
     /**
      * @return ProvideTableContainer
      */
-    public function container(){
+    public function container()
+    {
         return $this->container;
     }
+
     public function setting(array $setting = [], array $title = [], $filter = [], array $action = [])
     {
 
@@ -100,7 +115,7 @@ class ProvideTable implements Table
 
     public function callbackRow(\Closure $closure)
     {
-        $this->container->callbackRow($closure);
+        $this->container->bindCallbackRow($closure, $this);
         return $this;
     }
 
@@ -111,14 +126,19 @@ class ProvideTable implements Table
 
         if (!$this->container->getCallbackRow()) {
             $this->container->callbackRow(PageCreator::$row_init);
+            if (self::$callback instanceof \Closure) {
+                $this->container->bindCallbackRow(self::$callback, $this);
+            }
         }
+
+
         $this->container->setRow($this->getRow());
     }
 
     public function getRow()
     {
-        if($this->container->getRow()){
-            return  $this->container->getRow();
+        if ($this->container->getRow()) {
+            return $this->container->getRow();
         }
 
         $this->structure->set($this->dataArray);
@@ -201,8 +221,15 @@ class ProvideTable implements Table
         return $this->eeTable->__toString();
     }
 
+    public function add(callable $callable)
+    {
+        $this->addMiddleware($callable);
+        return $this;
+    }
+
     public function setRow(array $row)
     {
+
         $this->container->setRow($row);
         return $this;
     }
@@ -214,7 +241,7 @@ class ProvideTable implements Table
     {
 
 
-        if (!$this->container->filter) {
+        if (!$this->container->filter || container()->request->isXhr()) {
             return [];
         }
 
@@ -237,6 +264,7 @@ class ProvideTable implements Table
                             'id'       => "select_$key",
                             'multiple' => '',
                             'class'    => $this->select2,
+                            'data-key' => $key
                         ])->insert($filter[$key])
                         ->end('select')
                         ->input([
@@ -251,7 +279,6 @@ class ProvideTable implements Table
                 $result[] = $this->eeTable->newCell()->addData(' ')->addClass('ui-state-default')->setAttr('rowspan = 1 colspan = 1');;
             }
         }
-        self::jsCreateFilterInclude($this->container->title);
         $this->container->setFilter($filter);
 
 
@@ -259,24 +286,6 @@ class ProvideTable implements Table
 
     }
 
-    public static function jsCreateFilterInclude($title)
-    {
-        if (isset($title['id'])) {
-            unset($title['id']);
-        }
-        $title = array_keys($title);
-        if (PageCreator::$script == true) {
-            ?>
-            <script>
-                try {
-                    var title = <?= json_encode($title) ?>;
-                } catch (e) {
-                    console.log('');
-                }
-            </script>
-            <?php
-        }
-    }
 
     /**
      * @return array
@@ -288,22 +297,28 @@ class ProvideTable implements Table
 
         $row = $this->container->getRow();
 
+
         $size = count($row);
 
 
         $names = $this->getUserNames();
 
 
-
-        for ($counting = 0; $counting <= $size; $counting++) {
+        $rowKeys = array_keys($row);
+        foreach ($rowKeys as $counting) {
             $value = $row[$counting] ?? null;
-            if(!$value){
+            if (!$value || !is_array($value)) {
                 continue;
             }
+
+            $value = $this->callMiddlewareStack($value, $this->container->title);
             foreach ($keys as $key) {
 
-                if (!array_key_exists($key, $value)) {
 
+
+
+                if (!array_key_exists($key, $value)) {
+                    //var_dump($value);
                     //debug($key, $this->container->action);
                     if ($key === 'event_o' && $this->container->action) {
 
@@ -331,11 +346,16 @@ class ProvideTable implements Table
 
                 $value[$key] = $this->renderUserName($key, $value, $names);
 
+
                 $value[$key] = $this->renderRedirect($value, $key);
 
+                $value[$key] = $this->renderLink($key, $value);
+
                 $reputation = $this->renderReputatuin($value, $key);
+
+
                 if ($reputation !== false) {
-                    $value[$key] = $reputation;
+                    $result[] = $reputation;
                 } else {
 
                     $line = valid($this->container->title[$key], 'line', '8');
@@ -349,9 +369,12 @@ class ProvideTable implements Table
 
                             $result[] = $this->eeTable->newCell()->addData("<div class='tr-content createNote' data-o = '{$note['o']}'  data-id = '{$value['id']}' style = ' -webkit-line-clamp: {$line};' title = '" . clean($value[$key]) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text']) . "'");
                         } else {
-                            $value[$key] = isset($this->container->title[$key]['date_format']) ? date($this->container->title[$key]['date_format'],
-                                strtotime($value[$key])) : $value[$key];
 
+
+                            if($value[$key]){
+                                $value[$key] = isset($this->container->title[$key]['date_format']) ? date($this->container->title[$key]['date_format'],
+                                    strtotime($value[$key])) : $value[$key];
+                            }
                             $result[] = $this->eeTable->newCell()->addData("<div class='tr-content '  data-id = '" . ($value['id'] ?? $key) . "' style = ' -webkit-line-clamp: {$line};' title = '" . htmlspecialchars_decode(clean($value[$key])) . "'>{$value[$key]}</div")->setAttr("data-label = '" . addslashes($this->container->title[$key]['text'] ?? '') . "'");
 //
                         }
@@ -362,7 +385,7 @@ class ProvideTable implements Table
             }
 
 
-            $this->eeTable->setTBodyAttr($this->templates['tbody'])->addRow($this->eeTable->newRow()->setAttr("data-table-row-id = '" . ($value['id'] ?? -1) . "' data-table-count = '{$counting}'")->addArrayOfCells($result ?: [])->setAsTbody());
+            $this->eeTable->setTBodyAttr($this->templates['tbody'])->addRow($this->eeTable->newRow()->setAttr("style = '" . $this->getColorAsStyle(intval($value['id'] ?? 0)) . "' data-table-row-id = '" . ($value['id'] ?? -1) . "' data-table-count = '{$counting}'")->addArrayOfCells($result ?: [])->setAsTbody());
             $result = [];
 
         }
@@ -372,6 +395,7 @@ class ProvideTable implements Table
     private function getUserNames()
     {
 
+
         if (!$this->nameFotGet) {
             return null;
         }
@@ -379,14 +403,20 @@ class ProvideTable implements Table
         $row = $this->container->getRow();
         $ids = [];
         foreach ($this->nameFotGet as $column) {
-            $ids = array_merge($ids, array_diff(array_column($row, $column), [null]));
+
+            $ids = array_merge($ids, array_filter(array_column($row, $column), function ($var) {
+                return intval($var) > 0;
+            }));
+
         }
 
+
         $ids = array_unique($ids);
-        if(!$ids){
-            return  [];
+        if (!$ids) {
+            return [];
         }
-        if(is_string($ids[0]) && intval($ids[0]) === 0){
+
+        if (is_string($ids[0]) && intval($ids[0]) < 2) {
             return [];
         }
 
@@ -403,7 +433,6 @@ class ProvideTable implements Table
     private function dynamicFilter($setting, $currentValue, $registerId)
     {
 
-
         $id = $setting['id'];
         $key = $setting['key'];
         $o = $setting['o'] ?? 'updateRegisterTagsStatus';
@@ -414,7 +443,7 @@ class ProvideTable implements Table
         if ($data) {
             $data = array_diff($data, ['0', null, false, '']);
             $values = \structure()->set([
-                'dynamic' =>
+                'dynamic' . $key =>
                     [
                         'get'     => ['b_titleUK'],
                         'class'   => bcDictionaryCat::class,
@@ -423,7 +452,7 @@ class ProvideTable implements Table
                                 'where' => 'id IN (' . join(', ', $data) . ')',
                             ],
                     ],
-            ])->get('dynamic');
+            ])->get('dynamic' . $key);
 
             foreach ($values as $key => $val) {
                 $id = $data_copy[$key]['bc_connections_db_id'];
@@ -471,6 +500,13 @@ class ProvideTable implements Table
 
 
         if (!isset($names[$value[$key]])) {
+
+            //var_dump($this->nameFotGet);exit;
+            if (in_array($key, $this->nameFotGet)) {
+
+                return !boolval($value[$key]) ? '' : $value[$key];
+            }
+
             return $value[$key];
         }
 
@@ -509,6 +545,31 @@ class ProvideTable implements Table
         return $value[$key];
     }
 
+    private function renderLink($key, $value)
+    {
+
+        if (!array_key_exists($key, $this->container->title) ||
+            !array_key_exists('link', $this->container->title[$key])) {
+            return $value[$key];
+        }
+        if (!is_array($this->container->title[$key]['link'])) {
+            $href = $this->container->title[$key]['link'];
+            $need = $key;
+        } else {
+            $href = $this->container->title[$key]['link']['href'];
+            $need = $this->container->title[$key]['link']['value'];
+
+        }
+
+        if (!array_key_exists($need, $value)) {
+            return $value[$key];
+        }
+
+        $href = preg_replace("/%_value_%/", $value[$need], $href);
+        $value[$key] = html()->a(['text' => $value[$key], 'href' => $href, 'target' => '_blank'])->render(true);
+        return $value[$key];
+    }
+
     private function renderReputatuin($value, $key)
     {
         if (!in_array($key, self::$reputatuin)) {
@@ -523,12 +584,27 @@ class ProvideTable implements Table
 
     }
 
+    public function getColorAsStyle($index)
+    {
+        if (!$this->getColor($index)) {
+            return "";
+        }
+        $style = "background-color: " . $this->getColor($index) . ";";
+        return $style;
+    }
+
+    public function getColor(int $index)
+    {
+        return $this->colors[$index] ?? "";
+    }
+
     /**
      * @return array
      */
     protected function thead()
     {
         $result = [];
+
         foreach ($this->container->title as $name => $value) {
             if (isset($value['name']) && $value['name'] == true) {
                 $this->nameFotGet[] = $name;
@@ -547,7 +623,7 @@ class ProvideTable implements Table
                         ->end('span')
                         ->i([
                             'class' => $sortClass,
-                        ])->end('div')->render(true)
+                        ])->end('div')->end('i')->div(['class' => 'col-resize'])->div(['class' => 'draggingLine'])->end('div')->render(true)
                     );
             } else {
                 $width = $name == 'event_o' ? '55px' : $width;

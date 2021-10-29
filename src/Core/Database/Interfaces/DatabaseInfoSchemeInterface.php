@@ -4,7 +4,6 @@
 namespace src\Core\Database\Interfaces;
 
 
-use phpDocumentor\Reflection\Types\Mixed_;
 
 interface DatabaseInfoSchemeInterface
 {

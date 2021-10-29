@@ -37,7 +37,11 @@ class DatabaseInfoScheme implements DatabaseInfoSchemeInterface
         $column = $connection->select($tableColumnInfoQuery);
         $data = $connection->select($tableInfoQuery)[0] ?? null;
         if (!$data) {
-            throw new \PDOException("Undefined info about table");
+            throw new \PDOException("Undefined info about table $this->table");
+        }
+        if(!$connection->getPdo()->getAttribute(\PDO::ATTR_CASE)){
+            $column = $this->convertToLowerCase($column, 1);
+            $data = $this->convertToLowerCase($data);
         }
         $this->data = $data;
         $this->schema = $this->data['table_schema'];
@@ -45,6 +49,18 @@ class DatabaseInfoScheme implements DatabaseInfoSchemeInterface
         foreach ($column as $row) {
             $this->column[$row['column_name']] = $row;
         }
+    }
+
+    private function convertToLowerCase($data, $step = 0){
+        $result = [];
+        foreach ($data as $key => $value){
+            if($step != 0){
+                $result[$key] = $this->convertToLowerCase($value, ($step - 1));
+                continue;
+            }
+            $result[strtolower($key)] = $value;
+        }
+        return $result;
     }
 
     public function table(): string
@@ -152,7 +168,7 @@ class DatabaseInfoScheme implements DatabaseInfoSchemeInterface
             case 'longtext':
             case 'text':
             case 'char' :
-            case 'datetime' :
+
             case 'varchar' :
                 $callback = 'strval';
                 break;
@@ -165,10 +181,15 @@ class DatabaseInfoScheme implements DatabaseInfoSchemeInterface
                 break;
             case 'float':
             case 'double':
+            case 'decimal':
                 $callback = 'floatval';
                 break;
             case 'json':
                 $callback = 'json_encode';
+                break;
+            case 'date':
+            case 'datetime' :
+                $callback = 'date';
                 break;
             default:
                 $callback = null;
@@ -193,7 +214,7 @@ class DatabaseInfoScheme implements DatabaseInfoSchemeInterface
     public function getColumnMaxLength(string $column): int
     {
         $lenth = $this->getFromColumn($column, 'character_maximum_length');
-        return  $lenth;
+        return  intval($lenth);
     }
 
     /**

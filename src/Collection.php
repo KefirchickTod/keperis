@@ -23,6 +23,16 @@ class Collection implements CollectionInterface
         }
     }
 
+    public function hasMany(array $keys){
+        foreach ($keys as $key){
+            if($this->has($key)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public function set($key, $value)
     {
         if ($key === null) {
@@ -54,15 +64,6 @@ class Collection implements CollectionInterface
     public function all()
     {
         return $this->data;
-    }
-    public function hasMany(array $key)
-    {
-        foreach ($key as $need){
-            if(!$this->has($need)){
-                return false;
-            }
-        }
-        return true;
     }
 
     /**

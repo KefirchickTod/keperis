@@ -10,6 +10,7 @@ use src\Structure\Structure;
 
 class PageCreateButtons implements Buttons
 {
+    public static $mainColumn = 'col-lg-8 col-md-12 col-12 insertMargin-5px';
     public $length = [
         '10',
         '20',
@@ -26,23 +27,22 @@ class PageCreateButtons implements Buttons
     private $dataArray;
     private $setting = null;
 
-    public static $mainColumn = 'col-lg-8 col-md-12 col-12 insertMargin-5px';
-
     public function __construct()
     {
         $this->setting = [
-            self::$mainColumn => join('', [
+            self::$mainColumn                      => join('', [
                 $this->getLength(get('length', '10')),
                 (PageCreator::$export_allow === true ? $this->getExport() : ''),
                 $this->getDeleteFilter(),
             ]),
-            'col-lg-4 col-md-12 col-12 search-div'       => $this->getSearch(get('search', '') !== '-1' ? get('search', '') : ''),
+            'col-lg-4 col-md-12 col-12 search-div' => $this->getSearch(get('search', '') !== '-1' ? get('search',
+                '') : ''),
         ];
     }
 
     public function getLength($default = '')
     {
-        $result = "<select onchange='setTableLength(this.value)' class='dt-button ui-button ui-state-default ui-button-text-only' id = 'lengthSend'>";
+        $result = "<select  class='custom-ui-button' id = 'lengthSend'>";
         foreach ($this->length as $length) {
             $result .= "<option value='$length' " . ($length == $default ? 'selected' : '') . ">$length</option>";
         }
@@ -51,13 +51,33 @@ class PageCreateButtons implements Buttons
 
     public function getExport($default = '', $link = '')
     {
+        $text = null;
+        if (role_check('export.allow.300')) {
+            $text = 'Export (Обмежено до 300)';
+        }
+
+        if (role_check('export.allow.1000')) {
+            $text = 'Export (Обмежено до 1000)';
+        }
+
+        if (role_check('export.allow.all')) {
+            $text = 'Export';
+        }
+
+
+
+
+        if (!$text || PageCreator::$export_allow == false) {
+            return '';
+        }
         return html()->a
         (
             [
-                'class' => 'dt-button ui-button ui-state-default ui-button-text-only',
-                'href'  => "javascript:export_xlsx()",
+                'class' => 'custom-ui-button',
+                //'href'  => "javascript:export_xlsx()",
+                'id'    => 'export-xlsx',
                 'role'  => 'button',
-                'text'  => 'Export',
+                'text'  => $text,
             ]
         )->end('a');
 
@@ -65,13 +85,20 @@ class PageCreateButtons implements Buttons
 
     public function getDeleteFilter()
     {
+        $uri = strtok(
+            container()->get('serverdata')->get('REQUEST_URI'),
+            '?'
+        );
+
+
         return html()->a
         (
             [
                 'class' => 'dt-button ui-button ui-state-default ui-button-text-only',
-                'href'  => "javascript:deleteFilter()",
+                'href'  => "$uri",
                 'role'  => 'button',
                 'text'  => 'Скинути фільтри',
+
             ]
         )->end('a');
     }
@@ -117,10 +144,10 @@ class PageCreateButtons implements Buttons
     {
         return html()->button(
             [
-                'type'    => 'button',
-                'class'   => 'dt-button ui-button ui-state-default ui-button-text-only',
-                'onclick' => 'removeIds()',
-                'style' => 'margin-bottom:0;'
+                'type'  => 'button',
+                'class' => 'custom-ui-button',
+                'style' => 'margin-bottom:0;',
+                'id'    => 'removeIds'
                 //'text'        => 'Групове запрошення',
             ]
         )->span(['class' => 'ui-button-text', 'text' => 'Скинути групову дію'])->end('span')->end('button')->input([
@@ -141,7 +168,7 @@ class PageCreateButtons implements Buttons
         return html()->button(
             [
                 'type'        => 'button',
-                'class'       => 'dt-button ui-button ui-state-default ui-button-text-only',
+                'class'       => 'custom-ui-button',
                 'id'          => 'ButtonGroupInvite',
                 'style'       => 'margin-bottom: 0;',
                 'data-toggle' => 'modal',
@@ -154,7 +181,7 @@ class PageCreateButtons implements Buttons
     public function render(): string
     {
         $result = '';
-        $result .= "<div class='row table_buttons_action'>";
+        $result .= "<div class='table-button row'>";
         foreach ($this->setting as $class => $value) {
             $result .= "<div class='$class'>$value</div>";
         }

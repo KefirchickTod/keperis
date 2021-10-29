@@ -65,12 +65,12 @@ class Route extends Routeable
 
     private $middleware;
 
-    function __construct(array $methods, $pattern, $controller, $indication, $func, $groups = [] )
+    function __construct(array $methods, $pattern, $controller, $indication, $func, $groups = [])
     {
         $this->methods = $methods;
 
 
-        if(env('ROUTE_FULL_PATH', 'off') === 'on') {
+        if (env('ROUTE_FULL_PATH', 'off') === 'on') {
             $pattern = container()->request->getUri()->getBaseUrl() . $pattern;
         }
 
@@ -82,22 +82,18 @@ class Route extends Routeable
         $this->groups = $groups;
 
 
-
         $this->middleware = container()->get('middleware');
-
-
-
-
 
 
     }
 
-    public function finalize(){
-        if($this->finalize){
+    public function finalize()
+    {
+        if ($this->finalize) {
             return;
         }
         $groupMiddleware = [];
-        foreach ($this->getGroups() as $group){
+        foreach ($this->getGroups() as $group) {
             $groupMiddleware = array_merge($group->getMiddleware(), $groupMiddleware);
         }
 
@@ -111,7 +107,8 @@ class Route extends Routeable
     /**
      * @return RouteGroup[]
      */
-    public function getGroups(){
+    public function getGroups()
+    {
         return $this->groups;
     }
 
@@ -150,7 +147,7 @@ class Route extends Routeable
         }
 
         //debug($params, $routes);
-        throw new LogicException('Too many parameters given '.$url);
+        throw new LogicException('Too many parameters given ' . $url);
     }
 
     function getMethods()
@@ -164,7 +161,8 @@ class Route extends Routeable
         return $this->pattern;
     }
 
-    function withIndication($name){
+    function withIndication($name)
+    {
         $clone = clone $this;
         $clone->indication = $name;
         return $clone;
@@ -236,38 +234,30 @@ class Route extends Routeable
         $this->controller = $this->controller instanceof Controller || $this->controller instanceof \Closure ? $this->controller : new $this->controller;
         $handler = new RequestResponse();
 
+        $responseController = $handler($this->controller, $this->getFunc(), $request, $response, $routerinfo);
 
-        try {
-            $output = $handler($this->controller, $this->getFunc(), $request, $response, $routerinfo);
 
-            //$output = ($output instanceof View && $output->isResource()) ? $output->getResource() : $output;
-
-            if ($output instanceof View) {
-                $output = $output->render() . PHP_EOL;
-            } elseif ($output instanceof ResponseInterface) {
-                $response = $output;
-            }
-        } catch (Exception $e) {
-
-            error_log($e->getMessage());
-            throw new \RuntimeException($e->getMessage());
+        if ($responseController instanceof View) {
+            $response = $response->write($responseController->render() . PHP_EOL);
+        }
+        if ($responseController instanceof ResponseInterface) {
+            $response = $responseController;
         }
 
-//        $response = $this->requestHandle->handle($request);
 
-        if (!empty($output) && is_string($output)) {
+        if (!empty($responseController) && is_string($responseController)) {
             if ($response->getBody()->isWritable()) {
                 $body = new Body(fopen('php://temp', 'r+'));
 
                 $body->write(join('', [
-                    $output,
+                    $responseController,
                     $response->getBody(),
                 ]));
 
                 return $response->withBody($body);
             } else {
 
-                $response->getBody()->write($output);
+                $response->getBody()->write($responseController);
                 return $response;
             }
 
@@ -287,16 +277,15 @@ class Route extends Routeable
 
 
         $response = $this->middleware->process($request, $response, new RequestHandler());
-        return  $this($request, $response, $routerinfo);
+        return $this($request, $response, $routerinfo);
 
 
         //return $this($request, $response, $routerinfo);
     }
 
 
-
-
-    public function withPattern($pattern){
+    public function withPattern($pattern)
+    {
         $clone = clone $this;
         $clone->pattern = $pattern;
         return $clone;

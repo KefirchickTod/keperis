@@ -59,6 +59,9 @@ class DateFilter extends DataFilterPrototype implements FilterInterface
                     '5'      => 'pst.bc_dictionary_title_uk   LIKE    "%активний, підтвердж.%"',
                     '6'      => 'pst.bc_dictionary_title_uk   LIKE    "%деакт. користувачем%"',
                 ],
+            'timerMode' => [
+                '-1' => '   bc_user_leaders_cout_timer    =     "0"     '
+            ],
         ];
 
     private $type = 'date';
@@ -172,12 +175,13 @@ class DateFilter extends DataFilterPrototype implements FilterInterface
                         $insert = str_replace('%_val_%', $select, $this->basicFilter[$val]);
 
                     }
+
                     if (in_array($name, array_keys($this->exception))) {
-                        $insert = $this->exception[$name][$val];
+                        $insert = $this->exception[$name][$val] ?? $insert;
 
                     }
 
-                    if (count(array_diff(explode(',', $filter->$name), ['', null, false])) > 1) {
+                    if (count(array_diff(explode(',', $filter[$name]), ['', null, false])) > 1) {
                         $this->result = addToArray($this->result, $name, $insert, ' OR ');
                         $this->brackets[] = $name;
                     } else {
@@ -241,10 +245,8 @@ class DateFilter extends DataFilterPrototype implements FilterInterface
         switch ($value) {
             case -1:
                 break;
-            case 'filled':
-                $column_filters[] = "$name";
-                break;
             case 'empty':
+            case 'filled':
                 $column_filters[] = "$name";
                 break;
             case 'today':

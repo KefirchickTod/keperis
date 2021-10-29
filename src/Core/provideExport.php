@@ -6,12 +6,18 @@ namespace src\Core;
 
 use src\Core\Page\PageCreator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use src\EventDispatcher\Concerns\DelegatesToDisptacher;
+use src\Interfaces\EventDispatcher\EventDispatcherInterface;
+use src\MiddlewareProvideTableTrait;
 
 class provideExport
 {
 
+    use DelegatesToDisptacher, MiddlewareProvideTableTrait;
 
     public static $name = null;
+    public static $callback;
+    public static $middleware = [];
     private $initForRow;
     private $row = null;
     /**
@@ -77,7 +83,7 @@ class provideExport
      * @return array|null
      * @throws \Exception
      */
-    public static function exportTable(array $dataArray, array $title, string $name = '', $init = null, $row = [])
+    public static function exportTable(array $dataArray, array $title = null, string $name = '', $init = null, $row = [])
     {
 
         if (valid(container()->get('request')->getUri()->getParseQuery(), 'export', post('export', null))) {
@@ -93,6 +99,7 @@ class provideExport
 
     public function export($render = false)
     {
+        $this->bindMiddleware();
         if ($render != false) {
             return null;
         }
@@ -102,14 +109,18 @@ class provideExport
         } else {
             $row = $row->get(key($this->dataStructure));
         }
+
+
         //  debug($this->title);
-        set_time_limit(600);
+        set_time_limit(300);
         $this->excel->setActiveSheetIndex(0);
         $sheet = $this->excel->getActiveSheet();
-        $sheet->setTitle('Page');
 
+        $sheet->setTitle('Page')->getDefaultRowDimension();
 
+        $sheet->getDefaultRowDimension()->setRowHeight(35);
         $column_index = 0;
+
         foreach ($this->title as $key => $value) {
             if (in_array($key, $this->noexportOptions)) {
                 continue;
@@ -127,12 +138,21 @@ class provideExport
 
         $rowIndex = 2;
 
+        $row = $this->filterRowByRole($row);
+
         foreach ($row as $values) {
+            $values = $this->callMiddlewareStack($values, $this->title);
+
+
+
             $column_index = 1;
             foreach ($this->title as $key => $titles) {
                 if (in_array($key, $this->noexportOptions)) {
                     continue;
                 }
+
+
+
                 $id = isset($titles['name']) && $titles['name'] == true ? true : false;
                 $titles = isset($titles['title']) ? $titles['title'] : $key;
                 $width = isset($value['width']) ? $this->calculateWidth($value['width']) : $this->width;
@@ -184,10 +204,42 @@ class provideExport
 
     }
 
+    private function bindMiddleware()
+    {
+        if (!self::$middleware) {
+            return;
+        }
+
+        foreach (self::$middleware as $value) {
+            $this->addMiddleware($value);
+        }
+    }
+
     private function calculateWidth($var)
     {
         $var = is_string($var) ? (int)$var : $var;
         return ($var / 72) * 10;
+    }
+
+    protected function filterRowByRole($row)
+    {
+        $origin = $row;
+
+        if (role_check('export.allow.300')) {
+            $row = array_slice($origin, 0, 300);
+        }
+
+        if (role_check('export.allow.1000')) {
+            $row = array_slice($origin, 0, 1000);
+        }
+
+        if (role_check('export.allow.all')) {
+            $row = $origin;
+        }
+
+
+        return $row;
+
     }
 
     public function setRow($row)
@@ -254,9 +306,24 @@ class provideExport
         return new static();
     }
 
+    public static function add(callable $callable)
+    {
+        self::$middleware[] = $callable;
+    }
+
+    public function __invoke($data)
+    {
+        return $data;
+    }
+
+    public function addEvent(callable $calback)
+    {
+        $this->listener->add($calback, get_class($this));
+    }
+
     public function setName(string $name)
     {
-        self::$name = slugify($name);
+        $this->curentName = $name;
         return $this;
     }
 
@@ -320,5 +387,10 @@ class provideExport
         if ($this->notExistingFun) {
             var_dump($this->notExistingFun);
         }
+    }
+
+    public function setStack($stack)
+    {
+        $this->stack = $stack;
     }
 }

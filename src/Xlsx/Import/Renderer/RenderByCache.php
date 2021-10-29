@@ -9,7 +9,7 @@ use src\Core\Cache;
 use src\Interfaces\View\ValidatorInterface;
 use src\Interfaces\Xlsx\XlsxParseInterface;
 use src\Interfaces\Xlsx\XlsxValidationInterface;
-use src\Model;
+use src\Models\Model;
 use src\Xlsx\Import\Parse\Parser;
 
 class RenderByCache extends Render

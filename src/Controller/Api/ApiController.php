@@ -50,12 +50,15 @@ class ApiController extends Controller
         if ($this->errors) {
             $result = ['error' => $this->errors];
         }
-        if(db()->isError()){
-            $result = ['db' => db()->error];
+
+
+        if (error_get_last()) {
+            return $response->withJson(['error' => error_get_last()]);
         }
 
-
-
+        if (ErrorApi::$error) {
+            return $response->withJson(ErrorApi::$error);
+        }
         return $response->withJson($result);
     }
 
@@ -117,7 +120,7 @@ class ApiController extends Controller
 
     /**
      * @param string $token
-     * @param int    $userId
+     * @param int $userId
      * @return bool
      */
     protected function checkToken(string $token, int $userId = null): bool

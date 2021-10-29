@@ -10,6 +10,10 @@ use src\Core\ApostropheCreat;
 use src\Core\Filtration\DateFilter;
 use src\Core\provideExport;
 use src\Interfaces\PageInterface;
+use src\Page\DataTransformation;
+use src\Page\FilterData\Filter;
+use src\Page\FilterData\Search;
+use src\Page\FilterData\Sort;
 use src\Structure\bcProvideSearch;
 use src\Structure\Structure;
 use src\Interfaces\Buttons;
@@ -18,9 +22,11 @@ use src\Interfaces\Paginator;
 use Closure;
 use Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use src\Structure\StructureFilters\StructureFilterData;
 
 class PageCreator extends Creator
 {
+
 
     const default_length = 10;
 
@@ -41,7 +47,7 @@ class PageCreator extends Creator
     public function __construct(Structure $structure, array $dataArray)
     {
         parent::__construct($structure, $dataArray);
-        if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && self::$script == true) {
+        if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && self::$script == true && !isset(container()->response->getHeaders()['Location'])) {
             echo "
             <script>
             if(typeof data_array == 'undefined'){
@@ -64,7 +70,11 @@ class PageCreator extends Creator
 
         $name = key($dataArray);
         $get = $getting ?: (self::$getting ?: $_GET);
+
         $where = [];
+
+
+
         $filter = new DateFilter();
         if ($callback && $position == true) {
             call_user_func_array($callback, [&$dataArray, &$filter, &$get]);
@@ -84,8 +94,9 @@ class PageCreator extends Creator
 
         }
         if (valid($get, 'filter')) {
-            PageCreatePaginator::$distinct = array_keys(json_decode($get['filter'], true));
-            $where[] = $filter->setDataStructure($dataArray)->parseFilter(json_decode($get['filter']))->setDelimtr(' AND ')->getResult();
+            $queryFilter = is_array($get['filter']) ? $get['filter'] : json_decode($get['filter'], true);
+            PageCreatePaginator::$distinct = array_keys($queryFilter);
+            $where[] = $filter->setDataStructure($dataArray)->parseFilter($queryFilter)->setDelimtr(' AND ')->getResult();
         }
         if (valid($get, 'search', '-1') != '-1') {
 
@@ -93,6 +104,8 @@ class PageCreator extends Creator
 //            $search2 = new bcProvideSearch();
             $apostophe = new ApostropheCreat();
             $searchValue = str_replace('"', "'", $search->cleanSearch(trim($get['search'])));
+
+            $isApostrof = boolval(preg_match("~'~", $get['search']));
 
             $apostopheValue = $apostophe->setStr($searchValue)->render();
             if ($apostopheValue !== $searchValue) {
@@ -103,7 +116,17 @@ class PageCreator extends Creator
 
                 // echo $test ."<br><br>$test1";exit;
             } else {
-                $where[] = $search->setDataStructure($dataArray)->setSearch($search->cleanSearch(trim($get['search'])))->parse()->creatQuery()->getWhere();
+                if ($isApostrof !== false) {
+                    $deletApostofVal = implode('', array_filter(explode("'", $get['search']), function ($val) {
+                        return $val !== "'";
+                    }));
+                    $where[] = join(" OR ", [
+                        $search->setDataStructure($dataArray)->setSearch($search->cleanSearch(trim($get['search'])))->parse()->creatQuery()->getWhere(),
+                        $search->withSearch($search->cleanSearch($deletApostofVal))->parse()->creatQuery()->getWhere(),
+                    ]);
+                } else {
+                    $where[] = $search->setDataStructure($dataArray)->setSearch($search->cleanSearch(trim($get['search'])))->parse()->creatQuery()->getWhere();
+                }
             }
 
         }
@@ -119,15 +142,20 @@ class PageCreator extends Creator
             addToArray($dataArray[$name]['setting'], 'where', $where, ' AND ');
         }
         if (valid($get, 'event_outer_id') != 0 || valid($get, 'grant_outer_id') != 0) {
+
+
             $structure = new Structure();
             $name = key($dataArray);
             if (!$structure->isEmpty($name)) {
                 $structure->delete($name);
             }
             $size = (new PageCreatePaginator());
+            unset($dataArray[key($dataArray)]['setting']['limit']);
+
             $structure->set($dataArray);
             $size->setData($structure, $dataArray);
             $size = $size->size();
+
 
             if ($size > 300) {
                 session()->error('Перевищоно кількість вибраних персон на ' . ($size - 300) . '(Помилка 1)',
@@ -136,16 +164,22 @@ class PageCreator extends Creator
             }
             $groupInviteIdList = $structure->get($name);
             $outerId = array_diff([
-                EventModel::class         => get('event_outer_id'),
+                EventModel::class => get('event_outer_id'),
                 OpportunitiesModel::class => get('grant_outer_id'),
             ], [null, 'undefined', '0']);
             $size = sizeof($groupInviteIdList);
+
+
             foreach ($outerId as $class => $id) {
 
                 if ($id && ($size <= 300)) {
                     $userIds = array_column($groupInviteIdList, 'bc_user_id');
+
                     if (!empty($userIds)) {
                         foreach ($userIds as $userId) {
+                            if (is_null($userId)) {
+                                continue;
+                            }
                             if (method_exists($class, 'checkUserRegistered') && $class::checkUserRegistered($id,
                                     $userId) === '0') {
                                 $class::registerUser($id, $userId, true);
@@ -171,8 +205,12 @@ class PageCreator extends Creator
 
             //debug($da);
             //debug($dataArray, self::$title, self::$export_title);
+
+
+            //var_dump(self::$title);exit;
+
             $data = provideExport::exportTable($dataArray, self::$title, self::$export_title,
-                PageCreator::$row_init);
+                PageCreator::$row_init ?? provideExport::$callback);
 
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename=' . $data[1] . ".xlsx");

@@ -56,14 +56,27 @@ class ProvideSetter
     {
 
 
+
+
+
+        $preparedQuery = $query;
+
         if (get('debug')) {
-            echo '<br/>' . $query . '<br/>';
+            echo '<br/>' . $preparedQuery . '<br/>';
 
             // var_dump($this->database->querySql($query)->fetchAll(PDO::FETCH_NAMED));
         }
         try {
          //   var_dump(['query_strart' => microtime(true)]);
-            $forClean = $this->database->querySql($query)->fetchAll(PDO::FETCH_ASSOC);
+            $forClean = $this->database->querySql($preparedQuery)->fetchAll(PDO::FETCH_ASSOC);
+
+//            if(isset($query['LIMIT']) && $query['limit']){
+//                $query['LIMIT'] = '';
+//                $preparedQuery = implode(' ', $query);
+//                $this->database->querySql($preparedQuery)->fetchAll();
+//                $size = $this->database->querySql("SELECT FOUND_ROWS() as size;")->fetchAll(PDO::FETCH_ASSOC)[0]['size'];
+//                var_dump($size);
+//            }
         //    var_dump(['query_end'=> microtime(true)]);
         } catch (Error  $error) {
             error_log($error->getMessage() . '\n key = ' . $this->key . '\n user_id = 1264');

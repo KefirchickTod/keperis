@@ -26,8 +26,28 @@ class DatabaseAdapter implements DatabaseInterfaces
     {
         $this->connection = $connection;
     }
-    
 
+
+    public static function createDataBaseConnectinByPDOWithoutAttributes(PDO $PDO){
+        $PDO->exec("SET time_zone = '" . date('P') . "'");
+        $PDO->exec('SET names utf8');
+        return new static($PDO);
+    }
+
+    public static function createDataBaseConnectionByPdo(PDO $PDO){
+        $attributes = [
+            PDO::ATTR_ERRMODE      => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
+            PDO::ATTR_CASE         => PDO::CASE_LOWER,
+        ];
+        foreach ($attributes as $attribute => $value){
+
+            $PDO->setAttribute($attribute, $value);
+        }
+        $PDO->exec("SET time_zone = '" . date('P') . "'");
+        $PDO->exec('SET names utf8');
+        return new static($PDO);
+    }
     /**
      * @param Environment $environment
      * Return static with qyickle setting object

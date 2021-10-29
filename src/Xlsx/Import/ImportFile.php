@@ -8,7 +8,7 @@ use src\Core\Cache;
 use src\Interfaces\Xlsx\XlsxImportInterface;
 use src\Interfaces\Xlsx\XlsxRenderInterface;
 use src\Interfaces\Xlsx\XlsxValidationInterface;
-use src\Model;
+use src\Models\Model;
 use src\Xlsx\Validation\Validate;
 
 /**

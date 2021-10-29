@@ -5,7 +5,7 @@ namespace src\Traits;
 
 
 use src\Interfaces\CollectionInterface;
-use src\Model;
+use src\Models\Model;
 
 trait HasAttributes
 {
@@ -199,105 +199,6 @@ trait HasAttributes
     }
 
     /**
-     * Get an attribute array of all arrayable attributes.
-     *
-     * @return array
-     */
-    protected function getArrayableAttributes()
-    {
-        return $this->getArrayableItems($this->attributes);
-    }
-
-    /**
-     * Get all of the appendable values that are arrayable.
-     *
-     * @return array
-     */
-    protected function getArrayableAppends()
-    {
-        if (! count($this->appends)) {
-            return [];
-        }
-
-        return $this->getArrayableItems(
-            array_combine($this->appends, $this->appends)
-        );
-    }
-
-    /**
-     * Get the model's relationships in array form.
-     *
-     * @return array
-     */
-    public function relationsToArray()
-    {
-        $attributes = [];
-
-        foreach ($this->getArrayableRelations() as $key => $value) {
-            // If the values implements the Arrayable interface we can just call this
-            // toArray method on the instances which will convert both models and
-            // collections to their proper array form and we'll set the values.
-            if ($value instanceof CollectionInterface) {
-                $relation = $value->toArray();
-            }
-
-            // If the value is null, we'll still go ahead and set it in this list of
-            // attributes since null is used to represent empty relationships if
-            // if it a has one or belongs to type relationships on the models.
-            elseif (is_null($value)) {
-                $relation = $value;
-            }
-
-            // If the relationships snake-casing is enabled, we will snake case this
-            // key so that the relation attribute is snake cased in this returned
-            // array to the developers, making this consistent with attributes.
-            if (static::$snakeAttributes) {
-                $key = Str::snake($key);
-            }
-
-            // If the relation value has been set, we will set it on this attributes
-            // list for returning. If it was not arrayable or null, we'll not set
-            // the value on the array because it is some type of invalid value.
-            if (isset($relation) || is_null($value)) {
-                $attributes[$key] = $relation;
-            }
-
-            unset($relation);
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Get an attribute array of all arrayable relations.
-     *
-     * @return array
-     */
-    protected function getArrayableRelations()
-    {
-        return $this->getArrayableItems($this->relations);
-    }
-
-    /**
-     * Get an attribute array of all arrayable values.
-     *
-     * @param  array  $values
-     * @return array
-     */
-    protected function getArrayableItems(array $values)
-    {
-        if (count($this->getVisible()) > 0) {
-            $values = array_intersect_key($values, array_flip($this->getVisible()));
-        }
-
-        if (count($this->getHidden()) > 0) {
-            $values = array_diff_key($values, array_flip($this->getHidden()));
-        }
-
-        return $values;
-    }
-
-    /**
      * Get an attribute from the model.
      *
      * @param  string  $key
@@ -337,6 +238,8 @@ trait HasAttributes
     {
         $value = $this->getAttributeFromArray($key);
 
+
+
         // If the attribute has a get mutator, we will call that then return what
         // it returns as the value, which is useful for transforming values on
         // retrieval from the model to a form that is more useful for usage.
@@ -373,57 +276,8 @@ trait HasAttributes
         return $this->attributes[$key] ?? null;
     }
 
-    /**
-     * Get a relationship.
-     *
-     * @param  string  $key
-     * @return mixed
-     */
-    public function getRelationValue($key)
-    {
-        // If the key already exists in the relationships array, it just means the
-        // relationship has already been loaded, so we'll just return it out of
-        // here because there is no need to query within the relations twice.
-        if ($this->relationLoaded($key)) {
-            return $this->relations[$key];
-        }
 
-        // If the "attribute" exists as a method on the model, we will just assume
-        // it is a relationship and will load and return results from the query
-        // and hydrate the relationship's value on the "relationships" array.
-        if (method_exists($this, $key)) {
-            return $this->getRelationshipFromMethod($key);
-        }
-    }
 
-    /**
-     * Get a relationship value from a method.
-     *
-     * @param  string  $method
-     * @return mixed
-     *
-     * @throws \LogicException
-     */
-    protected function getRelationshipFromMethod($method)
-    {
-        $relation = $this->$method();
-
-        if (! $relation instanceof Relation) {
-            if (is_null($relation)) {
-                throw new LogicException(sprintf(
-                    '%s::%s must return a relationship instance, but "null" was returned. Was the "return" keyword used?', static::class, $method
-                ));
-            }
-
-            throw new LogicException(sprintf(
-                '%s::%s must return a relationship instance.', static::class, $method
-            ));
-        }
-
-        return tap($relation->getResults(), function ($results) use ($method) {
-            $this->setRelation($method, $results);
-        });
-    }
 
     /**
      * Determine if a get mutator exists for an attribute.
@@ -433,6 +287,7 @@ trait HasAttributes
      */
     public function hasGetMutator($key)
     {
+
         return method_exists($this, 'get'.studly($key).'Attribute');
     }
 

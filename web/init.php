@@ -1,16 +1,15 @@
 <?php
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$defins = new \src\Collection($dotenv->load());
-$env = $defins->map(function ($value, $key) {
-    if (!defined($key)) {
+session_start();
 
-        define($key, $value);
-    }
-    return $value;
-});
+define("ROOT_PATH", dirname(__DIR__));
+
+Dotenv\Dotenv::createImmutable(ROOT_PATH)->load();
+
+
 $app = new src\App(
     require_once "config.php"
 );
+
 /**
  * @param null $app
  * @return \src\App
@@ -26,15 +25,13 @@ function app($app = null)
 
 app($app);
 
-require_once ROOT_PATH . "/src/function.php";
+require_once ROOT_PATH . "/src/helper.php";
 
-if (file_exists(ROOT_PATH . "/app/config.php")) {
-    require_once ROOT_PATH . "/app/config.php";
-}
+//require_once ROOT_PATH . "/app/config.php";
 
 
 require_once "route.php";
-require_once "middleware.php";
+
 
 
 return app();

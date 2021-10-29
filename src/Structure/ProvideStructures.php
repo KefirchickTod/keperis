@@ -8,23 +8,112 @@ use src\Collection;
 
 abstract class ProvideStructures extends Collection
 {
+
     const namespace = 'App\src\Structure\ProvideStructures\\';
+    /**
+     * List of ignore column in property sql setting
+     * @var string[]
+     */
     public static $exception = ['table', 'id', 'prefix', 'size'];
+    /**
+     * List of default select settings
+     * @var array
+     */
+    protected static $guard = [
+        'select',
+        'as',
+        'type'
+    ];
+
+
+    /**
+     * List of additional select setting
+     * @var array
+     */
+    protected static $additional = [
+        'join',
+        'templates',
+    ];
+
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * Array of setting slq
+     * @var array
+     */
     protected $sqlSetting = [];
+
     /**
      * @var string
      */
     protected $factoryName;
+
+    /**
+     * @var array
+     */
     protected $pattern = [];
+
+    /**
+     * @var array
+     */
+    protected $columns;
 
     function __construct(array $item = [])
     {
         $item = $this->sqlSetting;
         parent::__construct($item);
+
+        $this->columns = container()->connection->getSchemaBuilder()->getColumnListing($this->getOriginTableName());
+    }
+
+
+    /**
+     * Retrun name for cache
+     * @return string
+     */
+    public function getFactoryName()
+    {
+        return $this->factoryName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginTableName()
+    {
+        if(!$this->has('table')){
+            throw new \Error("Cant find table in Provide Structure (setting)");
+        }
+        return $this->get('table');
+    }
+
+
+    /**
+     * Get all keys from sql setting where inner setting type is searching type
+     * @param string $type
+     * @return array
+     */
+    public function getAllWhereType(string $type)
+    {
+        $result = [];
+        foreach ($this->sqlSetting as $name => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+            if (!array_key_exists('type', $value)) {
+                continue;
+            }
+
+            if ($value['type'] === $type) {
+                $result = array_merge($result, [$name => $value]);
+            }
+        }
+
+        return $result;
+
     }
 
     public static function getAll($structure = true)
@@ -40,8 +129,8 @@ abstract class ProvideStructures extends Collection
         return $structure === true ? [
             'getAll' =>
                 [
-                    'get'   => $get,
-                    'class' => 'auto',
+                    'get' => $get,
+                    'class' => static::class,
                 ],
         ] : $get;
 
@@ -63,12 +152,7 @@ abstract class ProvideStructures extends Collection
             $this->name = $this->getPattern('table');
         }
 
-        return $this->name ;
-    }
-
-    public function getFactoryName()
-    {
-        return $this->factoryName;
+        return $this->name;
     }
 
     public function getTemplate($key = null)

@@ -4,14 +4,18 @@
 namespace src\Structure;
 
 
+use App\Provides\ProvideStructures\bcUser;
 use src\Collection;
 use src\Core\RowMiddlewhere;
 use Closure;
 use Error;
 use Exception;
+use src\MiddlewareProvideTableTrait;
 
 class Structure
 {
+
+    use  MiddlewareProvideTableTrait;
 
     const dirToStructures = ROOT_PATH . '/app/Provides/ProvideStructures/';
     /**
@@ -55,6 +59,16 @@ class Structure
         }
         $this->memory = memory_get_usage();
         $this->time = microtime(true);
+    }
+
+    public function __invoke($data)
+    {
+        return $data;
+    }
+
+    public function add(callable $callable){
+        $this->addMiddleware($callable);
+        return $this;
     }
 
     /**
@@ -106,7 +120,7 @@ class Structure
             }
 
         } catch (Error $error) {
-            var_dump($structure, $name, $value);
+            var_dump($structure, $name, $value, $error->getMessage());
 
             debug($error->getMessage());
             $this->error = $error;
@@ -129,20 +143,18 @@ class Structure
     private function getStructureClass(array $value, string $name): ProvideStructures
     {
 
-
+        if($value['class'] === 'auto'){
+            $value['class'] = "App\Provides\ProvideStructures\\bc".ucfirst($name);
+        }
         $class =  $value['class'];
+        if(class_exists($class)){
+            return new $class;
+        }
 
-        return new $class;
+        $value['class'] = "App\Provides\ProvideStructures\\".$value['class'];
+        $class = $value['class'];
 
-//        $value['class'] = isset($value['class']) ? $value['class'] : 'auto';
-//        $class = ProvideStructures::namespace . ($value['class'] === 'auto' ? 'bc' . ucfirst($name) : $value['class']);
-//
-//        if (class_exists($class)) {
-//            return new $class;
-//        }
-//        $class = $this->findClassByValue($value['get'][0]);
-//
-//        return new $class;
+        return  new $class;
     }
 
     /**
@@ -212,17 +224,6 @@ class Structure
         }
         ProvideRegister::removeData($key);
     }
-
-    private function binding(callable $closure){
-        if(!($closure instanceof \Closure)){
-            $closure = \Closure::fromCallable($closure);
-        }
-        $row = new RowMiddlewhere();
-
-        return $closure->bind($row);
-
-    }
-
     public function isError() : bool {
         return !($this->error || $this->error !== false);
     }
@@ -244,7 +245,7 @@ class Structure
             $callback = Closure::bind($callback, $this);
         }
 
-      //  $callback = $this->binding($callback);
+
         return call_user_func($callback, $this->get($key), $this->setter);
     }
 
@@ -278,6 +279,11 @@ class Structure
         ProvideRegister::set($key, $result);
 
 
+//        $result = array_map(function ($value){
+//            return $this->callMiddlewareStack($value);
+//        }, $result);
+
+        //$this->callMiddlewareStack($result);
 
         return $result;
     }

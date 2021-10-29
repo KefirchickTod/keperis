@@ -29,7 +29,7 @@ class Validator implements ValidatorInterface
 
 
         if ($file === false) {
-            throw new \RuntimeException("Didnt find file  " . __CLASS__);
+            throw new \RuntimeException("Didnt find file  $file" . __CLASS__);
         }
         return $file;
     }

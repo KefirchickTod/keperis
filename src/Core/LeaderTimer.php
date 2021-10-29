@@ -126,7 +126,7 @@ class LeaderTimer
         structure()->set([
             "stopDay$userId" => [
                 'get' => ['userLeaderUserId', 'timerStopDays2'],
-                'class' => 'bcUserLeader',
+                'class' => bcUserLeader::class,
                 'setting' => [
                     'where' => 'userLeaderUserId = ' . (int)$userId,
                 ]

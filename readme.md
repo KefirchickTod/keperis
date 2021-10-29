@@ -1,43 +1,6 @@
 ##INSTALLATION
 
-- Setup as virtual host for local development. Add to file httpd-vhosts.conf next few lines:
-````apacheconfig
-<VirtualHost {sitename}.local:80>
-    ServerAdmin serveradmin@root.com
-    DocumentRoot "{root folder}"
-    ServerName {sitename}.local
-    ErrorLog "{root folder}/logs"
-    CustomLog "{logs name}.log" common
 
-    AddHandler fcgid-script .php
-    FcgidInitialEnv PHPRC "g:/server/php72"
-	
-	
-    <Directory "g:/server/html/BCCRM2/www/">
-        AllowOverride All
-            order allow,deny
-            allow from all
-            deny from none
-            Require all granted
-        <Files ~ "\.php$">
-            AddHandler fcgid-script .php
-            FcgidWrapper "g:/server/php72/php-cgi.exe" .php
-            Options +ExecCGI
-            order allow,deny
-            allow from all
-            deny from none
-            Require all granted
-        </Files>
-    </Directory>
-</VirtualHost>
-
-````
-- Add file watcher for less file (nmp Node.js)
-````
-npm install -g less
-Argumnt : --source-map=../../public/css/$FileNameWithoutExtension$.css.map --no-color $FileName$ ../../public/css/$FileNameWithoutExtension$.css
-Output : $ProjectFileDir$/app/public/css/$FileDirPathFromParent(less)$
-````
 - Run composer update
 ```shell script
 composer update 
@@ -45,15 +8,21 @@ or
 composer install
 
 ```
-## Usage
-- Add route web/route.php
-```phpt
-app()->get|post("pattern", Controller|Clouser, 'method')->name('routename')
-```
-- Add template
-Include haeder - (resource/layots/include/header.php)
-```phpt
-return view("include.header");
-```
+- Git
+fog git using <a href="https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow#:~:text=Git%2Dflow%20%E2%80%94%20%D0%B0%D0%BB%D1%8C%D1%82%D0%B5%D1%80%D0%BD%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F%20%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C%20%D0%B2%D0%B5%D1%82%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F,%D0%B2%D0%B5%D1%82%D0%BA%D0%B8%20%D0%B8%20%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE%20%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D1%85%20%D0%B2%D0%B5%D1%82%D0%BE%D0%BA.&text=%D0%9F%D0%BE%20%D1%81%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D1%8E%20%D1%81%20%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C%D1%8E%20%D0%BC%D0%B0%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9,%D0%B4%D0%BE%D0%BB%D1%8C%D1%88%D0%B5%2C%20%D0%B0%20%D0%BA%D0%BE%D0%BC%D0%BC%D0%B8%D1%82%D1%8B%20%D0%BE%D0%B1%D1%8B%D1%87%D0%BD%D0%BE%20%D0%BA%D1%80%D1%83%D0%BF%D0%BD%D0%B5%D0%B5.">GitFlow</a>
+and for commits using <a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md">Angular</a>
+
+````
+<type>(<scope>): <short summary>
+  │       │             │
+  │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
+  │       │
+  │       └─⫸ Commit Scope: animations|bazel|benchpress|common|compiler|compiler-cli|core|
+  │                          elements|forms|http|language-service|localize|platform-browser|
+  │                          platform-browser-dynamic|platform-server|router|service-worker|
+  │                          upgrade|zone.js|packaging|changelog|docs-infra|migrations|ngcc|ve
+  │
+  └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
+````
 ## Author
 - Zahar Pylypchuck <zacharpu2@gmail.com>

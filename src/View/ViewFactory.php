@@ -3,9 +3,9 @@
 
 namespace src\View;
 
+use src\Interfaces\View\ValidatorInterface;
 use src\View\Renderer\Render;
 use src\View\Validators\Validator;
-use src\View\View;
 
 /**
  * Class ViewFactory
@@ -14,6 +14,16 @@ use src\View\View;
  */
 class ViewFactory
 {
+
+    public static function makeWithOwnValidator(ValidatorInterface $validator, string $file, $data = [])
+    {
+        return (new View(new Render($validator), $file, $data));
+    }
+
+    public static function makeWithoutDir(string $file, $data = [])
+    {
+        return (new View(new Render(new Validator()), $file, $data));
+    }
 
     public static function make(string $file, $data = [])
     {

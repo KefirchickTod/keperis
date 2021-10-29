@@ -3,6 +3,9 @@ nbproject/
 upload/
 vendor/
 *.log
-public/upload
+
 docs/*
 
+/.env
+/node_modules/
+/package-lock.json

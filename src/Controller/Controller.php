@@ -11,6 +11,7 @@ use src\Http\Request;
 use src\Http\Response;
 use App\Provides\Mask;
 
+use src\Models\Model;
 use src\Structure\ProvideFilter;
 use src\Structure\Structure;
 
@@ -18,17 +19,17 @@ use src\Structure\Structure;
 abstract class Controller
 {
 
-    public $role = null;
     /**
      * @var Structure
      */
     public $structure;
+    public $authentification = true;
+    protected $role = null;
     protected $exportTitle = null;
     /**
      * @var Container
      */
     protected $container;
-
     /**
      * @var ProvideFilter
      */
@@ -37,8 +38,9 @@ abstract class Controller
      * @var Mask
      */
     protected $mask;
-
-    public $authentification = true;
+    /**
+     * @var Model
+     */
 
     private $ajax = false;
 
@@ -50,14 +52,21 @@ abstract class Controller
 
     }
 
-    public function isAjax() //todo remove to request->isXhr();
+
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    public function withModel(Model $model)
     {
-
-        return $this->container->get('request')->isXhr();
-
-        //return valid($_SERVER, 'HTTP_X_REQUESTED_WITH', 'no') === 'XMLHttpRequest';
+        $this->model = $model;
+        return $this;
     }
 
+    public function getRole()
+    {
+        return $this->role;
+    }
 
     public function __invoke(Response $response, Request $request = null)
     {
@@ -70,11 +79,19 @@ abstract class Controller
 
     }
 
+    public function isAjax() //todo remove to request->isXhr();
+    {
+
+        return $this->container->get('request')->isXhr();
+
+        //return valid($_SERVER, 'HTTP_X_REQUESTED_WITH', 'no') === 'XMLHttpRequest';
+    }
+
     public function ajax(Response $response, Controller $controller)
     {
         PageCreator::$script = false;
         $controller->filter = [];
-       // debug($this->action);
+        // debug($this->action);
         $json = $controller->render(null, false);
         $json['success'] = true;
 

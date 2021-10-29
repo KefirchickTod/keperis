@@ -71,13 +71,26 @@ class View
      */
     public function render(): string
     {
-        return $this->render->render($this->file, $this->data);
+        return $this->render->render($this->file, $this->getValues());
     }
 
-
+    /**
+     * Set global dir
+     * @param $dir
+     * @return $this
+     */
     public function withDir($dir){
+
         $this->file = "$dir.{$this->file}";
         return $this;
+    }
+
+    public function getValue(string $key, $default = null){
+        return $this->data[$key] ?? $default;
+    }
+
+    public function getValues(){
+        return $this->data;
     }
 
 

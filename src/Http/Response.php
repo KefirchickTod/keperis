@@ -91,6 +91,7 @@ class Response extends Message implements ResponseInterface
      * @var StreamInterface|false|resource
      */
     protected $body;
+    protected $streamDownloadCallback;
 
 
     public function __construct(int $status, HeaderInterface $header, StreamInterface $stream = null)
@@ -118,6 +119,13 @@ class Response extends Message implements ResponseInterface
         return session();
     }
 
+
+    /**
+     * @param array $data
+     * @param null $status
+     * @return false|int
+     */
+
     public function withJson(array $data, $status = null)
     {
         if ($this->getHeaders()) {
@@ -141,6 +149,34 @@ class Response extends Message implements ResponseInterface
 
     }
 
+    public function back()
+    {
+        return $this->withRedirect($_SERVER['HTTP_REFERER'] ?? '/');
+    }
+
+
+    public function getStreamDownload()
+    {
+        return $this->streamDownloadCallback;
+    }
+
+    public function isStreamDownload()
+    {
+
+        if (!is_null($this->streamDownloadCallback)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function withStreamDownload(callable $callback)
+    {
+        $clone = clone $this;
+        $clone->streamDownloadCallback = $callback;
+        return $clone;
+    }
+
+
     public function write($context)
     {
 
@@ -158,11 +194,13 @@ class Response extends Message implements ResponseInterface
         return $this->withRedirect($actual_link . $msg);
     }
 
-    public function reload(){
+    public function reload()
+    {
         return $this->withRedirect((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     }
 
-    public function render(){
+    public function render()
+    {
         return $this->resource->render();
     }
 

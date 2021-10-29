@@ -7,7 +7,7 @@ namespace src\Core\User;
 use src\Core\Page\PageCreator;
 use src\Core\Page\ProvideTable;
 use src\Http\Request;
-use src\Model;
+use src\Models\Model;
 use App\Provides\Mask;
 use src\Structure\ProvideFilter;
 use src\Structure\ProvideStructures;

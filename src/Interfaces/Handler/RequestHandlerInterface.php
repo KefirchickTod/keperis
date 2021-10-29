@@ -20,6 +20,10 @@ interface RequestHandlerInterface
      * Handles a request and produces a response.
      *
      * May call other collaborating code to generate the response.
+     * @param Request $request
+     * @param ResponseInterface $response
+     * @param RequestHandlerInterface|null $requestHandler
+     * @return ResponseInterface|null
      */
     public function handle(Request $request, ResponseInterface $response ,RequestHandlerInterface $requestHandler = null): ?ResponseInterface;
 

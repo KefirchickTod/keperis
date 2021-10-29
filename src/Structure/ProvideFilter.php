@@ -152,9 +152,14 @@ class ProvideFilter implements ProvideFilterInterface
     {
         $result = [];
 
+
         if (isset($value['name']) || (!empty($row[0]) && count($row[0]) == 1)) {
+
+            $names = getUserNameArray(array_column($row, $title));
             foreach ($row as $val) {
-                $result[$val[$title]] = isset($value['name']) ? getNameById($val[$title]) : $val[$title];
+                //todo fixed
+
+                $result[$val[$title]] = isset($value['name']) ? ($names[$val[$title]] ?? '') : $val[$title];
             }
         } else {
             foreach ($row as $val) {

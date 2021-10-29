@@ -56,12 +56,29 @@ class ProvideQueryGenerate implements getQueryInterface
 
     }
 
-    public function getQuery(bool $array = false)
+
+    public function getParsedQuery() : array {
+        $result = [];
+        foreach ($this->parse(!true)->query as $name => $value) {
+            if ($value !== '' && !empty(trim($value))) {
+                $name = strtoupper($name);
+                if ($name === 'JOIN') {
+                    addToArray($result, $name, ' ' . $value);
+                } else {
+                    addToArray($result, $name, $name === 'GROUP' ? $name . ' BY ' . $value : $name . ' ' . $value);
+
+                }
+            }
+        }
+        return  $result;
+    }
+
+    public function getQuery(bool $array = false, $strict = true)
     {
         $result = [];
 
         $template = $this->prepreTemplate();
-        if($template === true && $array === false){
+        if($template === true && $array === false && $strict === true){
             return $this->query;
         }
         foreach ($this->parse(!$array)->query as $name => $value) {
@@ -75,6 +92,7 @@ class ProvideQueryGenerate implements getQueryInterface
                 }
             }
         }
+
         return $array == false ? join(' ', $result) : $this->query;
     }
 
@@ -220,8 +238,14 @@ class ProvideQueryGenerate implements getQueryInterface
                 $result = ' BY ' . ($needReplace ? $valueOrder['select'] : $valueOrder['as'] )  . " $descOrAsc ";
 
             }
-
         }
+        if(!$result){
+            $result = " BY {$value}" ;
+            if(preg_match("~BY~", $this->query['order'] ?? '')){
+                $result = ", {$value}";
+            }
+        }
+        //var_dump($result, $value);exit;
         return $result;
 
     }

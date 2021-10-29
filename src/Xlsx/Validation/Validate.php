@@ -35,6 +35,8 @@ class Validate implements XlsxValidationInterface
 
     public function validate($filename)
     {
+
+
         $this->filename = $filename;
         if(!$this->filename){
             return $this->massage("Invalid file");
@@ -43,11 +45,11 @@ class Validate implements XlsxValidationInterface
             return $this->massage("Cant find file");
         }
 
-        $info = pathinfo($filename);
+        $info = pathinfo($filename, PATHINFO_EXTENSION);
 
-        if(!in_array($info['extension'], self::$extension)){
-            return $this->massage("Error extenspion");
-        }
+//        if(!in_array($info['extension'], self::$extension)){
+//            return $this->massage("Error extenspion ".$info['extension'] );
+//        }
 
         return true;
     }

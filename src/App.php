@@ -33,12 +33,10 @@ class App
      * @var Container
      */
     public $container;
-
     /**
      * @var Middleware
      */
     private $middleware;
-
     /**
      * @var RequestHandlerInterface
      */
@@ -92,6 +90,8 @@ class App
         return $router;
     }
 
+
+
     /**
      * @param $pattern
      * @param $controller
@@ -130,7 +130,6 @@ class App
             $routeInfo = $request->getAttribute('routeInfo');
 
 
-
         }
 
 
@@ -138,7 +137,10 @@ class App
             /** @var  $route Route */
             $route = $router->lookupRoute($routeInfo[1]);
             $request = $request->withRouteName($route->getIndication());
-            $response =    $route->run($request, $this->middleware->process($request, $response, $this->requestHandle));
+            $response = $this->middleware->process($request, $response, $this->requestHandle);
+
+            $response = $route->run($request, $response);
+
             return $response;
         } elseif ($routeInfo[0] === Dispatcher::NOT_FOUND) {
 
@@ -146,7 +148,7 @@ class App
             /**
              * @var $response Response
              */
-            $response = $response->withResource(view('404'));
+            $response = $response->withStatus(404);
         } else {
 
             $response = $response->withStatus(405);
@@ -157,8 +159,6 @@ class App
     protected function dispatchRouterAndPrepareRoute(Request $request, Router $router): Request
     {
         $routeInfo = $router->dispatch($request);
-
-
 
 
         if ($routeInfo[0] === Dispatcher::FOUND) {
@@ -213,13 +213,17 @@ class App
 
 
         } catch (RuntimeException $exception) {
+
             error_log($exception->getMessage());
-            debug($exception->getMessage(), __METHOD__, __LINE__);
+            $response = $response->withStatus(301);
+            //debug($exception->getMessage(), __METHOD__, __LINE__);
         }
 
         $response = $this->finalize($response);
 
+
         $this->respond($response);
+
 
         return $response;
 
@@ -251,7 +255,6 @@ class App
     public function respond(ResponseInterface $response)
     {
 
-
         if (!headers_sent()) {
 
             header(sprintf(
@@ -271,8 +274,16 @@ class App
         }
 
 
+        if ($response->isStreamDownload()) {
+
+
+            $callback = $response->getStreamDownload();
+            call_user_func($callback, $response);
+            return;
+        }
         if (!$this->isEmptyResponse($response)) {
             $body = $response->getBody();
+
 
             if ($body->isSeekable()) {
                 $body->rewind();

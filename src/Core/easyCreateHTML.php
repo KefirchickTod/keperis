@@ -33,49 +33,14 @@ class easyCreateHTML
 
     public static function dataPickerBeetween($parent = '')
     {
-
-        return self::create()
-            ->div([
-                'id'    => 'pageWrapper',
-                'style' => '    height: 86%;
-                                display: flex;
-                                align-items: flex-end;',
-            ])
-            ->div(
-                [
-                    'id'    => 'pageMasthead',
-                    'class' => 'pageSection',
-                ])->end('div')
-            ->div(
-                [
-                    'id'    => 'pageContentArea',
-                    'class' => 'pageSection',
-                    'style' => 'margin-top:0!important;',
-                ])->form()
-            ->input(
-                [
-                    'type' => 'text',
-
-                    'name'        => 'txtDateRange',
-                    'class'       => 'inputField shortInputField dateRangeField',
-                   // 'placeholder' => 'Date',
-                    'style'       => 'width: 100%;background-color: white;
-                                            border: 1px solid #aaa;
-                                            border-radius: 4px;
-                                            height: 33px;
-                                           
-                                            clear: both;',
-                    'value'       => '',
-                ])->input([
-                'type'  => 'hidden',
-                'name'  => 'parent',
-                'class' => 'dateParent',
-                'value' => $parent,
-            ])
-            ->end('form')
-            ->end('div')
-            ->end('div')
-            ->__toString();
+        return static::create()
+            ->div()
+                ->input([
+                    'class' => 'form-control litepicker-date',
+//                    'readonly' => 'readonly',
+                    'data-parent' => $parent,
+                ])
+            ->end('div')->render(true);
 
 
     }

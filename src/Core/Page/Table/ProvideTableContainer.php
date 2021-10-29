@@ -103,6 +103,22 @@ class ProvideTableContainer
     }
 
     /**
+     * @param \Closure $closure
+     * @param object $binded
+     */
+    public function bindCallbackRow(\Closure $closure, $binded){
+        if(!is_object($binded)){
+            throw new \TypeError("Binding var must be type object not ".gettype($binded));
+        }
+
+
+        // $binded = array_merge($closure, $binded);
+        $closure = \Closure::bind($closure, $binded);
+
+
+        $this->callbackRow = $closure;
+    }
+    /**
      * @param null|\Closure $closure
      */
     public function callbackRow($closure)

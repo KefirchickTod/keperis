@@ -3,10 +3,11 @@
 
 namespace src\Core;
 
-use App\bcerpapi;
+
 use Closure;
 use ErrorException;
 use Exception;
+use src\bcerpapi;
 
 class ActionButton
 {
@@ -29,6 +30,7 @@ class ActionButton
             'otherId',
             'type',
             'attr',
+            'roles'
         ];
     private $doneInit = false;
     /**
@@ -78,6 +80,11 @@ class ActionButton
         return new static();
     }
 
+    public function deleteAction($key){
+        if(array_key_exists($key, $this->action)){
+            unset($this->action[$key]);
+        }
+    }
     /**
      * @param $name
      * @return $this
@@ -128,17 +135,26 @@ class ActionButton
             }
             $this->doneInit = true;
 
+
+            $roleFilter = [];
             foreach ($this->action as $action) {
                 foreach ($action as $name => $value) {
+
                     if (in_array($name, $this->initKey) && !empty($value)) {
+                        if(array_key_exists('roles', $action)){
+                            $roleFilter = $action['roles'];
+                        }
                         $this->position = $name == 'position' ? ($value == 'start' ? false : true) : $this->position;
                         $value = is_array($value) ? $value : [$value];
 
                         if ($name == 'link') {
 
                             foreach ($value as $num => $data) {
+                                if(array_key_exists($num, $roleFilter) && !role_check($roleFilter[$num])){
+                                    continue;
+                                }
                                 if (isset($action['api']) && $action['settingApi']) {
-                                    $api = bcerpapi::sendRequest($action['api']);
+                                    $api = \src\bcerpapi::sendRequest($action['api']);
                                     $data = $this->setOtherIds($action['settingApi'], $data, $this->row, $api);
                                 }
                                 if (isset($action['id']) && $action['id'] == true) {
