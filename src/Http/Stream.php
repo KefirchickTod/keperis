@@ -4,9 +4,9 @@
 namespace src\Http;
 
 
-use src\Interfaces\StreamInterface;
 use Error;
 use RuntimeException;
+use src\Interfaces\StreamInterface;
 
 
 class Stream implements StreamInterface

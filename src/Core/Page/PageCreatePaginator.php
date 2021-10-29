@@ -4,14 +4,10 @@
 namespace src\Core\Page;
 
 
-use src\Core\easyCreateHTML;
-use src\Http\Request;
-use src\Http\Uri;
 use src\Interfaces\Paginator;
 use src\Structure\ProvideRegister;
 use src\Structure\ProvideSettingParse;
 use src\Structure\Structure;
-use Error;
 
 class PageCreatePaginator implements Paginator
 {

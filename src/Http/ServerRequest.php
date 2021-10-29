@@ -1,10 +1,10 @@
 <?php
 
 namespace src\Http;
+use InvalidArgumentException;
 use src\Interfaces\StreamInterface;
 use src\Interfaces\UploadedFileInterface;
 use src\Interfaces\UriInterface;
-use InvalidArgumentException;
 
 class ServerRequest extends Request
 {

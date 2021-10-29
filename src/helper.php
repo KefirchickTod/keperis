@@ -1,7 +1,6 @@
 <?php
 
 
-use src\App;
 use src\Container;
 use src\Core\easyCreateHTML;
 use src\Router\Router;

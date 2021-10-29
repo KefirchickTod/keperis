@@ -5,7 +5,6 @@ namespace src\Eloquent\Provide;
 
 
 use src\Collection;
-use src\Interfaces\CollectionInterface;
 use src\Structure\ProvideStructures;
 use TypeError;
 

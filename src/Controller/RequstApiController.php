@@ -9,7 +9,6 @@ use src\Controller\Api\ApiController;
 use src\Controller\Api\ErrorApi;
 use src\Http\Request;
 use src\Http\Response;
-use src\Controller\Api\ApiFactory;
 
 class RequstApiController extends Controller
 {

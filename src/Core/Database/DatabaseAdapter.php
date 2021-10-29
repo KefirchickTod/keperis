@@ -4,7 +4,7 @@
 namespace src\Core\Database;
 
 use PDO;
-use src\Core\Database\Interfaces\DatabaseAdapterInterface AS DatabaseInterfaces;
+use src\Core\Database\Interfaces\DatabaseAdapterInterface as DatabaseInterfaces;
 use src\Http\Environment;
 
 /**

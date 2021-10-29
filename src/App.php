@@ -9,23 +9,17 @@
 namespace src;
 
 
-use src\Controller\Controller;
-
+use FastRoute\Dispatcher;
+use RuntimeException;
 use src\Http\Request;
 use src\Http\Response;
-use src\Interfaces\MiddlewareInterface;
 use src\Interfaces\RequestHandlerInterface;
 use src\Interfaces\ResponseInterface;
-
 use src\Middleware\Middleware;
 use src\Middleware\RequestHandler;
 use src\Router\Route;
 use src\Router\RouteGroup;
 use src\Router\Router;
-use Error;
-use Exception;
-use FastRoute\Dispatcher;
-use RuntimeException;
 
 class App
 {

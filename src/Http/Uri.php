@@ -6,7 +6,6 @@ namespace src\Http;
 
 use InvalidArgumentException;
 use src\Interfaces\UriInterface;
-use Error;
 
 class Uri implements UriInterface
 {

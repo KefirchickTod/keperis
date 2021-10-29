@@ -5,7 +5,6 @@ namespace src\Controller\Api;
 
 
 use src\Controller\Api\Controller\UserApi;
-use src\Http\Request;
 use src\Interfaces\ApiInterfaces;
 
 class Api implements ApiInterfaces

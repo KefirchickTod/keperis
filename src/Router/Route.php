@@ -4,21 +4,16 @@
 namespace src\Router;
 
 
+use FastRoute\RouteParser\Std;
+use LogicException;
 use src\Controller\Controller;
-
 use src\Http\Body;
 use src\Http\Request;
 use src\Http\RequestResponse;
 use src\Http\Response;
-use src\Interfaces\MiddlewareInterface;
 use src\Interfaces\ResponseInterface;
-use src\Middleware\Middleware;
 use src\Middleware\RequestHandler;
-
 use src\Resource;
-use Exception;
-use FastRoute\RouteParser\Std;
-use LogicException;
 use src\View\View;
 
 class Route extends Routeable

@@ -4,17 +4,15 @@
 namespace src\Router;
 
 
-use src\Controller\Controller;
-
-use src\Http\Request;
-use src\Interfaces\RouterInterface;
-
 use Error;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use FastRoute\RouteParser;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use src\Controller\Controller;
+use src\Http\Request;
+use src\Interfaces\RouterInterface;
 use src\Middleware\RequestHandler;
 use function FastRoute\simpleDispatcher;
 

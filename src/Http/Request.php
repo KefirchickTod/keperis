@@ -4,13 +4,13 @@
 namespace src\Http;
 
 
-use src\Collection;
-use src\Interfaces\HeaderInterface;
-use src\Interfaces\SessionInterface;
 use Closure;
 use Error;
 use InvalidArgumentException;
 use RuntimeException;
+use src\Collection;
+use src\Interfaces\HeaderInterface;
+use src\Interfaces\SessionInterface;
 use src\Interfaces\UriInterface;
 
 class Request extends Message

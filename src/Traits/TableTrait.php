@@ -4,6 +4,7 @@
 namespace src\Traits;
 
 
+use Error;
 use src\Container;
 use src\Core\Page\PageCreateButtons;
 use src\Core\Page\PageCreatePaginator;
@@ -11,8 +12,6 @@ use src\Core\Page\PageCreator;
 use src\Core\Page\ProvideTable;
 use src\Interfaces\Buttons;
 use src\Interfaces\Paginator;
-
-use Error;
 use src\View\View;
 
 /**

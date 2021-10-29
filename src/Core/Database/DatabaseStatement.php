@@ -5,7 +5,6 @@ namespace src\Core\Database;
 
 
 use ArrayIterator;
-use src\Collection;
 use src\Core\Database\Interfaces\DatabaseAdapterInterface;
 use src\Core\Database\Interfaces\DatabaseInfoSchemeInterface;
 use src\Core\Database\Interfaces\DatabaseStatementInterface;

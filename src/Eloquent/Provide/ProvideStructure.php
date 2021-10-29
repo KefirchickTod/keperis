@@ -5,13 +5,10 @@ namespace src\Eloquent\Provide;
 
 
 use src\Eloquent\Provide\Processes\ProcessorInterface;
-use src\Eloquent\Provide\Processes\ProvideStructureProcessor;
 use src\EventDispatcher\Dispatcher\Dispatcher;
 use src\EventDispatcher\Provider\ListenerCollection;
-use src\EventDispatcher\Provider\Provider;
 use src\Interfaces\EventDispatcher\EventDispatcherInterface;
 use src\Interfaces\EventDispatcher\ListenerProviderInterface;
-use src\Traits\ModelTableTrait;
 
 class ProvideStructure implements ListenerProviderInterface
 {

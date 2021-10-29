@@ -2,7 +2,6 @@
 
 namespace src\Eloquent\Provide\Commands;
 
-use Closure;
 use src\Eloquent\Provide\StructureCollection;
 
 class ProvideReceiver implements ProvideReceiverInterface

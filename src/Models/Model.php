@@ -6,6 +6,7 @@ namespace src\Models;
 
 use App\Models\Dictionary\DictionaryModel;
 use App\Provides\Mask;
+use Error;
 use src\Collection;
 use src\Core\Database\DatabaseAdapter;
 use src\Core\Database\DatabaseInfoScheme;
@@ -14,7 +15,6 @@ use src\Core\Page\PageCreator;
 use src\Interfaces\ModelInterface;
 use src\Structure\Structure;
 use src\Traits\HasAttributes;
-use Error;
 use src\Traits\ModelTableTrait;
 use src\Xlsx\Import\Renderer\Render;
 

@@ -5,7 +5,6 @@ namespace src\Interfaces\Handler;
 
 
 use src\Http\Request;
-use src\Http\Response;
 use src\Interfaces\ResponseInterface;
 
 /**

@@ -5,7 +5,6 @@ namespace src\Traits\User;
 
 
 use App\bcerpapi;
-
 use src\Collection;
 use src\Core\User\UserAuth;
 

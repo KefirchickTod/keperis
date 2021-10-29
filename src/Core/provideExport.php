@@ -4,10 +4,9 @@
 namespace src\Core;
 
 
-use src\Core\Page\PageCreator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use src\Core\Page\PageCreator;
 use src\EventDispatcher\Concerns\DelegatesToDisptacher;
-use src\Interfaces\EventDispatcher\EventDispatcherInterface;
 use src\MiddlewareProvideTableTrait;
 
 class provideExport

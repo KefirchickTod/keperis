@@ -6,23 +6,17 @@ namespace src\Core\Page;
 
 use App\Models\Event\EventModel;
 use App\Models\Opportunities\OpportunitiesModel;
+use Closure;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use src\Core\ApostropheCreat;
 use src\Core\Filtration\DateFilter;
 use src\Core\provideExport;
+use src\Interfaces\Buttons;
 use src\Interfaces\PageInterface;
-use src\Page\DataTransformation;
-use src\Page\FilterData\Filter;
-use src\Page\FilterData\Search;
-use src\Page\FilterData\Sort;
+use src\Interfaces\Paginator;
+use src\Interfaces\Table;
 use src\Structure\bcProvideSearch;
 use src\Structure\Structure;
-use src\Interfaces\Buttons;
-use src\Interfaces\Table;
-use src\Interfaces\Paginator;
-use Closure;
-use Exception;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use src\Structure\StructureFilters\StructureFilterData;
 
 class PageCreator extends Creator
 {

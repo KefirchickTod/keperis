@@ -7,7 +7,6 @@ namespace src\Eloquent\Provide\Processes;
 use Exception;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\QueryException;
-use src\Core\Database\Interfaces\DatabaseBuilderInterface;
 use src\Eloquent\Provide\ProvideStructure;
 use src\Eloquent\Provide\StructureCollection;
 use Symfony\Component\Console\Helper\DebugFormatterHelper;

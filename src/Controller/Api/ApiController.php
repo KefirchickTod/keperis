@@ -4,8 +4,6 @@
 namespace src\Controller\Api;
 
 
-use App\Models\User\UserModel;
-use src\Container;
 use src\Controller\Controller;
 use src\Http\Request;
 use src\Http\Response;

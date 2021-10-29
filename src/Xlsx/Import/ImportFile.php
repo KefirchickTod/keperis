@@ -4,11 +4,9 @@
 namespace src\Xlsx\Import;
 
 
-use src\Core\Cache;
 use src\Interfaces\Xlsx\XlsxImportInterface;
 use src\Interfaces\Xlsx\XlsxRenderInterface;
 use src\Interfaces\Xlsx\XlsxValidationInterface;
-use src\Models\Model;
 use src\Xlsx\Validation\Validate;
 
 /**

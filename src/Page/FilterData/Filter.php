@@ -8,7 +8,6 @@ use Error;
 use Exception;
 use src\Core\Page\PageCreatePaginator;
 use src\Eloquent\Provide\Commands\ProvideReceiver;
-use src\Eloquent\Provide\StructureCollection;
 
 class Filter extends TransformationLogic
 {

@@ -4,12 +4,8 @@
 namespace src\Eloquent;
 
 
-use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use src\Eloquent\Concerns\ImportXlsx;
 use src\Eloquent\Concerns\MaskConcerns;
-
-use src\Traits\ModelTableTrait;
-use src\Traits\TableTrait;
 
 abstract class Model extends \Illuminate\Database\Eloquent\Model
 {

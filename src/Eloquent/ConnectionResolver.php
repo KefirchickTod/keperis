@@ -4,7 +4,7 @@
 namespace src\Eloquent;
 
 
-use  Illuminate\Database\ConnectionResolver as ParentResolver;
+use Illuminate\Database\ConnectionResolver as ParentResolver;
 
 class ConnectionResolver extends ParentResolver
 {

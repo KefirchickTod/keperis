@@ -4,12 +4,12 @@
 namespace src\Http;
 
 
+use Error;
+use InvalidArgumentException;
 use src\Collection;
 use src\Interfaces\HeaderInterface;
 use src\Interfaces\MessageInterface;
 use src\Interfaces\StreamInterface;
-use Error;
-use InvalidArgumentException;
 
 abstract class Message implements MessageInterface
 {

@@ -4,9 +4,9 @@
 namespace src;
 
 
-use src\Interfaces\CollectionInterface;
 use ArrayIterator;
 use Exception;
+use src\Interfaces\CollectionInterface;
 
 class Collection implements CollectionInterface
 {

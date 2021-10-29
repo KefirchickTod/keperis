@@ -6,7 +6,6 @@ namespace src\Interfaces\Xlsx;
 
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use src\Collection;
 
 interface XlsxRenderInterface
 {

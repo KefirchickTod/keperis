@@ -10,7 +10,6 @@ use src\Core\Page\PageCreator;
 use src\Core\Page\ProvideTable;
 use src\Core\provideExport;
 use src\Interfaces\Buttons;
-use src\Interfaces\Table;
 use src\Structure\ProvideFilter;
 
 trait ModelTableTrait

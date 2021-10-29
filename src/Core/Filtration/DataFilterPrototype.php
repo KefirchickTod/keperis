@@ -3,7 +3,6 @@
 
 namespace src\Core\Filtration;
 
-use src\Core\Filtration\ProvideStructure;
 use Exception;
 
 class DataFilterPrototype extends ProvideStructure

@@ -2,9 +2,9 @@
 
 
 namespace src\Traits;
+use RuntimeException;
 use src\CallableResolver;
 use src\Container;
-use RuntimeException;
 
 /**
  * ResolveCallable

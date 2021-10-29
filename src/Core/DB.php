@@ -2,7 +2,6 @@
 
 namespace src\Core;
 
-use src\Collection;
 use PDO;
 use PDOException;
 use src\Controller\Api\ErrorApi;

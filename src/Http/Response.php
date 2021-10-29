@@ -4,11 +4,10 @@
 namespace src\Http;
 
 
+use RuntimeException;
 use src\Interfaces\HeaderInterface;
 use src\Interfaces\ResponseInterface;
 use src\Interfaces\StreamInterface;
-
-use RuntimeException;
 use src\View\View;
 
 

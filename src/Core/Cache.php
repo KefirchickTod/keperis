@@ -4,7 +4,6 @@
 namespace src\Core;
 
 
-use phpDocumentor\Reflection\Types\Self_;
 use src\Collection;
 use src\Http\Stream;
 

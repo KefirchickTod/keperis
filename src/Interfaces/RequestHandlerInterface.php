@@ -5,8 +5,6 @@ namespace src\Interfaces;
 
 
 
-use src\Http\Response;
-
 /**
  * Handles a server request and produces a response.
  *

@@ -4,9 +4,7 @@
 namespace src\Page\FilterData;
 
 
-use Error;
 use src\Eloquent\Provide\Commands\ProvideReceiver;
-use src\Eloquent\Provide\StructureCollection;
 
 class Sort extends TransformationLogic
 {

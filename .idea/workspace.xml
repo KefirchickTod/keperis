@@ -19,175 +19,75 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7583b319-d1bf-4417-8197-702a1c65ff18" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resource/views/layots/welcome.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Api/Ajax.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Api/Api.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Api/ApiFaced.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Api/ApiFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Api/Interfaces/AbstractApi.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/Page/Handler/MiddlewareProvideTableTrait.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/Page/Interfaces/TableCommandInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/Page/Stack/RowStackable.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/RendererData/RenderFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Core/RendererData/RenderJson.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Concerns/GuardsAttributes.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Concerns/ImportXlsx.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Concerns/MaskConcerns.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/ConnectionResolver.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Model.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/ProvideReceiver.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/ProvideReceiverInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/UriRequestCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Processes/ExportProcessor.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Processes/ProcessorInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Processes/ProvideStructureProcessor.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Processes/SearchProcessor.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/ProvideQueryBuilder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/ProvideStructure.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Structure.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/StructureCollection.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Eloquent/Provide/StructureQueryBuilder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/EventDispatcher/Concerns/DelegatesToDisptacher.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/EventDispatcher/Dispatcher/Dispatcher.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/EventDispatcher/Provider/ListenerCollection.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/EventDispatcher/Provider/Provider.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Command/CommandInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/Command/UndoableCommandInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/EventDispatcher/EventDispatcherInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/EventDispatcher/ListenerProviderInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/EventDispatcher/StopabledEventIterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Interfaces/ProvideMask.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MiddlewareProvideTableTrait.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MiddlewareTrait.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Models/ModelCollection.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Component.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Button.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Paginator.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Table/TBody.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Table/TFooter.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Table/THead.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Table/TableEntity.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Table/TableReplacerTrait.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/Table/View/TableViewValidator.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/TableComponent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Components/resource/table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Creator.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/DataTransformation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/FilterData/Filter.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/FilterData/Search.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/FilterData/Sort.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/FilterData/TransformationLogic.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Structure/StructureFilters/StructureFilterData.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Traits/ModelTableTrait.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Collection/CollectionTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Collection/DictionaryCollectionTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/DataTransformationTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Eloquent/Provide/Commands/ProvideReceiverTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Eloquent/Provide/Commands/UriRequestCommandTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Eloquent/Provide/StructureCollectionTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/FunctionTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/GroupInviteTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/MaskTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/MiddlewareTraitTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Page/Transformation/FilterTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Page/Transformation/FromToTransformationTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Page/Transformation/SearchTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/Page/Transformation/SortTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/StructureFilterDataTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="7583b319-d1bf-4417-8197-702a1c65ff18" name="Default Changelist" comment="feat: delete needlessly and replace src with current version">
       <change beforePath="$PROJECT_DIR$/.idea/keperis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/keperis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/FontAwesome.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/fontawesome-webfont.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/fontawesome-webfont.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/fontawesome-webfont.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/fontawesome-webfont.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/fontawesome-webfont.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/ui-icons_444444_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/ui-icons_555555_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/ui-icons_777620_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/ui-icons_777777_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/ui-icons_cc0000_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/ui-icons_ffffff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/animsition.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Api/ApiFaced.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Api/ApiFaced.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BCApi.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Collection.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Container.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Container.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Api/Api.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Api/Api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/Api/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Api/ApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/Api/ErrorApi.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Api/ErrorApi.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Controller.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/RequstApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RequstApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/ActionButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/ActionButton.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/ApostropheCreat.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/ApostropheCreat.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Cache.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/DB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/DB.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Database/DatabaseAdapter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseAdapter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Database/DatabaseBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseBuilder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Database/DatabaseInfoScheme.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseInfoScheme.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Database/DatabaseStatement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Database/DatabaseStatement.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Database/Interfaces/DatabaseInfoSchemeInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Database/Interfaces/DatabaseInfoSchemeInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Filtration/DateFilter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Filtration/DateFilter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/LeaderTimer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/LeaderTimer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Filtration/DataFilterPrototype.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Filtration/DataFilterPrototype.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Filtration/ProvideStructure.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Filtration/ProvideStructure.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/Creator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/Creator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreateButtons.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreateButtons.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreatePaginator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreatePaginator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/Page/PageCreator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/PageCreator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/ProvideTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/Page/Table/ProvideTableContainer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Page/Table/ProvideTableContainer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Table/eeCaption.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Table/eeCaption.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Table/eeCell.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Table/eeCell.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Table/eeRow.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Table/eeRow.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Table/eeTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Table/eeTable.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/User/UserHistory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/User/UserHistory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Core/easyCreateHTML.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/easyCreateHTML.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Core/provideExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/provideExport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Http/Body.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Body.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Concerns/ImportXlsx.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Concerns/ImportXlsx.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Concerns/MaskConcerns.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Concerns/MaskConcerns.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/ConnectionResolver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/ConnectionResolver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Model.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/ProvideReceiver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/ProvideReceiver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/UriRequestCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Commands/UriRequestCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Provide/Processes/ProvideStructureProcessor.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Processes/ProvideStructureProcessor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Provide/ProvideStructure.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Provide/ProvideStructure.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Provide/Structure.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Provide/Structure.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Eloquent/Provide/StructureCollection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Eloquent/Provide/StructureCollection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EventDispatcher/Provider/ListenerCollection.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventDispatcher/Provider/ListenerCollection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Message.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Message.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Http/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Request.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Http/RequestResponse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/RequestResponse.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Http/Response.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Response.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interfaces/ApiInterfaces.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/ApiInterfaces.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interfaces/CollectionInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/CollectionInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/ServerRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/ServerRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Session.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Session.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Stream.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Stream.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/UploadedFile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/UploadedFile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Http/Uri.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/Uri.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interfaces/Handler/RequestHandlerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/Handler/RequestHandlerInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interfaces/Observer/ObserverInterface.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxParseInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxParseInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interfaces/RequestHandlerInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/RequestHandlerInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxRenderInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interfaces/Xlsx/XlsxRenderInterface.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Middleware/RequestHandler/TestHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middleware/RequestHandler/TestHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Models/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/Model.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Observers/TableRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Page/FilterData/Filter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Page/FilterData/Filter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Page/FilterData/Sort.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Page/FilterData/Sort.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router/Route.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Route.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Router/Routeable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Routeable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Router/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router/Router.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Structure/ProvideFilter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/ProvideFilter.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Structure/ProvideQueryGenerate.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/ProvideQueryGenerate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Structure/ProvideSetter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/ProvideSetter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Structure/ProvideStructures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/ProvideStructures.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Structure/Structure.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/Structure.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Structure/bcProvideSearch.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structure/bcProvideSearch.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Traits/HasAttributes.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/HasAttributes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Traits/CallableResolverAwareTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/CallableResolverAwareTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Traits/ModelTableTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/ModelTableTrait.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Traits/TableTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/TableTrait.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Traits/User/UserTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Traits/User/UserTrait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Renderer/Render.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Renderer/Render.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Validators/Validator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Validators/Validator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/View.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ViewFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewFactory.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Xlsx/Import/ImportFile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Import/ImportFile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Xlsx/Import/Parse/Parser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Import/Parse/Parser.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/Render.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/Render.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderByCache.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderByCache.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Xlsx/Validation/Validate.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Validation/Validate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Xlsx/XlsxFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/XlsxFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/helper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/init.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/init.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/middleware.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/route.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/route.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderNewNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Xlsx/Import/Renderer/RenderNewNote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/helper.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,6 +198,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="COPY_ALWAYS" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -341,7 +242,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608816683316</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: delete needlessly and replace src with current version">
+      <created>1635546823101</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1635546823101</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,14 +268,29 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Add readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add readme" />
+    <MESSAGE value="feat: delete needlessly and replace src with current version" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: delete needlessly and replace src with current version" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1998" y="238" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1635546859582">
+      <screen x="1600" y="-113" width="1280" height="984" />
+    </state>
+    <state x="1998" y="238" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1600.860/1600.-113.1280.984@1600.-113.1280.984" timestamp="1635546859582" />
+    <state x="1865" y="-53" key="CommitChangelistDialog2" timestamp="1635547023992">
+      <screen x="1600" y="-113" width="1280" height="984" />
+    </state>
+    <state x="1865" y="-53" key="CommitChangelistDialog2/0.0.1600.860/1600.-113.1280.984@1600.-113.1280.984" timestamp="1635547023992" />
     <state x="2128" y="247" width="506" height="264" key="MultipleFileMergeDialog" timestamp="1635543549129">
       <screen x="1600" y="-113" width="1280" height="984" />
     </state>
     <state x="2128" y="247" width="506" height="264" key="MultipleFileMergeDialog/0.0.1600.860/1600.-113.1280.984@1600.-113.1280.984" timestamp="1635543549129" />
+    <state x="1832" y="99" key="Vcs.Push.Dialog.v2" timestamp="1635546825868">
+      <screen x="1600" y="-113" width="1280" height="984" />
+    </state>
+    <state x="1832" y="99" key="Vcs.Push.Dialog.v2/0.0.1600.860/1600.-113.1280.984@1600.-113.1280.984" timestamp="1635546825868" />
     <state x="1903" y="98" width="672" height="678" key="search.everywhere.popup" timestamp="1635545518478">
       <screen x="1600" y="-113" width="1280" height="984" />
     </state>

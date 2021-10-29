@@ -4,7 +4,6 @@
 namespace src\Router;
 
 use src\Container;
-
 use src\Middleware\RequestHandler;
 
 abstract class Routeable

@@ -4,7 +4,6 @@
 namespace src\Core\Page;
 
 
-use src\Collection;
 use src\Core\Vector;
 use src\Interfaces\Buttons;
 use src\Interfaces\PageInterface;

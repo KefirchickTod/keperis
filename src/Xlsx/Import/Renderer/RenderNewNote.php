@@ -4,8 +4,6 @@
 namespace Xlsx\Import\Renderer;
 
 
-use src\Core\Page\Table\ProvideTableContainer;
-use src\Xlsx\Import\Parse\Parser;
 use src\Xlsx\Import\Renderer\RenderByCache;
 
 class RenderNewNote extends RenderByCache

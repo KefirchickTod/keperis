@@ -3,11 +3,6 @@
 
 namespace src\Core\Table;
 
-use src\Core\Table\eeTablePrototype;
-use src\Core\Table\eeCaption;
-use src\Core\Table\eeRow;
-use src\Core\Table\eeCell;
-
 class eeTable extends eeTablePrototype
 {
     protected $table = '';

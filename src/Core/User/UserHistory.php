@@ -4,13 +4,9 @@
 namespace src\Core\User;
 
 
-use src\Core\Page\PageCreator;
-use src\Core\Page\ProvideTable;
-use src\Http\Request;
-use src\Models\Model;
 use App\Provides\Mask;
+use src\Core\Page\ProvideTable;
 use src\Structure\ProvideFilter;
-use src\Structure\ProvideStructures;
 use src\Structure\Structure;
 
 class UserHistory

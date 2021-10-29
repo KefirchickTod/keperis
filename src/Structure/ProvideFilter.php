@@ -4,9 +4,9 @@
 namespace src\Structure;
 
 
+use App\Models\Dictionary\DictionaryModel;
 use src\Core\easyCreateHTML;
 use src\Interfaces\ProvideFilterInterface;
-use App\Models\Dictionary\DictionaryModel;
 
 
 class ProvideFilter implements ProvideFilterInterface

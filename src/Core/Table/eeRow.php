@@ -3,9 +3,6 @@
 
 namespace src\Core\Table;
 
-use src\Core\Table\eeCell;
-use src\Core\Table\eeTablePrototype;
-
 class eeRow extends eeTablePrototype
 {
     protected $cells = [];

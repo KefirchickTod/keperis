@@ -4,7 +4,6 @@
 namespace src\Http;
 
 
-use src\Collection;
 use src\Interfaces\SessionInterface;
 
 /**

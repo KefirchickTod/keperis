@@ -5,7 +5,6 @@ namespace src\EventDispatcher\Provider;
 
 
 use InvalidArgumentException;
-use src\Interfaces\EventDispatcher\ListenerProviderInterface;
 
 final class ListenerCollection
 {

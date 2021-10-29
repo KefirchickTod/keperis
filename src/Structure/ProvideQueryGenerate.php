@@ -4,8 +4,6 @@
 namespace src\Structure;
 
 use src\Http\Request;
-use src\Http\Response;
-use src\Structure\ProvideStructures;
 use src\Interfaces\getQueryInterface;
 
 class ProvideQueryGenerate implements getQueryInterface

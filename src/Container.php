@@ -4,11 +4,11 @@
 namespace src;
 
 
+use Exception;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\MySqlConnection;
-
+use Psr\Container\ContainerInterface;
 use src\Core\Database\DatabaseAdapter;
-
 use src\Core\Page\PageCreator;
 use src\Eloquent\Model;
 use src\Http\Environment;
@@ -22,8 +22,6 @@ use src\Middleware\RequestHandler;
 use src\Middleware\RequestHandler\NotFoundHandler;
 use src\Router\Router;
 use src\Structure\Structure;
-use Exception;
-use Psr\Container\ContainerInterface;
 
 
 /**

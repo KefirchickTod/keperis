@@ -4,9 +4,6 @@
 namespace src\Controller\Api;
 
 
-use phpDocumentor\Reflection\Types\Self_;
-use src\Container;
-
 class ErrorApi extends ApiController
 {
 

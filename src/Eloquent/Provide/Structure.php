@@ -4,13 +4,6 @@
 namespace src\Eloquent\Provide;
 
 
-use src\Eloquent\Provide\Processes\ProcessorInterface;
-use src\EventDispatcher\Dispatcher\Dispatcher;
-use src\EventDispatcher\Provider\ListenerCollection;
-use src\EventDispatcher\Provider\Provider;
-use src\Interfaces\CollectionInterface;
-use src\Interfaces\EventDispatcher\EventDispatcherInterface;
-
 class Structure
 {
 

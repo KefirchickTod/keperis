@@ -13,15 +13,12 @@ use src\Collection;
 use src\Core\Cache;
 use src\Core\Page\PageCreateButtons;
 use src\Core\Page\ProvideTable;
-
 use src\Interfaces\Xlsx\XlsxParseInterface;
 use src\Interfaces\Xlsx\XlsxRenderInterface;
-
 use src\Interfaces\Xlsx\XlsxValidationInterface;
 use src\Models\Model;
 use src\Xlsx\Import\Parse\Parser;
 use src\Xlsx\Import\Parse\ParserForMarge;
-use function foo\func;
 
 
 /**

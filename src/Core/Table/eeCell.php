@@ -3,8 +3,6 @@
 
 namespace src\Core\Table;
 
-use src\Core\Table\eeTablePrototype;
-
 class eeCell extends eeTablePrototype
 {
     protected $index = null;

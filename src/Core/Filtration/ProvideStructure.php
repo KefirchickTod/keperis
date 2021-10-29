@@ -6,7 +6,6 @@ namespace src\Core\Filtration;
 
 
 use src\Interfaces\Structure\provideStructureInterface;
-use src\Structure\ProvideStructures;
 use src\Structure\Structure;
 
 class ProvideStructure extends Structure implements provideStructureInterface

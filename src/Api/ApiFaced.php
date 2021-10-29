@@ -5,7 +5,6 @@ namespace src\Api;
 
 
 use src\Api\Interfaces\AbstractApi;
-use src\Interfaces\ResponseInterface;
 
 class ApiFaced
 {

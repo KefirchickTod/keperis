@@ -4,7 +4,6 @@
 namespace src\Core\Page;
 
 
-use src\Core\easyCreateHTML;
 use src\Interfaces\Buttons;
 use src\Structure\Structure;
 

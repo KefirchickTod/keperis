@@ -4,8 +4,6 @@
 namespace src\Middleware\RequestHandler;
 
 
-use src\Http\Request;
-
 use src\Interfaces\Handler\RequestHandlerInterface;
 use src\Interfaces\ResponseInterface;
 use src\Middleware\RequestHandler;

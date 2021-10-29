@@ -3,10 +3,9 @@
 
 namespace src\Http;
 
-use src\Interfaces\StreamInterface;
-use src\Interfaces\UploadedFileInterface;
 use http\Exception\InvalidArgumentException;
 use RuntimeException;
+use src\Interfaces\UploadedFileInterface;
 
 /**
  * Represents Uploaded Files.

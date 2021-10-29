@@ -3,10 +3,9 @@
 
 namespace src\Structure;
 
-use src\Core\ApostropheCreat;
-use src\Core\Filtration\DataFilterPrototype;
 use DateTime;
 use Exception;
+use src\Core\Filtration\DataFilterPrototype;
 
 class bcProvideSearch extends DataFilterPrototype
 {

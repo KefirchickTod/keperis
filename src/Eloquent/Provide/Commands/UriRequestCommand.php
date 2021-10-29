@@ -3,7 +3,6 @@
 namespace src\Eloquent\Provide\Commands;
 
 use src\Eloquent\Provide\Processes\ProvideStructureProcessor;
-use src\Eloquent\Provide\StructureCollection;
 use src\Http\Request;
 use src\Interfaces\Command\CommandInterface;
 use src\Structure\ProvideStructures;
