@@ -4,7 +4,7 @@
 namespace src\View;
 
 
-use src\Interfaces\View\RenderInterface;
+use src\View\RenderInterface;
 
 /**
  * Class View

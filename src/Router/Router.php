@@ -12,13 +12,11 @@ use Psr\Container\ContainerInterface;
 use RuntimeException;
 use src\Controller\Controller;
 use src\Http\Request;
-use src\Interfaces\RouterInterface;
 use src\Middleware\RequestHandler;
 use function FastRoute\simpleDispatcher;
 
-class Router  implements RouterInterface
+class Router
 {
-
 
 
     /**
@@ -72,9 +70,11 @@ class Router  implements RouterInterface
     }
 
 
-    public function setContainer(ContainerInterface $container){
+    public function setContainer(ContainerInterface $container)
+    {
         $this->container = $container;
     }
+
     /**
      * @return bool|mixed|RouteGroup
      */
@@ -84,7 +84,8 @@ class Router  implements RouterInterface
         return $group instanceof RouteGroup ? $group : false;
     }
 
-    public function name(string $name){
+    public function name(string $name)
+    {
 
         change_key($this->currentIndification, $name, $this->routes);
         $this->routes[$name] = $this->routes[$name]->withIndication($name);
@@ -92,16 +93,17 @@ class Router  implements RouterInterface
         return $this;
 
     }
+
     /**
      * @param array $method
      * @param array $pattern
-     * @param  Controller|\Closure $controller
+     * @param Controller|\Closure $controller
      * @param $func
      * @return $this
      */
-    public function map(array $method, $pattern,  $controller, $func)
+    public function map(array $method, $pattern, $controller, $func)
     {
-        $indication = !($controller instanceof \Closure) ? get_class($controller).".$func" : "route".$this->counting;
+        $indication = !($controller instanceof \Closure) ? get_class($controller) . ".$func" : "route" . $this->counting;
         $route = new Route($method, $pattern, $controller, $indication, $func);
 
         $route->setContainer($this->container);
@@ -117,8 +119,8 @@ class Router  implements RouterInterface
     public function dispatch(Request $request)
     {
         $uri = '/' . ltrim($request->getUri()->getPath(), '/');
-        if(env('ROUTE_FULL_PATH', 'off') === 'on'){
-            $uri =  $request->getUri()->getBaseUrl() . $uri;
+        if (env('ROUTE_FULL_PATH', 'off') === 'on') {
+            $uri = $request->getUri()->getBaseUrl() . $uri;
         }
 
         return $this->getDispatcher()->dispatch(
@@ -139,7 +141,6 @@ class Router  implements RouterInterface
                 /** @var $route Route */
 
                 $r->addRoute($route->getMethods(), $route->getPattern(), $route->getIndication());
-
 
 
             }
@@ -188,17 +189,19 @@ class Router  implements RouterInterface
     {
 
         if (!isset($this->routes[$identifier])) {
-            throw new RuntimeException('Route not found, looks like your route cache is stale. '.$identifier);
+            throw new RuntimeException('Route not found, looks like your route cache is stale. ' . $identifier);
         }
         return $this->routes[$identifier];
     }
 
-    public function middleware(RequestHandler $middleware){
+    public function middleware(RequestHandler $middleware)
+    {
         $this->routes[$this->currentIndification]->add($middleware);
         return $this;
     }
 
-    public function getRoutes(){
+    public function getRoutes()
+    {
         return $this->routes;
     }
 

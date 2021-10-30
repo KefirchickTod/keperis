@@ -10,8 +10,8 @@ namespace src\View\Renderer;
  * @version 0.1
  */
 
-use src\Interfaces\View\RenderInterface;
-use src\Interfaces\View\ValidatorInterface;
+use src\View\RenderInterface;
+use src\View\ValidatorInterface;
 
 
 class Render implements RenderInterface

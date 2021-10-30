@@ -68,18 +68,6 @@ class easyCreateHTML
         return '';
     }
 
-    public static function panel_toolbox($active = true, $candelete = true): string
-    {
-        if (self::$toolBar !== '' && self::$toolBar && $active == true) {
-            return self::$toolBar;
-        }
-        $result = html()->ul(['class' => 'nav navbar-right panel_toolbox'])
-            ->li()->a(['class' => 'collapse-link'])->i(['class' => $active == false ? 'fa fa-chevron-down' : 'fa fa-chevron-up'])->end('i')->end('a')->end('li')
-            ->li(['style' => "display : " . ($candelete == 'true' ? 'block' : 'none')])->a(['class' => 'close-link'])->i(['class' => 'fa fa-close'])->end('i')->end('a')->end('li')
-            ->end('ul')->render(true);
-        self::$toolBar = $result;
-        return $result;
-    }
 
     /**
      * Simple foreach create with tags

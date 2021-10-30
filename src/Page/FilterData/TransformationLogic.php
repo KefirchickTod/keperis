@@ -3,7 +3,7 @@
 namespace src\Page\FilterData;
 
 use src\Eloquent\Provide\StructureCollection;
-use src\Interfaces\Structure\ProvideCreateInterface;
+
 use src\Structure\ProvideStructures;
 
 abstract class TransformationLogic
@@ -87,7 +87,7 @@ abstract class TransformationLogic
     }
 
     /**
-     * @param $changer ProvideCreateInterface
+     * @param $changer ProvideCreate
      * @param $uriBody array
      * @param $next callable
      * @return mixed

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace src\Interfaces\View;
+namespace src\View;
 
 /**
  * Interface ValidatorInterface

@@ -3,7 +3,7 @@
 
 namespace src\View;
 
-use src\Interfaces\View\ValidatorInterface;
+use src\View\ValidatorInterface;
 use src\View\Renderer\Render;
 use src\View\Validators\Validator;
 

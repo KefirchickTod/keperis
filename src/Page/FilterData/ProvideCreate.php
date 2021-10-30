@@ -1,10 +1,10 @@
 <?php
 
 
-namespace src\Interfaces\Structure;
+namespace src\Page\FilterData;
 
 
-interface ProvideCreateInterface
+interface ProvideCreate
 {
     public function getRow($page = false);
 

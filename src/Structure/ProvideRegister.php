@@ -4,13 +4,9 @@
 namespace src\Structure;
 
 
-use src\Interfaces\Structure\bcProvideRegisterInterface;
 
-class ProvideRegister implements bcProvideRegisterInterface
+class ProvideRegister
 {
-    /*
-     * @var mixed[]
-     * */
     /**
      * @var int;
      */

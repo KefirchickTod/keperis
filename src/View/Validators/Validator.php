@@ -4,7 +4,7 @@
 namespace src\View\Validators;
 
 
-use src\Interfaces\View\ValidatorInterface;
+use src\View\ValidatorInterface;
 
 /**
  * Class Validator

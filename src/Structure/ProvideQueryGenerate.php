@@ -4,9 +4,8 @@
 namespace src\Structure;
 
 use src\Http\Request;
-use src\Interfaces\getQueryInterface;
 
-class ProvideQueryGenerate implements getQueryInterface
+class ProvideQueryGenerate
 {
 
     private $query =
