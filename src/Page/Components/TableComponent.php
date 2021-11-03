@@ -2,7 +2,6 @@
 
 namespace src\Page\Components;
 
-use App\EloquentModelTable;
 use src\Interfaces\ProvideMask;
 use src\Page\Component;
 use src\Page\Components\Table\TableEntity;

@@ -147,11 +147,6 @@ class THead implements TableEntity
 
     public function register(TableComponent $table): TableComponent
     {
-        $table->addEvent(function (TBody $body) {
-            $body->add(function ($row, $setting, $next) {
-                return $next($row, $setting);
-            });
-        }, TBody::class);
         return $table;
     }
 }

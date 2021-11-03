@@ -5,7 +5,6 @@ namespace src\Page\Components\Table;
 
 
 use Illuminate\Support\Str;
-use src\Core\ActionButton;
 use src\MiddlewareProvideTableTrait;
 use src\Page\Components\TableComponent;
 use stdClass;

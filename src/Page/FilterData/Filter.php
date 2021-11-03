@@ -6,7 +6,7 @@ namespace src\Page\FilterData;
 
 use Error;
 use Exception;
-use src\Core\Page\PageCreatePaginator;
+
 use src\Eloquent\Provide\Commands\ProvideReceiver;
 
 class Filter extends TransformationLogic
@@ -114,7 +114,7 @@ class Filter extends TransformationLogic
             }
         }
 
-        PageCreatePaginator::$distinct = array_keys($filterAttributes);
+        //PageCreatePaginator::$distinct = array_keys($filterAttributes);//todo dispatch to paginator
 
 
         $changer->changeWhere(function ($where) use ($changer, $filterAttributes) {
@@ -128,13 +128,6 @@ class Filter extends TransformationLogic
                 $where[] = implode(' AND ', $filter);
             }
 
-
-//            $structure = $changer->get();
-//            $where[] = (new DateFilter())
-//                ->setDataStructure($structure)
-//                ->parseFilter($filterAttributes)
-//                ->setDelimtr(" AND ")
-//                ->getResult();
 
             return $where;
         });

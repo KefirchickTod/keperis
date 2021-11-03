@@ -8,8 +8,7 @@ use Exception;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\MySqlConnection;
 use Psr\Container\ContainerInterface;
-use src\Core\Database\DatabaseAdapter;
-use src\Core\Page\PageCreator;
+
 use src\Eloquent\Model;
 use src\Http\Environment;
 use src\Http\Headers;
@@ -45,9 +44,9 @@ final class Container extends \Pimple\Container implements ContainerInterface
 {
     private $defaultSettings = [
         'displayErrorDetails' => true,
-        'httpVersion'         => '1.1',
-        'responseChunkSize'   => 4096,
-        'api'                 => []//todo
+        'httpVersion' => '1.1',
+        'responseChunkSize' => 4096,
+        'api' => []//todo
     ];
 
 
@@ -89,11 +88,6 @@ final class Container extends \Pimple\Container implements ContainerInterface
         if (!isset($this['structure'])) {
             $this['structure'] = function () {
                 return \structure();
-            };
-        }
-        if (!isset($this['pageCreator'])) {
-            $this['pageCreator'] = function ($c) {
-                return new PageCreator($c->get('structure'), []);
             };
         }
         if (!isset($this['router'])) {
@@ -154,9 +148,47 @@ final class Container extends \Pimple\Container implements ContainerInterface
 
         if (!isset($this['connection'])) {
             $this['connection'] = function ($e) {
-                $pdo = DatabaseAdapter::createDateBaseConnection($e->env)->getPdo();
 
-                $connection = new MySqlConnection($pdo, $e->env->get('DB_NAME'));
+                $pdo = static function (Environment $environment, $options = [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]) {
+                    $attributes = [
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_EMPTY_STRING,
+                        \PDO::ATTR_CASE => \PDO::CASE_LOWER,
+                    ];
+                    if (!$environment->hasMany(['DB_USER', 'DB_HOST', 'DB_PASS', 'DB_NAME'])) {
+                        throw new \PDOException("Undefined db setting");
+                    }
+
+                    if (!$environment->has('dsn')) {
+                        $environment->set('dsn', 'mysql:host=' . $environment->get('DB_HOST') . ';dbname=' . $environment->get('DB_NAME'));
+                    }
+
+                    try {
+                        $pdo = new \PDO(
+                            $environment->get('dsn'),
+                            $environment->get('DB_USER'),
+                            $environment->get('DB_PASS'),
+                            $options
+                        );
+                        foreach ($attributes as $attribute => $value) {
+
+                            $pdo->setAttribute($attribute, $value);
+                        }
+                        $pdo->exec("SET time_zone = '" . date('P') . "'");
+                        $pdo->exec('SET names utf8');
+                        return $pdo;
+                    } catch (\PDOException $exception) {
+                        ;
+                        if (boolval($environment->get('APP_DEBUG', false)) === true) {
+                            echo $exception->getMessage();
+                        }
+                        error_log($exception->getMessage());
+                        die(0);
+                    }
+                };
+
+
+                $connection = new MySqlConnection($pdo($e->env), $e->env->get('DB_NAME'));
 
                 $resolver = new \src\Eloquent\ConnectionResolver([
                     'mysql' => $connection,

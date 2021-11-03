@@ -2,7 +2,7 @@
 
 namespace src\Page\Components\Table\View;
 
-use src\Interfaces\View\ValidatorInterface;
+use src\View\ValidatorInterface;
 use src\View\Validators\Validator;
 
 class TableViewValidator implements ValidatorInterface

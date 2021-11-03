@@ -1,17 +1,14 @@
 <?php
 
 
-namespace src\Page;
+namespace src\Page\Components\Table;
 
 
 use Closure;
 use ErrorException;
-use Exception;
-use src\bcerpapi;
 
 class ActionButton
 {
-
     /**
      * @var Closure
      */
@@ -80,11 +77,13 @@ class ActionButton
         return new static();
     }
 
-    public function deleteAction($key){
-        if(array_key_exists($key, $this->action)){
+    public function deleteAction($key)
+    {
+        if (array_key_exists($key, $this->action)) {
             unset($this->action[$key]);
         }
     }
+
     /**
      * @param $name
      * @return $this
@@ -123,7 +122,7 @@ class ActionButton
 
     function __toString(): string
     {
-        return implode(' ', $this->init()->html).PHP_EOL;
+        return implode(' ', $this->init()->html) . PHP_EOL;
     }
 
     protected function init()
@@ -141,7 +140,7 @@ class ActionButton
                 foreach ($action as $name => $value) {
 
                     if (in_array($name, $this->initKey) && !empty($value)) {
-                        if(array_key_exists('roles', $action)){
+                        if (array_key_exists('roles', $action)) {
                             $roleFilter = $action['roles'];
                         }
                         $this->position = $name == 'position' ? ($value == 'start' ? false : true) : $this->position;
@@ -150,7 +149,7 @@ class ActionButton
                         if ($name == 'link') {
 
                             foreach ($value as $num => $data) {
-                                if(array_key_exists($num, $roleFilter) && !role_check($roleFilter[$num])){
+                                if (array_key_exists($num, $roleFilter) && !role_check($roleFilter[$num])) {
                                     continue;
                                 }
                                 if (isset($action['api']) && $action['settingApi']) {
@@ -237,11 +236,13 @@ class ActionButton
         $this->error[] = $massage;
     }
 
-    public function withRow($row){
+    public function withRow($row)
+    {
         $clone = clone $this;
         $clone->row = $row;
         return $clone;
     }
+
     /**
      * @param $id
      * @param $link
@@ -256,7 +257,7 @@ class ActionButton
         }
         return html()
             ->a([
-                'href'   => $link,
+                'href' => $link,
                 'target' => $this->getTarget($id),
             ])
             ->i(['class' => $icon])
